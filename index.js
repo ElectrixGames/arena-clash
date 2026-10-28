@@ -15,7 +15,7 @@ const MAPS = ['blockyard', 'dustbowl', 'frostbite', 'neon'];
 const MODES = {
   ffa: { limit: 15 },                         // free-for-all, first to 15 kills
   tdm: { limit: 30, teams: true },            // team deathmatch, first team to 30
-  snipers: { limit: 10, weapons: [3, 4] },    // only sniper (3) and pistol (4)
+  snipers: { limit: 10, weapons: [3, 4, 7, 10] }, // sniper, handgun, revolver + grenades
 };
 const MODE_IDS = Object.keys(MODES);
 const MAX_PLAYERS = 8;
@@ -34,8 +34,12 @@ const WEAPONS = [
   { max: 48, rate: 0.2 },    // 4 Pistol
   { max: 44, rate: 0.07 },   // 5 Burst Rifle (per bullet)
   { max: 110, rate: 1.4 },   // 6 Rocket Launcher (splash)
+  { max: 90, rate: 0.55 },   // 7 Revolver
+  { max: 40, rate: 0.115 },  // 8 AK-47
+  { max: 16, rate: 0.05 },   // 9 Minigun
+  { max: 100, rate: 0.8 },   // 10 Grenade (splash)
 ];
-const BUILD_SLOT = WEAPONS.length;
+const BUILD_SLOT = 15;
 const PIECES = { wall: 150, floor: 120, ramp: 120 };
 const HATS = ['none', 'cap', 'crown', 'cowboy', 'horns', 'halo', 'tophat', 'headphones'];
 const EFFECTS = ['sparks', 'confetti', 'pixels', 'fire'];
@@ -268,6 +272,11 @@ function handle(p, m) {
       const a = m.a.slice(0, 3).map(v => num(v, -300, 300) || 0);
       const b = m.b.slice(0, 9).filter(Array.isArray).map(e => e.slice(0, 3).map(v => num(v, -300, 300) || 0));
       broadcast(room, { t: 'shot', id: p.id, a, b }, p); break;
+    }
+    case 'gr': {
+      if (!playing || p.dead || !Array.isArray(m.a) || !Array.isArray(m.v) || now - (p.lastNade || 0) < 700) return;
+      p.lastNade = now;
+      broadcast(room, { t: 'gr', id: p.id, a: m.a.slice(0, 3).map(v => num(v, -300, 300) || 0), v: m.v.slice(0, 3).map(v => num(v, -60, 60) || 0) }, p); break;
     }
     case 'rk': {
       if (!playing || p.dead || !Array.isArray(m.a) || !Array.isArray(m.v)) return;
