@@ -321,6 +321,52 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
 .skinchip.rare{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 -2px 0 #4f8fe8}.skinchip.epic{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 -2px 0 #8c4be0}.skinchip.legendary{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 -2px 0 #e0a922}
 @media (max-width:760px){.loslots{grid-template-columns:repeat(2,1fr)}.logrid{grid-template-columns:repeat(3,1fr)}.locard span{font-size:14px}}
 
+
+/* ============ v1.3: shop, game log, zombies ============ */
+#shopbtn{position:fixed;right:calc(18px + env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:auto;z-index:5;font-size:26px;padding:12px 26px;display:flex;align-items:center;gap:10px}
+#shopbtn .crico{width:20px;height:22px}
+#gamelog{position:fixed;left:calc(18px + env(safe-area-inset-left,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));width:min(330px,calc(100vw - 36px));z-index:5;
+  background:linear-gradient(180deg,rgba(28,42,80,.92),rgba(10,16,34,.94));border:2px solid rgba(255,255,255,.14);border-radius:16px;box-shadow:0 6px 0 rgba(0,0,0,.35);font-size:13px}
+#gamelog summary{cursor:pointer;padding:10px 14px;margin:0;color:#fff;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center}
+#gamelog summary::-webkit-details-marker{display:none}
+#gamelog .ver{font-family:"Lilita One",sans-serif;color:var(--gold1)}
+.glbody{padding:0 14px 12px;max-height:38vh;overflow:auto}
+.glbody h4{margin:0 0 6px;font-family:"Lilita One",sans-serif;font-weight:400;font-size:16px;color:#ff9a3d}
+.glbody ul{margin:0;padding-left:16px;line-height:1.45;color:var(--muted)}.glbody li{margin-bottom:3px}.glbody b{color:#fff}
+.soon{margin-top:10px;text-align:center;font-family:"Lilita One",sans-serif;font-size:18px;color:#7fe7ff;border:2px dashed rgba(127,231,255,.4);border-radius:10px;padding:6px}
+.tabs{display:flex;gap:8px;margin:6px 0}
+.shoptab{width:auto;font-size:18px;padding:8px 18px;background:rgba(255,255,255,.1);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.35);border:2px solid transparent}
+.shoptab[aria-selected="true"]{background:linear-gradient(180deg,var(--gold1),var(--gold2));color:#1c1206}
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;max-height:52vh;overflow:auto;padding:4px}
+.shopcard{border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:2px solid rgba(255,255,255,.1);box-shadow:0 4px 0 rgba(0,0,0,.35);display:flex;flex-direction:column}
+.shopcard .simg{position:relative;height:110px;background:linear-gradient(180deg,#2a2d35,#9aa3b5)}
+.shopcard.rare .simg{background:linear-gradient(180deg,#123a7a,#4f8fe8)}.shopcard.epic .simg{background:linear-gradient(180deg,#3a1468,#8c4be0)}
+.shopcard.legendary .simg{background:linear-gradient(180deg,#5a3a00,#e0a922)}.shopcard.limited .simg{background:linear-gradient(180deg,#3a0a00,#ff7a1a)}
+.shopcard .simg img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(0,0,0,.45))}
+.shopcard .trial{position:absolute;right:8px;top:8px;font-style:normal;font-family:"Lilita One",sans-serif;font-size:13px;background:#ffe74a;color:#1c1206;border-radius:6px;padding:2px 7px}
+.sminis{display:flex;background:rgba(0,0,0,.25)}.sminis img{flex:1;height:44px;object-fit:contain;min-width:0}
+.sbody{padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.stitle{display:flex;justify-content:space-between;align-items:center;gap:6px}.stitle b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:19px}
+.rar{font-style:normal;font-size:10px;font-weight:800;letter-spacing:1px;border-radius:6px;padding:2px 6px;background:#555b66}
+.rar.rare{background:#2f6fd0}.rar.epic{background:#7a3ad0}.rar.legendary{background:#c08a10;color:#1c1206}.rar.limited{background:#ff7a1a;color:#1c1206}
+.stats{display:flex;flex-direction:column;gap:4px}
+.sb{display:grid;grid-template-columns:62px 1fr 46px;align-items:center;gap:6px;font-size:11px;color:var(--muted)}.sb b{color:#fff;text-align:right;font-size:12px}
+.sbar{height:7px;border-radius:4px;background:rgba(0,0,0,.4);overflow:hidden}.sbar div{height:100%;background:linear-gradient(90deg,#7fe7ff,#3ddc84)}
+.sbody button{font-size:17px;padding:8px 12px;margin-top:auto}
+#wavebanner{position:absolute;left:50%;top:30%;transform:translateX(-50%);text-align:center;opacity:0;pointer-events:none;white-space:nowrap}
+#wavebanner.show{animation:kb 3s ease forwards}
+.wb-big{font-family:"Lilita One",sans-serif;font-size:46px;color:#ff9a3d;-webkit-text-stroke:2px #2a0a00;text-shadow:0 4px 0 #2a0a00}
+.wb-small{font-size:17px;font-weight:600;text-shadow:0 2px 3px rgba(0,0,0,.8)}
+#bossbar{position:absolute;left:50%;top:calc(76px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(460px,70vw);text-align:center}
+#bossbar span{font-family:"Lilita One",sans-serif;font-size:16px;letter-spacing:2px;color:#ff5d6c;text-shadow:0 2px 0 #2a0008}
+#bossbar>div{height:14px;border-radius:7px;background:rgba(0,0,0,.55);border:2px solid #2a0008;overflow:hidden;margin-top:3px}
+#bossfill{height:100%;width:100%;background:linear-gradient(180deg,#ff8a8a,#e0283c)}
+#lives{color:#ff5d6c;font-size:13px;margin-left:6px;letter-spacing:1px}#lives span{opacity:.25}
+#hpbox{width:200px;padding:8px 12px}
+body.touch #hpbox{top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));left:calc(12px + env(safe-area-inset-left,0px));width:150px}
+body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
+@media (max-width:760px){#gamelog{bottom:auto;top:calc(10px + env(safe-area-inset-top,0px));width:calc(100vw - 20px);left:10px}#gamelog details:not([open]){width:auto}.shopgrid{grid-template-columns:1fr}}
+
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -331,6 +377,8 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
   <svg id="ring" width="44" height="44" viewBox="0 0 44 44"><circle class="track" cx="22" cy="22" r="16"/><circle id="ringfill" cx="22" cy="22" r="16"/></svg>
   <div id="cross"><i class="t"></i><i class="b"></i><i class="l"></i><i class="r"></i><b></b></div>
   <div id="killbanner"></div>
+  <div id="wavebanner"></div>
+  <div id="bossbar" hidden><span>THE GIANT</span><div><div id="bossfill"></div></div></div>
   <div id="hit"></div>
   <div id="shieldtag" hidden>Spawn shield</div>
   <div id="reload" hidden><div id="reloadbar"><div id="reloadfill"></div></div>Reloading</div>
@@ -340,7 +388,7 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
   <div id="feed"></div>
   <div id="buildbar" hidden><span data-p="wall">Z Wall</span><span data-p="floor">X Floor</span><span data-p="ramp">C Ramp</span></div>
   <div id="msg"></div>
-  <div class="panel" id="hpbox"><div id="hprow"><span class="small">Health</span><span id="hptext" class="display">100</span></div><div id="hpbar"><div id="hpfill"></div></div></div>
+  <div class="panel" id="hpbox"><div id="hprow"><span class="small">Health <b id="lives"></b></span><span id="hptext" class="display">100</span></div><div id="hpbar"><div id="hpfill"></div></div></div>
   <div id="slots"></div>
   <div id="crtoast"></div>
   <div class="panel" id="ammobox"><div id="nadebox" title="Grenades (G)"><span class="nadeico"></span><b id="nades">2</b><small>G</small></div><div id="wname" class="small">Assault Rifle</div><div><span id="mag" class="display">30</span><span id="reserve" class="display"> / 120</span></div><div id="mats">Wood 200</div></div>
@@ -366,6 +414,27 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
   <button class="tb" id="tNade" aria-label="Throw grenade">NADE</button>
 </div>
 
+<button id="shopbtn" hidden><span class="crico"></span>Shop</button>
+<aside id="gamelog" hidden>
+  <details open>
+    <summary><b>Game Log</b> <span class="ver">V1.3</span></summary>
+    <div class="glbody">
+      <h4>V1.3: The biggest update ever!</h4>
+      <ul>
+        <li>🎃 <b>Zombies mode</b> on the new Halloween map, Pumpkin Hollow. Survive 5 waves and the Giant.</li>
+        <li>🗺️ 2 new maps: <b>Temple Ruins</b> and <b>Crystal Caverns</b>.</li>
+        <li>🔫 3 new weapons: <b>Halloween RPG</b> (limited), <b>Scythe</b> and <b>Portal Gun</b>.</li>
+        <li>💎 Clash Crystals now appear on maps, and are harder to earn.</li>
+        <li>🌈 New <b>Rainbow</b> skin. Skins and guns cost more.</li>
+        <li>🛒 New <b>Shop</b> with damage, fire rate and reload stats.</li>
+        <li>💣 Grenades buffed (bigger blast, 3 per life). Minigun is smaller and a bit slower.</li>
+        <li>❤️ Health bar moved to the bottom left during play.</li>
+      </ul>
+      <div class="soon">V1.4 coming soon!</div>
+    </div>
+  </details>
+</aside>
+
 <div id="overlay">
   <section class="card wide" id="s-menu">
     <div class="menugrid">
@@ -387,7 +456,7 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
             <kbd>Mouse</kbd><span>Shoot. Right-click to aim, or scope with the sniper</span>
             <kbd>1 to 4</kbd><span>Your loadout guns (pick them on the Loadout screen)</span>
             <kbd>5</kbd><span>Build mode (Z wall, X floor, C ramp)</span>
-            <kbd>G</kbd><span>Throw a grenade (2 per life)</span>
+            <kbd>G</kbd><span>Throw a grenade (3 per life)</span>
             <kbd>Q E F</kbd><span>Quick-build a wall, ramp or floor anytime</span>
             <kbd>R</kbd><span>Reload</span>
             <kbd>Tab</kbd><span>Scoreboard</span>
@@ -451,6 +520,14 @@ body.touch #buildbar{top:calc(160px + env(safe-area-inset-top,0px))}
     <div class="modes" id="modes"></div>
     <h3>Map</h3>
     <div class="maps" id="maps"></div>
+  </section>
+
+  <section class="card wide" id="s-shop" hidden>
+    <div class="votehead"><h2 class="display">Shop</h2><div class="crbar"><span class="crico"></span><b id="shopcr">0</b><span>Clash Crystals</span></div></div>
+    <div class="tabs" role="tablist"><button class="shoptab" role="tab" data-t="guns">Weapons</button><button class="shoptab" role="tab" data-t="skins">Skins</button></div>
+    <p class="small">Click Buy, then Confirm. Earn Clash Crystals from kills, wins, zombie waves and crystals you find on the map.</p>
+    <div class="shopgrid" id="shopgrid"></div>
+    <div class="row"><button class="ghost" id="shopclose">Back</button></div>
   </section>
 
   <section class="card wide" id="s-loadout" hidden>
@@ -665,6 +742,7 @@ function addBlock(x, y, z, sx, sy, sz, color, glow) {
 let seed = 1; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const pick = (a) => a[Math.floor(rnd() * a.length)];
 const pickAny = (a) => a[Math.floor(Math.random() * a.length)];
+let circleArena = false;
 const MAPS = {
   blockyard: { name: 'Blockyard', blurb: 'Colorful crates scattered across open grass.', sky: 0x8ec5ff, fog: [55, 140], g: ['#74c25e', '#69b553'], hg: 0x5d7a4a, edge: 0x55657a,
     pal: [0xe76f51, 0xf4a261, 0xe9c46a, 0x2a9d8f, 0x8ab17d, 0x7d7aa8, 0xc77dab, 0x5fa8d3], gen: 'scatter', seed: 11, decor: 'trees',
@@ -679,6 +757,15 @@ const MAPS = {
     pal: [0xff3cac, 0x2bd2ff, 0x7cff6b, 0xffd23f], gen: 'mirror', seed: 5, dark: true, decor: 'lamps', line: '#4b37a8',
     skyTop: 0x07051a, skyHor: 0x3a1f6e, outer: 0x140f30, cloud: 0x2a1d5a, clouds: 8, hills: { pal: [0x1a1340, 0x221a55, 0x15103a], cap: 0xff3cac, h: [10, 30] } },
 };
+MAPS.temple = { name: 'Temple Ruins', blurb: 'Jungle pyramids, broken pillars and vines.', sky: 0x9fd6c8, fog: [45, 130], g: ['#5a8f3e', '#4f8236'], hg: 0x3f6a2e, edge: 0x6f7a5a,
+  pal: [0x8a8f75, 0x7a8066, 0x9aa085, 0x6f765c], gen: 'temple', seed: 41, decor: 'jungle',
+  skyTop: 0x3f9ad0, skyHor: 0xd8f0d0, outer: 0x3f7a30, cloud: 0xffffff, clouds: 12, hills: { pal: [0x3f7a30, 0x4a8a38, 0x356a28], cap: 0x5aa048, h: [10, 24] } };
+MAPS.caverns = { name: 'Crystal Caverns', blurb: 'Dark rock spires lit by glowing crystals.', sky: 0x1a1430, fog: [28, 95], g: ['#3a3550', '#332e48'], hg: 0x221c38, edge: 0x2a2440,
+  pal: [0x4a4268, 0x3e3858, 0x564c78], gen: 'caverns', seed: 53, dark: true, decor: 'crystals',
+  skyTop: 0x0c0818, skyHor: 0x2a1f4a, outer: 0x1c1830, cloud: 0x3a2f5a, clouds: 6, hills: { pal: [0x2a2440, 0x332c4e, 0x241e38], cap: 0x5fd0ff, h: [14, 34] } };
+MAPS.pumpkin = { name: 'Pumpkin Hollow', blurb: 'A haunted round graveyard. Zombies climb in from every side.', sky: 0x2a1440, fog: [30, 115], g: ['#3a3222', '#2f291c'], hg: 0x2a1a30, edge: 0x3a2a1a,
+  pal: [0x6a6a72, 0x5a5a62, 0x7a7a82], gen: 'hollow', seed: 31, dark: true, moon: true, decor: 'spooky', circle: true,
+  skyTop: 0x12082a, skyHor: 0x6a2a4a, outer: 0x1f1a12, cloud: 0x3a2a4a, clouds: 10, hills: { pal: [0x1a1424, 0x221a2e, 0x15101e], cap: 0x2a2036, h: [10, 26] } };
 const GEN = {
   scatter(M) {
     for (let i = 0; i < 42; i++) {
@@ -703,6 +790,29 @@ const GEN = {
     }
     for (let i = 0; i < 26; i++) { const x = (rnd() * 2 - 1) * 36, z = (rnd() * 2 - 1) * 36; if (Math.hypot(x, z) < 6) continue; const s = 1 + rnd() * 1.2; addBlock(x, 0, z, s, s * .8, s, 0xffffff); }
   },
+  temple(M) {
+    for (let k = 0; k < 4; k++) {
+      const x = [-22, 22, -20, 21][k], z = [-20, 18, 21, -22][k];
+      for (let l = 0; l < 4; l++) addBlock(x, l * 1.1, z, 9 - l * 2, 1.1, 9 - l * 2, pick(M.pal));
+    }
+    for (let i = 0; i < 26; i++) {
+      const x = (rnd() * 2 - 1) * 34, z = (rnd() * 2 - 1) * 34; if (Math.hypot(x, z) < 8) continue;
+      if (rnd() < .6) addBlock(x, 0, z, 1.4, 1.5 + rnd() * 4, 1.4, pick(M.pal)); else addBlock(x, 0, z, 3 + rnd() * 3, 1 + rnd() * .8, 1.2, pick(M.pal));
+    }
+  },
+  caverns(M) {
+    for (let i = 0; i < 30; i++) {
+      const x = (rnd() * 2 - 1) * 34, z = (rnd() * 2 - 1) * 34; if (Math.hypot(x, z) < 8) continue;
+      const w = 1.6 + rnd() * 2.4, h = 2 + rnd() * 7; addBlock(x, 0, z, w, h, w, pick(M.pal)); if (rnd() < .5) addBlock(x, h, z, w * .6, 1.2, w * .6, pick(M.pal));
+    }
+  },
+  hollow(M) {
+    for (let i = 0; i < 64; i++) { const a = i / 64 * Math.PI * 2; decoBox(.4, 1.6, .4, 0x3a2a1a, Math.cos(a) * 34.5, 0, Math.sin(a) * 34.5); }
+    for (let i = 0; i < 18; i++) {
+      const a = rnd() * Math.PI * 2, r = 9 + rnd() * 20, x = Math.cos(a) * r, z = Math.sin(a) * r;
+      if (rnd() < .75) addBlock(x, 0, z, 1.2, 1.5 + rnd() * .6, .45, pick(M.pal)); else addBlock(x, 0, z, 3, 2.4, 2.2, 0x4a4a52);
+    }
+  },
   mirror(M) {
     for (let i = 0; i < 11; i++) {
       const x = 5 + rnd() * 30, z = 5 + rnd() * 30, sx = 2 + Math.floor(rnd() * 3), sz = 2 + Math.floor(rnd() * 3), sy = 1.5 + rnd() * 5, c = pick(M.pal);
@@ -713,6 +823,28 @@ const GEN = {
 };
 
 const DECOR = {
+  jungle(M) {
+    for (let i = 0; i < 10; i++) { const x = (rnd() * 2 - 1) * 36, z = (rnd() * 2 - 1) * 36; if (Math.hypot(x, z) < 9) continue;
+      addBlock(x, 0, z, .8, 3.4, .8, 0x6b4a2b); addBlock(x, 3.4, z, 3.4, 1.4, 3.4, 0x2f8a3a); }
+    for (let i = 0; i < 60; i++) { const x = (rnd() * 2 - 1) * 38, z = (rnd() * 2 - 1) * 38; decoBox(.12, .6 + rnd() * .8, .12, pick([0x3f9a3a, 0x2f7a2a]), x, 0, z); }
+  },
+  crystals(M) {
+    for (let i = 0; i < 40; i++) {
+      const x = (rnd() * 2 - 1) * 37, z = (rnd() * 2 - 1) * 37, h = .6 + rnd() * 1.6, c = pick([0x5fd0ff, 0xff5fd8, 0x9b7bff]);
+      const m = decoBox(.35, h, .35, c, x, 0, z, true); m.rotation.z = (rnd() - .5) * .6; m.rotation.x = (rnd() - .5) * .6;
+    }
+  },
+  spooky(M) {
+    for (let i = 0; i < 26; i++) {
+      const a = rnd() * Math.PI * 2, r = 6 + rnd() * 27, x = Math.cos(a) * r, z = Math.sin(a) * r, s2 = .5 + rnd() * .5;
+      decoBox(s2, s2 * .8, s2, 0xff7a1a, x, 0, z); decoBox(s2 * .55, s2 * .25, .04, 0xffd23f, x, s2 * .3, z + s2 / 2, true); decoBox(.08, .2, .08, 0x3f6a2e, x, s2 * .8, z);
+    }
+    for (let i = 0; i < 7; i++) {
+      const a = rnd() * Math.PI * 2, r = 12 + rnd() * 18, x = Math.cos(a) * r, z = Math.sin(a) * r;
+      addBlock(x, 0, z, .6, 4, .6, 0x2a2018); decoBox(1.6, .25, .25, 0x2a2018, x + .7, 3, z); decoBox(.25, .25, 1.4, 0x2a2018, x, 3.5, z - .6);
+    }
+    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; decoBox(.25, 2.4, .25, 0x222222, Math.cos(a) * 31, 0, Math.sin(a) * 31); decoBox(.5, .5, .5, 0xffb347, Math.cos(a) * 31, 2.4, Math.sin(a) * 31, true); }
+  },
   trees(M) {
     for (let i = 0; i < 12; i++) {
       const x = (rnd() * 2 - 1) * 35, z = (rnd() * 2 - 1) * 35; if (Math.hypot(x, z) < 9) continue;
@@ -761,6 +893,7 @@ function tryMove(o, nx, nz, feet, h, r, rampsBlock) {
   if (stuck || !hitsSolid(nx, o.pos.z, feet, h, r, rampsBlock)) o.pos.x = nx; else ok = false;
   if (stuck || !hitsSolid(o.pos.x, nz, feet, h, r, rampsBlock)) o.pos.z = nz; else ok = false;
   const lim = ARENA - r; o.pos.x = Math.max(-lim, Math.min(lim, o.pos.x)); o.pos.z = Math.max(-lim, Math.min(lim, o.pos.z));
+  if (circleArena) { const d = Math.hypot(o.pos.x, o.pos.z), cl = 33.5 - r; if (d > cl) { o.pos.x *= cl / d; o.pos.z *= cl / d; } }
   return ok;
 }
 function rampSurf(s, x, z) {
@@ -784,7 +917,7 @@ const SFX = { ar: ['square', 220, 60, .07, .05], smg: ['square', 300, 90, .05, .
   pistol: ['square', 380, 120, .07, .05], burst: ['square', 250, 70, .06, .045], rocket: ['sawtooth', 180, 70, .3, .07], boom: ['sawtooth', 90, 25, .55, .13],
   bot: ['square', 200, 70, .06, .018], hit: ['sine', 1100, 900, .06, .06], head: ['sine', 1500, 1300, .09, .08],
   build: ['square', 140, 90, .08, .05], hurt: ['sawtooth', 110, 60, .15, .06], kill: ['triangle', 660, 990, .2, .08], reload: ['triangle', 500, 700, .06, .04],
-  pickup: ['triangle', 520, 1040, .18, .07], throw: ['triangle', 300, 160, .12, .05], buy: ['triangle', 660, 1320, .25, .08], spin: ['sawtooth', 60, 140, .08, .02], empty: ['square', 900, 850, .03, .03], tick: ['sine', 880, 880, .05, .04], chat: ['sine', 700, 760, .06, .03] };
+  pickup: ['triangle', 520, 1040, .18, .07], throw: ['triangle', 300, 160, .12, .05], buy: ['triangle', 660, 1320, .25, .08], spin: ['sawtooth', 60, 140, .08, .02], portal: ['sine', 300, 1200, .3, .07], swing: ['triangle', 900, 300, .14, .05], groan: ['sawtooth', 120, 70, .45, .025], crystal: ['sine', 1200, 2400, .15, .06], whistle: ['sine', 1400, 500, .9, .03], empty: ['square', 900, 850, .03, .03], tick: ['sine', 880, 880, .05, .04], chat: ['sine', 700, 760, .06, .03] };
 function sfx(type) {
   try {
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -831,16 +964,16 @@ const EFFECTS = {
   fire: { name: 'Fire', colors: [0xff3b1f, 0xff8c1a, 0xffd23f], n: 36, speed: 2.5, up: 4, life: .9, g: -2 },
 };
 function killFx(effect, pos, target) { const E = EFFECTS[effect] || EFFECTS.sparks; burstFx(target || scene, new V3(pos.x, (pos.y || 0) + 1.1, pos.z), E.colors, E.n, E.speed, E.up, E.life, E.g); }
-function boomFx(p) {
+function boomFx(p, scale) {
   const m = new THREE.Mesh(boomGeo, new THREE.MeshBasicMaterial({ color: 0xff9a3d, transparent: true, opacity: .8, depthWrite: false }));
-  m.position.copy(p); scene.add(m); fx.push({ o: m, t: .35, max: .35, boom: true });
+  m.position.copy(p); scene.add(m); fx.push({ o: m, t: .35, max: .35, boom: true, sc: scale || 1 });
   burstFx(scene, p, [0xff8c1a, 0xffd23f, 0x555555, 0x333333], 26, 9, 2, .8, 14);
 }
 function updateFx(dt) {
   for (let i = fx.length - 1; i >= 0; i--) {
     const f = fx[i]; f.t -= dt; const k = Math.max(0, f.t / f.max); f.o.material.opacity = f.boom ? k * .8 : k;
     if (f.grow) f.o.scale.setScalar(1 + (1 - k) * 2);
-    if (f.boom) f.o.scale.setScalar(.5 + (1 - k) * 4.2);
+    if (f.boom) f.o.scale.setScalar((.5 + (1 - k) * 4.2) * f.sc);
     if (f.t <= 0) { scene.remove(f.o); if (!f.grow && !f.boom) f.o.geometry.dispose(); f.o.material.dispose(); fx.splice(i, 1); }
   }
 }
@@ -880,6 +1013,91 @@ function feed(html) {
 let msgT = 0, hitT = 0, vigT = 0;
 function msg(t) { $('msg').textContent = t; $('msg').classList.add('show'); msgT = 1.6; }
 function hitmarker(head) { const h = $('hit'); h.classList.add('show'); h.classList.toggle('head', !!head); hitT = .12; sfx(head ? 'head' : 'hit'); }
+/* ===== Zombie wave simulation (shared by the server and the game page) ===== */
+function makeZombieSim(opts) {
+  const R_SPAWN = 46, R_ARENA = 31;
+  const TYPES = {
+    small: { hp: 75, speed: 3.3, reach: 1.5, dmg: 10, cd: 1.0, scale: 1, rad: .45 },
+    big: { hp: 150, speed: 2.7, reach: 2.4, dmg: 10, cd: 1.1, scale: 2, rad: .85 },
+    giant: { hp: 1000, speed: 1.7, reach: 4.2, dmg: 30, cd: 1.6, scale: 4, rad: 1.7 },
+  };
+  const WAVES = [{ small: 6, big: 2 }, { small: 9, big: 3 }, { small: 12, big: 5 }, { big: 8, giant: 1 }, { big: 12, giant: 1 }];
+  const S = { wave: 0, state: 'intermission', timer: 6, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1 };
+  const r2 = (v) => Math.round(v * 100) / 100;
+  function startWave() {
+    S.wave++; S.state = 'fighting';
+    const W = WAVES[S.wave - 1], k = 1 + .5 * Math.max(0, S.nplayers - 1);
+    const list = [];
+    for (let i = 0; i < Math.round((W.small || 0) * k); i++) list.push('small');
+    for (let i = 0; i < Math.round((W.big || 0) * k); i++) list.push('big');
+    list.sort(() => Math.random() - .5);
+    if (W.giant) list.splice(Math.min(3, list.length), 0, 'giant'); // the giant shows up early in the wave
+    S.queue = list; S.spawnT = 0; S.bombT = 5;
+    opts.event({ type: 'wave', wave: S.wave });
+  }
+  function spawn(type) {
+    const a = Math.random() * Math.PI * 2;
+    S.zombies.push({ id: S.nextId++, type, x: Math.cos(a) * R_SPAWN, z: Math.sin(a) * R_SPAWN, yaw: 0, hp: TYPES[type].hp, cd: 1, swing: 0 });
+    if (type === 'giant') opts.event({ type: 'giant' });
+  }
+  function update(dt) {
+    if (S.state === 'intermission') { S.timer -= dt; if (S.timer <= 0) startWave(); return; }
+    if (S.state !== 'fighting') return;
+    const ps = opts.players().filter(p => p.alive);
+    if (S.queue.length) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.7 : 1.0; } }
+    for (const z of S.zombies) {
+      const T = TYPES[z.type]; z.swing = Math.max(0, z.swing - dt); z.cd -= dt;
+      let best = null, bd = Infinity;
+      for (const p of ps) { const d = Math.hypot(p.x - z.x, p.z - z.z); if (d < bd) { bd = d; best = p; } }
+      if (!best) { z.moving = false; continue; }
+      const dx = best.x - z.x, dz = best.z - z.z, d = bd || .001;
+      z.yaw = Math.atan2(dx, dz);
+      if (d > T.reach * .8) { const step = Math.min(T.speed * dt, d - T.reach * .75); z.x += dx / d * step; z.z += dz / d * step; z.moving = true; } else z.moving = false;
+      if (d < T.reach && (best.y || 0) < 2.6 * T.scale && z.cd <= 0) { z.cd = T.cd; z.swing = .45; opts.hurt(best.id, T.dmg); }
+    }
+    for (let i = 0; i < S.zombies.length; i++) for (let j = i + 1; j < S.zombies.length; j++) { // keep zombies from stacking
+      const a = S.zombies[i], b = S.zombies[j], ra = TYPES[a.type].rad + TYPES[b.type].rad, dx = b.x - a.x, dz = b.z - a.z, d = Math.hypot(dx, dz);
+      if (d > 0 && d < ra) { const push = (ra - d) / 2, ux = dx / d, uz = dz / d; a.x -= ux * push; a.z -= uz * push; b.x += ux * push; b.z += uz * push; }
+    }
+    if (S.zombies.some(z => z.type === 'giant')) { // the giant calls in bombs: red circles first, then impact
+      S.bombT -= dt;
+      if (S.bombT <= 0) {
+        S.bombT = S.wave >= 5 ? 2.0 : 3.0;
+        const n = S.wave >= 5 ? 6 : 4;
+        for (let i = 0; i < n; i++) {
+          let x, z;
+          if (ps.length && i < ps.length * 2) { const p = ps[i % ps.length]; x = p.x + (Math.random() - .5) * 6; z = p.z + (Math.random() - .5) * 6; }
+          else { const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * R_ARENA; x = Math.cos(a) * r; z = Math.sin(a) * r; }
+          S.bombs.push({ id: S.bombId++, x, z, t: S.wave >= 5 ? 1.4 : 1.7, r: 3.3 });
+        }
+      }
+    }
+    for (let i = S.bombs.length - 1; i >= 0; i--) {
+      const b = S.bombs[i]; b.t -= dt;
+      if (b.t <= 0) {
+        for (const p of ps) if (Math.hypot(p.x - b.x, p.z - b.z) < b.r) opts.bombHit(p.id);
+        opts.event({ type: 'boom', x: r2(b.x), z: r2(b.z) }); S.bombs.splice(i, 1);
+      }
+    }
+    if (!S.queue.length && !S.zombies.length) {
+      S.bombs = [];
+      if (S.wave >= WAVES.length) { S.state = 'won'; opts.event({ type: 'won' }); }
+      else { S.state = 'intermission'; S.timer = 8; opts.event({ type: 'clear', wave: S.wave }); }
+    }
+  }
+  function damage(zid, dmg) {
+    const i = S.zombies.findIndex(z => z.id === zid); if (i < 0) return null;
+    const z = S.zombies[i]; z.hp -= dmg;
+    if (z.hp <= 0) { S.zombies.splice(i, 1); return { killed: true, type: z.type, x: z.x, z: z.z }; }
+    return { killed: false, type: z.type };
+  }
+  function snapshot() {
+    return { w: S.wave, s: S.state, t: Math.ceil(S.timer), left: S.queue.length + S.zombies.length,
+      z: S.zombies.map(z => [z.id, z.type[0], r2(z.x), r2(z.z), r2(z.yaw), Math.max(0, Math.round(z.hp)), z.swing > 0 ? 1 : 0, z.moving ? 1 : 0]),
+      b: S.bombs.map(b => [b.id, r2(b.x), r2(b.z), r2(b.t), b.r]) };
+  }
+  return { S, TYPES, WAVES, update, damage, snapshot, stop() { S.state = 'over'; } };
+}
 
 /* ================= weapons + modes ================= */
 const WEAPONS = [
@@ -892,20 +1110,28 @@ const WEAPONS = [
   { id: 'rocket', name: 'Rocket Launcher', short: 'Rocket', dmg: 110, head: 110, rate: 1.4, mag: 1, reserve: 8, reload: 1.2, spread: 0, auto: false, pellets: 0, rocket: true, radius: 4.5, speed: 32, kick: .16, recoil: .06, tracer: 0xff8a3d },
   { id: 'revolver', name: 'Revolver', short: 'Revolver', dmg: 45, head: 90, rate: .55, mag: 6, reserve: 36, reload: 1.9, spread: .006, auto: false, pellets: 1, kick: .09, recoil: .03, tracer: 0xfff2a8 },
   { id: 'ak', name: 'AK-47', short: 'AK-47', dmg: 20, head: 40, rate: .115, mag: 30, reserve: 120, reload: 1.9, spread: .02, auto: true, pellets: 1, kick: .06, recoil: .01, tracer: 0xfff2a8 },
-  { id: 'minigun', name: 'Minigun', short: 'Minigun', dmg: 9, head: 16, rate: .05, mag: 120, reserve: 240, reload: 3.2, spread: .04, auto: true, spinup: .55, pellets: 1, kick: .02, recoil: .003, tracer: 0xffe3a0 },
+  { id: 'minigun', name: 'Minigun', short: 'Minigun', dmg: 9, head: 16, rate: .065, mag: 120, reserve: 240, reload: 3.2, spread: .04, auto: true, spinup: .8, pellets: 1, kick: .02, recoil: .003, tracer: 0xffe3a0 },
+  { id: 'pumpkin', name: 'Halloween RPG', short: 'Pumpkin', dmg: 150, head: 150, rate: 1.6, mag: 1, reserve: 6, reload: 1.4, spread: 0, auto: false, pellets: 0, rocket: true, pumpkin: true, radius: 9, speed: 26, kick: .18, recoil: .07, tracer: 0xff8a3d },
+  { id: 'scythe', name: 'Scythe', short: 'Scythe', dmg: 55, head: 55, rate: .55, mag: 1, reserve: 0, reload: 0, spread: 0, auto: true, pellets: 0, melee: true, noAmmo: true, kick: 0, recoil: 0, tracer: 0 },
+  { id: 'portal', name: 'Portal Gun', short: 'Portal', dmg: 0, head: 0, rate: .45, mag: 1, reserve: 0, reload: 0, spread: 0, auto: false, pellets: 0, portal: true, noAmmo: true, kick: .05, recoil: .01, tracer: 0 },
 ];
-const GRENADE_W = WEAPONS.length;  // index the server uses for grenade hits
+const GRENADE_W = 13;               // index the server uses for grenade hits
+const PUMPKIN_W = 10;
+const LIMITED_END = Date.UTC(2026, 10, 8); // Halloween RPG can be bought until Nov 8, 2026
 const NET_BUILD = 15;               // weapon number sent to the server while building
 const GUN_INFO = { // price in Clash Crystals (0 = starter) and rarity
   ar: [0, 'common'], smg: [0, 'common'], shotgun: [0, 'common'], pistol: [0, 'common'],
-  sniper: [150, 'rare'], burst: [200, 'rare'], revolver: [200, 'rare'], ak: [300, 'epic'], rocket: [400, 'epic'], minigun: [500, 'legendary'],
+  sniper: [300, 'rare'], burst: [400, 'rare'], revolver: [400, 'rare'], ak: [600, 'epic'], scythe: [700, 'epic'], rocket: [800, 'epic'],
+  portal: [900, 'epic'], minigun: [1000, 'legendary'], pumpkin: [1200, 'limited'],
 };
 const MODES = {
   ffa: { name: 'Free-for-all', blurb: 'Everyone for themselves. First to 15 kills.', limit: 15 },
   tdm: { name: 'Team Deathmatch', blurb: 'Red vs Blue. First team to 30 kills.', limit: 30, teams: true },
   snipers: { name: 'Snipers Only', blurb: 'Sniper, handgun and revolver only. First to 10 kills.', limit: 10, weapons: [3, 4, 7] },
+  zombies: { name: '🎃 Zombies', blurb: 'Halloween co-op! Survive 5 waves and the Giant on Pumpkin Hollow.', limit: 0, zombies: true },
 };
-const SPAWN_SHIELD = 1.5, RESPAWN_TIME = 3, MAX_NADES = 2;
+const zombiesOn = () => !!MODES[match.mode].zombies;
+const SPAWN_SHIELD = 1.5, RESPAWN_TIME = 3, MAX_NADES = 3;
 const TEAM_NAMES = ['Red', 'Blue'], TEAM_HEX = ['#ff6b6b', '#5fb0ff'], TEAM_CLS = ['red', 'blue'];
 const guns = WEAPONS.map(w => ({ mag: w.mag, reserve: w.reserve }));
 const Wp = { cur: 0, cd: 0, cdMax: 1, reload: 0, reloadMax: 1, kick: 0, piece: 'wall', aim: false, aimT: 0, burstLeft: 0, burstT: 0, spin: 0 };
@@ -935,6 +1161,9 @@ const ICONS = {
   revolver: [[8, 5, 22, 3], [12, 4, 8, 6], [10, 9, 5, 8], [28, 4, 2, 2]],
   ak: [[0, 7, 8, 5], [8, 6, 20, 4], [28, 7, 8, 2], [14, 10, 4, 7], [21, 10, 6, 2]],
   minigun: [[4, 4, 16, 10], [20, 5, 16, 2], [20, 8, 16, 2], [20, 11, 16, 2], [8, 14, 4, 4]],
+  pumpkin: [[2, 6, 22, 6], [22, 3, 12, 12], [26, 1, 3, 3], [8, 12, 4, 5]],
+  scythe: [[2, 15, 30, 2], [26, 2, 4, 14], [16, 1, 12, 3], [12, 3, 6, 2]],
+  portal: [[4, 5, 18, 8], [22, 6, 8, 6], [30, 7, 6, 4], [8, 13, 4, 4], [10, 2, 6, 3]],
   build: [[17, 4, 4, 14], [9, 1, 20, 6]],
 };
 const iconSVG = (id) => '<svg viewBox="0 0 38 18" width="42" height="20" aria-hidden="true">' + ICONS[id].map(r => '<rect x="' + r[0] + '" y="' + r[1] + '" width="' + r[2] + '" height="' + r[3] + '" rx=".6"/>').join('') + '</svg>';
@@ -966,7 +1195,7 @@ function saveWallet() { store.set('arenaclash.wallet', wallet); renderCrystals()
 const STARTERS = WEAPONS.map((w, i) => i).filter(i => GUN_INFO[WEAPONS[i].id][0] === 0);
 const TRIAL_HOURS = 6;
 function trialInfo() { // two locked guns are free for everyone, rotating every 6 hours
-  const span = TRIAL_HOURS * 3600e3, win = Math.floor(Date.now() / span), pool = WEAPONS.map((w, i) => i).filter(i => !STARTERS.includes(i));
+  const span = TRIAL_HOURS * 3600e3, win = Math.floor(Date.now() / span), pool = WEAPONS.map((w, i) => i).filter(i => !STARTERS.includes(i) && i !== PUMPKIN_W);
   let s2 = (win * 9301 + 49297) % 233280; const r = () => (s2 = (s2 * 9301 + 49297) % 233280) / 233280;
   const a = pool[Math.floor(r() * pool.length)]; let b = a; while (b === a) b = pool[Math.floor(r() * pool.length)];
   return { guns: [a, b], endsAt: (win + 1) * span };
@@ -979,8 +1208,10 @@ function addCrystals(n, why) {
 }
 function renderCrystals() { document.querySelectorAll('.crystals').forEach(el => el.textContent = wallet.crystals.toLocaleString()); }
 const look_lo = () => (Array.isArray(look.loadout) ? look.loadout : [0, 1, 2, 4]).filter(i => WEAPONS[i]).slice(0, 4);
+const limitedOpen = () => Date.now() < LIMITED_END;
 function matchLoadout() {
   const forced = MODES[match.mode].weapons; if (forced) return forced.slice();
+  if (zombiesOn()) return [PUMPKIN_W, ...look_lo().filter(i => canUseGun(i) && i !== PUMPKIN_W)].slice(0, 4);
   const lo = look_lo().filter(canUseGun);
   return lo.length ? lo : [0, 4];
 }
@@ -1005,13 +1236,14 @@ function randomFreeSpot(avoid, minDist, team) {
   return new V3((Math.random() * 2 - 1) * 30, 0, (Math.random() * 2 - 1) * 30);
 }
 function seededSpot() {
-  for (let i = 0; i < 300; i++) { const x = (rnd() * 2 - 1) * 35, z = (rnd() * 2 - 1) * 35; if (!hitsSolid(x, z, 0, 2, .7, true)) return new V3(x, 0, z); }
+  for (let i = 0; i < 300; i++) { const x = (rnd() * 2 - 1) * 35, z = (rnd() * 2 - 1) * 35; if (circleArena && Math.hypot(x, z) > 30) continue; if (!hitsSolid(x, z, 0, 2, .7, true)) return new V3(x, 0, z); }
   return new V3(0, 0, 0);
 }
 function refillAll() { WEAPONS.forEach((w, i) => { guns[i].mag = w.mag; guns[i].reserve = w.reserve; }); }
 
 function respawnPlayer() {
-  P.pos.copy(randomFreeSpot(others(), 16, P.team)); P.vy = 0; P.hp = 100; P.dead = false; P.ramp = null; P.shield = SPAWN_SHIELD;
+  if (zombiesOn()) { let sp = null; for (let i = 0; i < 80 && !sp; i++) { const a = Math.random() * 6.28, r = Math.random() * 8, x = Math.cos(a) * r, z = Math.sin(a) * r; if (!hitsSolid(x, z, 0, 2, .6, true)) sp = new V3(x, 0, z); } P.pos.copy(sp || new V3()); }
+  else P.pos.copy(randomFreeSpot(others(), 16, P.team)); P.vy = 0; P.hp = 100; P.dead = false; P.ramp = null; P.shield = SPAWN_SHIELD;
   P.yaw = Math.atan2(P.pos.x, P.pos.z);
   if (pendingLO) { LO = pendingLO; pendingLO = null; buildSlots(); Wp.cur = 0; lastHud = ''; }
   refillAll(); Wp.reload = 0; Wp.cd = 0; Wp.burstLeft = 0; Wp.spin = 0; P.nades = MAX_NADES; if (Wp.cur >= nslots()) Wp.cur = 0;
@@ -1045,7 +1277,7 @@ function rewardKill(head, victimName) {
   P.mats = Math.min(999, P.mats + 50);
   WEAPONS.forEach((w, i) => { guns[i].reserve = Math.min(w.reserve, guns[i].reserve + Math.ceil(w.mag / 2)); });
   stats.kills++; if (head) stats.headshots++; saveStats(); sfx('kill');
-  const online = mode === 'online'; addCrystals((online ? 5 : 3) + (head ? 2 : 0), head ? 'headshot' : 'kill');
+  const online = mode === 'online'; addCrystals((online ? 2 : 1) + (head && online ? 1 : 0), head ? 'headshot' : 'kill');
 }
 
 /* ================= building ================= */
@@ -1100,6 +1332,7 @@ function removeStruct(s) {
 }
 function place(kind) {
   if (P.dead || !match.active) return;
+  if (zombiesOn()) { msg('Building is off in Zombies mode'); return; }
   if (P.mats < 10) { msg('Out of wood. Get kills for more.'); return; }
   const p = placement(kind); if (!p.valid) return;
   P.mats -= 10; sfx('build');
@@ -1152,26 +1385,28 @@ function clearWorld() {
   for (const c of crates) scene.remove(c.g); crates.length = 0;
   for (const r of rockets) scene.remove(r.g); rockets.length = 0;
   for (const n of nades) scene.remove(n.g); nades.length = 0;
+  clearZombies(); clearPortals(); clearPickups();
   clearGroup(deco);
   clearFx();
 }
 function rebuildTargets() {
   rayTargets.length = 0; rayTargets.push(ground);
-  for (const o of [...bots, ...remotes.values()]) rayTargets.push(...o.meshes);
+  for (const o of [...bots, ...remotes.values(), ...zombieEnts.values()]) rayTargets.push(...o.meshes);
   for (const s of solids) rayTargets.push(s.mesh);
 }
 function buildMap(id) {
   const M = MAPS[id] || MAPS.blockyard; clearWorld();
   scene.background.setHex(M.skyHor); scene.fog.color.setHex(M.skyHor); scene.fog.near = M.fog[0]; scene.fog.far = M.fog[1] + 40;
   skyMat.uniforms.top.value.setHex(M.skyTop); skyMat.uniforms.hor.value.setHex(M.skyHor); skyMat.uniforms.bot.value.setHex(M.skyHor);
-  skyMat.uniforms.sunAmt.value = M.dark ? 0 : 1;
+  skyMat.uniforms.sunAmt.value = M.moon ? .8 : M.dark ? 0 : 1; skyMat.uniforms.sunCol.value.setHex(M.moon ? 0xfff0d0 : 0xfff3c4);
+  circleArena = !!M.circle;
   hemi.intensity = M.dark ? .5 : .72; hemi.color.setHex(M.dark ? 0x8a7dff : 0xdfefff); hemi.groundColor.setHex(M.hg);
   sun.intensity = M.dark ? .35 : .85; sun.color.setHex(M.dark ? 0xb9a8ff : 0xfff1d6); ambient.intensity = M.dark ? .2 : .12;
   outerGround.material.color.setHex(M.outer);
   if (ground.material.map) ground.material.map.dispose();
   ground.material.map = groundTex(M.g[0], M.g[1], M.line); ground.material.needsUpdate = true;
   groundHex = new THREE.Color(M.g[0]).getHex();
-  const EH = 2.4;
+  const EH = M.circle ? .01 : 2.4;
   addBlock(0, 0, -ARENA - .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark); addBlock(0, 0, ARENA + .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark);
   addBlock(-ARENA - .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark); addBlock(ARENA + .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark);
   seed = M.seed; GEN[M.gen](M); DECOR[M.decor](M);
@@ -1184,13 +1419,14 @@ let groundHex = 0x74c25e;
 /* ================= gun skins (detailed pixel textures) ================= */
 const GUN_SKINS = {
   classic: { name: 'Classic', price: 0, rarity: 'common' },
-  camo: { name: 'Camo', price: 100, rarity: 'common' },
-  candy: { name: 'Candy', price: 150, rarity: 'rare' },
-  frost: { name: 'Frost', price: 200, rarity: 'rare' },
-  neon: { name: 'Neon', price: 300, rarity: 'epic' },
-  lava: { name: 'Lava', price: 350, rarity: 'epic' },
-  gold: { name: 'Gold', price: 450, rarity: 'legendary' },
-  galaxy: { name: 'Galaxy', price: 600, rarity: 'legendary' },
+  camo: { name: 'Camo', price: 200, rarity: 'common' },
+  candy: { name: 'Candy', price: 300, rarity: 'rare' },
+  frost: { name: 'Frost', price: 400, rarity: 'rare' },
+  neon: { name: 'Neon', price: 600, rarity: 'epic' },
+  lava: { name: 'Lava', price: 700, rarity: 'epic' },
+  gold: { name: 'Gold', price: 900, rarity: 'legendary' },
+  galaxy: { name: 'Galaxy', price: 1200, rarity: 'legendary' },
+  rainbow: { name: 'Rainbow', price: 1500, rarity: 'legendary', isNew: true },
 };
 const ownsSkin = (id) => id === 'classic' || wallet.skins.includes(id);
 function canvasTex(size, paint) {
@@ -1251,6 +1487,11 @@ const SKIN_PAINT = {
     accent: (g, s) => { base(g, s, 0x2a1a08, .12); for (let y = 2; y < s; y += 4) P_(g, 2, y, '#e0a922', s - 4, 1); },
     metal: (g, s) => { base(g, s, 0xf3cf55, .1); for (let y = 1; y < s; y += 2) P_(g, 0, y, tone(0xf3cf55, 1.2), s, 1); },
   },
+  rainbow: {
+    body: (g, s) => rainbow(g, s, 1), bodyEmi: (g, s) => rainbow(g, s, .45),
+    accent: (g, s) => { base(g, s, 0xffffff, .05); for (let i = 0; i < 12; i++) P_(g, sr() * s | 0, sr() * s | 0, 'hsl(' + (sr() * 360 | 0) + ',100%,70%)', 2, 2); },
+    metal: (g, s) => rainbow(g, s, .7), metalEmi: (g, s) => rainbow(g, s, .3),
+  },
   galaxy: {
     body: (g, s) => { nebula(g, s); },
     bodyEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); for (let i = 0; i < 18; i++) P_(g, sr() * s | 0, sr() * s | 0, sr() < .5 ? '#ffffff' : '#c7a8ff'); },
@@ -1269,6 +1510,10 @@ function circuit(g, s, c) {
 function cracks(g, s, c) {
   for (let i = 0; i < 5; i++) { let x = sr() * s | 0, y = 0; while (y < s) { P_(g, x, y, c); if (sr() < .4) P_(g, x + 1, y, c); x += (sr() * 3 | 0) - 1; y++; } }
 }
+function rainbow(g, s, light) {
+  for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) { g.fillStyle = 'hsl(' + (((x + y) * 360 / s) % 360) + ',95%,' + (35 + 25 * light) + '%)'; g.fillRect(x, y, 1, 1); }
+}
+const rainbowTex = [];
 function engrave(g, s, c) { for (let y = 3; y < s; y += 6) for (let x = 0; x < s; x++) P_(g, x, y + Math.round(Math.sin(x * .6) * 1.5), c); }
 function nebula(g, s) {
   for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
@@ -1284,6 +1529,7 @@ function skinMats(id) {
   for (const part of ['body', 'accent', 'metal']) {
     const m = new THREE.MeshLambertMaterial({ map: canvasTex(32, S[part]) });
     if (S[part + 'Emi']) { m.emissiveMap = canvasTex(32, S[part + 'Emi']); m.emissive.setHex(0xffffff); m.emissiveIntensity = 1; }
+    if (id === 'rainbow') for (const t of [m.map, m.emissiveMap]) if (t) { t.wrapS = t.wrapT = THREE.RepeatWrapping; rainbowTex.push(t); }
     else if (id === 'gold') { m.emissive.setHex(0x3a2600); m.emissiveIntensity = 1; }
     out[part] = m;
   }
@@ -1301,6 +1547,9 @@ const WGUN = {
   rocket: [[.2, .2, .95, 'body', 0, .04, .15], [.25, .25, .08, 'metal', 0, .04, .62], [.25, .25, .08, 'metal', 0, .04, -.3], [.06, .16, .1, 'metal', 0, -.12, .1], [.05, .08, .16, 'accent', 0, .17, .15]],
   revolver: [[.07, .08, .32, 'metal', 0, .02, .2], [.1, .11, .12, 'body', 0, 0, .04], [.06, .16, .07, 'accent', 0, -.1, -.03]],
   ak: [[.1, .13, .4, 'body', 0, 0, .05], [.09, .1, .2, 'accent', 0, -.01, .33], [.05, .05, .2, 'metal', 0, .02, .55], [.07, .2, .09, 'body', 0, -.15, .14], [.08, .12, .24, 'accent', 0, -.03, -.27]],
+  pumpkin: [[.16, .16, .8, 'body', 0, .04, .1], [.34, .3, .34, 'accent', 0, .04, .6], [.06, .1, .06, 'metal', 0, .22, .6], [.06, .16, .1, 'metal', 0, -.12, .05]],
+  scythe: [[.06, .06, 1.6, 'body', 0, 0, .2], [.05, .5, .1, 'metal', 0, .22, .98], [.05, .12, .5, 'metal', 0, .42, .78]],
+  portal: [[.14, .16, .38, 'body', 0, 0, .05], [.12, .12, .2, 'accent', 0, 0, .32], [.08, .08, .1, 'metal', 0, 0, .46], [.06, .14, .08, 'body', 0, -.13, -.02]],
   minigun: [[.2, .2, .4, 'body', 0, 0, 0], [.05, .05, .5, 'metal', .05, .05, .42], [.05, .05, .5, 'metal', -.05, .05, .42], [.05, .05, .5, 'metal', .05, -.05, .42], [.05, .05, .5, 'metal', -.05, -.05, .42], [.17, .17, .05, 'accent', 0, 0, .6], [.06, .14, .14, 'accent', 0, .17, -.05]],
 };
 function buildWorldGun(holder, id, skin) {
@@ -1346,7 +1595,8 @@ function nameSprite(text, color, xray) {
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: !xray }));
   s.scale.set(2, .5, 1); s.position.y = 2.6; if (xray) s.renderOrder = 10; return s;
 }
-function makeAvatar(ent, name, color, hat, target) {
+function makeAvatar(ent, name, color, hat, target, opts) {
+  const skinM = (opts && opts.skin) || skin, headM = (opts && opts.head) || headMats, pantsM = (opts && opts.pants) || pants;
   const g = new THREE.Group(); ent.group = g; ent.meshes = []; ent.host = target || scene; ent.walkT = 0; ent.flash = 0; ent.legYaw = 0; ent.air = 0;
   ent.shirt = new THREE.MeshLambertMaterial({ color, map: blockTex });
   const add = (geo, mat, x, y, z, part, parent) => {
@@ -1358,19 +1608,19 @@ function makeAvatar(ent, name, color, hat, target) {
   // legs: hip -> thigh -> knee -> shin -> foot. legsRoot turns toward the direction of movement.
   const legsRoot = grp(g, 0, 0, 0);
   const leg = (x) => {
-    const hip = grp(legsRoot, x, .64, 0); add(thighGeo, pants, 0, 0, 0, 'body', hip);
-    const knee = grp(hip, 0, -.34, 0); add(shinGeo, pants, 0, 0, 0, 'body', knee); add(footGeo, shoeMat, 0, -.27, .05, null, knee);
+    const hip = grp(legsRoot, x, .64, 0); add(thighGeo, pantsM, 0, 0, 0, 'body', hip);
+    const knee = grp(hip, 0, -.34, 0); add(shinGeo, pantsM, 0, 0, 0, 'body', knee); add(footGeo, shoeMat, 0, -.27, .05, null, knee);
     return { hip, knee };
   };
   const L = leg(-.16), Rl = leg(.16);
   const torso = add(torsoGeo, ent.shirt, 0, .98, 0, 'body'); const belt = add(beltGeo, black, 0, .66, 0, null);
-  const head = add(headGeo, headMats, 0, 1.62, 0, 'head');
+  const head = add(headGeo, headM, 0, 1.62, 0, 'head');
   // arms + gun sit in a rig that pitches with the player's aim
   const rig = grp(g, 0, 1.26, 0);
   const arm = (x, ry, rx, elbow) => {
     const sh = grp(rig, x, 0, 0); sh.rotation.order = 'YXZ'; sh.rotation.set(rx, ry, 0);
     add(upperArmGeo, ent.shirt, 0, 0, 0, 'body', sh);
-    const el = grp(sh, 0, -.3, 0); el.rotation.x = elbow; add(foreArmGeo, ent.shirt, 0, 0, 0, 'body', el); add(handGeo, skin, 0, -.32, 0, null, el);
+    const el = grp(sh, 0, -.3, 0); el.rotation.x = elbow; add(foreArmGeo, ent.shirt, 0, 0, 0, 'body', el); add(handGeo, skinM, 0, -.32, 0, null, el);
     return { sh, el };
   };
   const AR = arm(.47, -.18, -1.2, -.35), AL = arm(-.47, .62, -1.05, -.45);
@@ -1457,6 +1707,8 @@ const ray = new THREE.Raycaster();
 function firstHit(hits, ignore, friendlyTeam) {
   for (const h of hits) {
     const e = h.object.userData.ent; if (!e) continue;
+    if (e.isZombie) { if (e.dead) continue; return h; }
+    if (e.isRemote && zombiesOn()) continue;
     if (e.isBot || e.isRemote) {
       if (e.dead || e === ignore) continue;
       if (friendlyTeam != null && e.team === friendlyTeam) continue;
@@ -1524,45 +1776,65 @@ const rockets = [];
 const rocketGeo = new THREE.CylinderGeometry(.08, .08, .55, 6); rocketGeo.rotateX(Math.PI / 2);
 const flameGeo = new THREE.ConeGeometry(.07, .25, 6); flameGeo.rotateX(-Math.PI / 2); flameGeo.translate(0, 0, -.38);
 const rocketMat = LM(0x5c6470), flameMat = new THREE.MeshBasicMaterial({ color: 0xffa62b });
-function spawnRocket(pos, vel, mine) {
-  const g = new THREE.Group(); g.add(new THREE.Mesh(rocketGeo, rocketMat)); g.add(new THREE.Mesh(flameGeo, flameMat));
+const pumpkinMat = new THREE.MeshLambertMaterial({ color: 0xff7a1a, emissive: 0x6a2a00, emissiveIntensity: 1 }), stemMat = LM(0x3f6a2e);
+const pumpkinGeo = new THREE.BoxGeometry(.5, .42, .5), stemGeo = new THREE.BoxGeometry(.08, .16, .08), faceGeo = new THREE.BoxGeometry(.28, .12, .02);
+const faceMatP = new THREE.MeshBasicMaterial({ color: 0xffe066 });
+function spawnRocket(pos, vel, mine, kind) {
+  const g = new THREE.Group();
+  if (kind === 'p') { g.add(new THREE.Mesh(pumpkinGeo, pumpkinMat)); const st = new THREE.Mesh(stemGeo, stemMat); st.position.y = .28; g.add(st); const f = new THREE.Mesh(faceGeo, faceMatP); f.position.z = .26; g.add(f); }
+  else { g.add(new THREE.Mesh(rocketGeo, rocketMat)); g.add(new THREE.Mesh(flameGeo, flameMat)); }
   g.position.copy(pos); g.lookAt(pos.clone().add(vel)); scene.add(g);
-  rockets.push({ g, vel: vel.clone(), mine, life: 4, trailT: 0 });
+  rockets.push({ g, vel: vel.clone(), mine, life: 4, trailT: 0, kind: kind || 'r' });
 }
 function fireRocket(w) {
   const dir = new V3(); camera.getWorldDirection(dir);
-  const pos = camera.position.clone().addScaledVector(dir, .7).add(new V3(0, -.12, 0)), vel = dir.multiplyScalar(w.speed);
-  spawnRocket(pos, vel, true);
-  if (mode === 'online') netSend({ t: 'rk', a: [rd(pos.x), rd(pos.y), rd(pos.z)], v: [rd(vel.x), rd(vel.y), rd(vel.z)] });
+  const pos = camera.position.clone().addScaledVector(dir, .7).add(new V3(0, -.12, 0)), vel = dir.multiplyScalar(w.speed), k = w.pumpkin ? 'p' : 'r';
+  spawnRocket(pos, vel, true, k);
+  if (mode === 'online') netSend({ t: 'rk', k, a: [rd(pos.x), rd(pos.y), rd(pos.z)], v: [rd(vel.x), rd(vel.y), rd(vel.z)] });
 }
 function updateRockets(dt) {
   const step = new V3();
   for (let i = rockets.length - 1; i >= 0; i--) {
-    const r = rockets[i]; r.life -= dt; r.vel.y -= 2 * dt;
+    const r = rockets[i]; r.life -= dt; r.vel.y -= (r.kind === 'p' ? 5 : 2) * dt;
     step.copy(r.vel).multiplyScalar(dt); const len = step.length();
     ray.set(r.g.position, step.clone().normalize()); ray.far = len + .3;
     const h = firstHit(ray.intersectObjects(rayTargets, false), null, r.mine && teamsOn() ? P.team : null);
-    if (h || r.life <= 0) { explode(r, h ? h.point : r.g.position.clone()); rockets.splice(i, 1); continue; }
-    r.g.position.add(step); r.g.lookAt(r.g.position.clone().add(r.vel));
-    r.trailT -= dt; if (r.trailT <= 0) { r.trailT = .03; burstFx(scene, r.g.position, [0xdddddd, 0xbbbbbb], 1, .3, .4, .5, -1); }
+    if (h || r.life <= 0) { explode(r, h ? h.point : r.g.position.clone(), r.kind === 'p' ? 'pumpkin' : 'rocket'); rockets.splice(i, 1); continue; }
+    r.g.position.add(step);
+    if (r.kind === 'p') { r.g.rotation.x += dt * 6; } else r.g.lookAt(r.g.position.clone().add(r.vel));
+    r.trailT -= dt; if (r.trailT <= 0) { r.trailT = .03; burstFx(scene, r.g.position, r.kind === 'p' ? [0xff8c1a, 0xffd23f] : [0xdddddd, 0xbbbbbb], 1, .3, .4, .5, -1); }
   }
 }
+// kind: 'rocket' | 'nade' | 'pumpkin'
 function explode(r, p, kind) {
-  const nade = kind === 'nade';
-  scene.remove(r.g); boomFx(p);
+  const nade = kind === 'nade', pk = kind === 'pumpkin';
+  scene.remove(r.g); boomFx(p, pk ? 2 : nade ? 1.3 : 1);
+  if (pk) burstFx(scene, p, [0xff7a1a, 0xffd23f, 0x3f6a2e], 30, 10, 3, 1, 12);
   const dist = P.pos.distanceTo(p);
-  if (dist < 50) sfx('boom');
-  if (dist < 14) addShake(.5 * (1 - dist / 14));
+  if (dist < 60) sfx('boom');
+  if (dist < (pk ? 22 : 14)) addShake((pk ? .7 : .5) * (1 - dist / (pk ? 22 : 14)));
   if (!r.mine || !match.active) return;
-  const RAD = nade ? 5.2 : WEAPONS[6].radius, W = nade ? GRENADE_W : 6, list = [], sl = [], c = new V3();
+  const RAD = pk ? WEAPONS[PUMPKIN_W].radius : nade ? 6.5 : WEAPONS[6].radius, W = pk ? PUMPKIN_W : nade ? GRENADE_W : 6;
+  const dmgAt = (d) => Math.round(pk ? 30 + 120 * (1 - d / RAD) : nade ? 30 + 100 * (1 - d / RAD) : 25 + 85 * (1 - d / RAD));
+  const list = [], zl = [], sl = [], c = new V3();
   for (const e of others()) {
-    if (e.dead || !enemyOf(P, e)) continue;
+    if (e.dead || !enemyOf(P, e) || zombiesOn()) continue;
     c.set(e.pos.x, e.pos.y + 1, e.pos.z); const d = c.distanceTo(p);
     if (d < RAD) {
-      const dmg = Math.round(nade ? 20 + 80 * (1 - d / RAD) : 25 + 85 * (1 - d / RAD));
+      const dmg = dmgAt(d);
       if (mode === 'online') { if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(c.clone(), dmg, false); e.flash = .08; } }
       else { if (!e.shield) dmgNum(c.clone(), dmg, false); damageBot(e, dmg, false, P); }
     }
+  }
+  for (const z of zombieEnts.values()) {
+    if (z.dead) continue;
+    c.set(z.pos.x, z.scale, z.pos.z); const d = Math.max(0, c.distanceTo(p) - z.rad);
+    if (d < RAD) { const dmg = dmgAt(d); zl.push({ z: z.id, dmg, head: false }); dmgNum(c.clone().setY(z.scale * 1.6), dmg, false); z.flash = .08; }
+  }
+  if (zl.length) { hitmarker(false); hitZombies(W, zl); }
+  if (pk) { // the Halloween RPG hurts you too if you're inside the blast
+    c.set(P.pos.x, P.pos.y + 1, P.pos.z); const d = c.distanceTo(p);
+    if (d < RAD && !P.dead && P.shield <= 0) selfDamage(Math.round(dmgAt(d) * .6));
   }
   for (const s of [...structs.values()]) {
     c.set((s.min.x + s.max.x) / 2, (s.min.y + s.max.y) / 2, (s.min.z + s.max.z) / 2); const d = c.distanceTo(p);
@@ -1585,11 +1857,11 @@ function spawnNade(pos, vel, mine) {
   const t = new THREE.Mesh(nadeTopGeo, nadeTop); t.position.y = .16; g.add(t);
   const l = new THREE.Mesh(leverGeo, nadeTop); l.position.set(.12, .06, 0); g.add(l);
   g.position.copy(pos); scene.add(g);
-  nades.push({ g, vel: vel.clone(), mine, fuse: 2.2, rest: false, blink: 0 });
+  nades.push({ g, vel: vel.clone(), mine, fuse: 1.8, rest: false, blink: 0 });
 }
 function throwGrenade() {
   if (P.dead || !match.active || paused || chatOpen || nadeCd > 0) return;
-  if (!(P.nades > 0)) { msg('No grenades left. You get 2 more when you respawn.'); return; }
+  if (!(P.nades > 0)) { msg('No grenades left. You get ' + MAX_NADES + ' more when you respawn.'); return; }
   P.nades--; nadeCd = .8; lastHud = '';
   const dir = new V3(); camera.getWorldDirection(dir);
   const pos = camera.position.clone().addScaledVector(dir, .6).add(new V3(0, -.15, 0));
@@ -1740,7 +2012,33 @@ function onNet(m) {
       if (m.id === NET.id) { if (m.hp < P.hp && !P.dead) { vigT = .35; sfx('hurt'); addShake(.12); } if (!P.dead) P.hp = m.hp; }
       else { const r = remotes.get(m.id); if (r) { r.hp = m.hp; setBar(r); } }
       break;
+    case 'zs': if (match.active && zombiesOn()) applyZSnap(m.s); break;
+    case 'zev': if (match.active) onZEvent(m.ev); break;
+    case 'zwave': if (match.active) onZWave(m.wave, m.lives); break;
+    case 'zkill': if (match.active) onZKill(m); break;
+    case 'zdeath': {
+      const vp = roomPlayer(m.id); if (vp) vp.deaths++;
+      const why = m.cause === 'bomb' ? "the Giant's bomb" : m.cause === 'self' ? 'their own pumpkin' : 'a zombie';
+      feed(nameHTML(vp ? vp.name : '?', m.id === NET.id) + ' was taken out by ' + why + (m.out ? ' (out until next wave)' : ''));
+      if (m.id === NET.id) {
+        P.lives = m.lives; P.out = !!m.out; P.deaths++; stats.deaths++; saveStats();
+        showDeath(m.cause === 'bomb' ? "the Giant's bomb" : m.cause === 'self' ? 'your own pumpkin' : 'a zombie');
+        if (P.out) $('killer').textContent += '. Out until the next wave.';
+      } else { const r = remotes.get(m.id); if (r) { r.dead = true; r.group.visible = false; } }
+      break;
+    }
+    case 'pt': {
+      let st = remotePortals.get(m.id); if (!st) { st = [null, null]; remotePortals.set(m.id, st); }
+      placePortal(st, m.i, new V3(m.p[0], m.p[1], m.p[2]), new V3(m.n[0], m.n[1], m.n[2])); break;
+    }
     case 'kill': {
+      if (m.self) {
+        const sp = roomPlayer(m.v); if (sp) sp.deaths++;
+        feed(nameHTML(sp ? sp.name : '?', m.v === NET.id, sp && sp.team) + ' blew themselves up');
+        if (m.v === NET.id) { P.deaths++; stats.deaths++; saveStats(); showDeath('your own pumpkin'); }
+        else { const r = remotes.get(m.v); if (r) { r.dead = true; r.group.visible = false; } }
+        break;
+      }
       const kp = roomPlayer(m.k), vp = roomPlayer(m.v);
       if (kp) kp.kills++; if (vp) vp.deaths++;
       if (Array.isArray(m.ts)) match.teamScores = m.ts.slice(0, 2);
@@ -1759,7 +2057,7 @@ function onNet(m) {
       break;
     }
     case 'gr': if (match.active) { spawnNade(new V3(m.a[0], m.a[1], m.a[2]), new V3(m.v[0], m.v[1], m.v[2]), false); } break;
-    case 'rk': if (match.active) { spawnRocket(new V3(m.a[0], m.a[1], m.a[2]), new V3(m.v[0], m.v[1], m.v[2]), false); if (P.pos.distanceTo(new V3(m.a[0], m.a[1], m.a[2])) < 40) sfx('rocket'); } break;
+    case 'rk': if (match.active) { spawnRocket(new V3(m.a[0], m.a[1], m.a[2]), new V3(m.v[0], m.v[1], m.v[2]), false, m.k === 'p' ? 'p' : 'r'); if (P.pos.distanceTo(new V3(m.a[0], m.a[1], m.a[2])) < 40) sfx('rocket'); } break;
     case 'build': if (match.active) buildPiece(m.s, m.s.hp); break;
     case 'shp': { const s = structs.get(m.key); if (s) setStructHp(s, m.hp); break; }
     case 'sgone': { const s = structs.get(m.key); if (s) removeStruct(s); break; }
@@ -1767,7 +2065,7 @@ function onNet(m) {
       if (mode === 'online' && match.active) {
         if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores;
         endMatch(m.standings.map(p => ({ name: p.name, kills: p.kills, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id })), m.reason,
-          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id) });
+          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id), zres: m.mode === 'zombies' ? m.reason : null, wave: m.wave });
       }
       break;
   }
@@ -1846,10 +2144,11 @@ function startOnlineMatch(m) {
   if (NET.room) for (const p of NET.room.players) { p.kills = 0; p.deaths = 0; }
   syncRemotes();
   for (const r of remotes.values()) teamTag(r);
+  ZS.sim = null; ZS.wave = 0; P.lives = 3; P.out = false;
   NET.spawned = false; respawnPlayer(); $('gchatlog').innerHTML = '';
   const M = MODES[match.mode];
   $('rmap').textContent = M.name + ' on ' + MAPS[m.map].name;
-  $('rsub').textContent = M.blurb + (M.teams ? " You're on the " + TEAM_NAMES[P.team] + ' team.' : '') + ' Other players can see you once you drop in.';
+  $('rsub').textContent = M.blurb + (M.zombies ? ' Everyone gets the Halloween RPG. Careful, its blast hurts you too.' : '') + (M.teams ? " You're on the " + TEAM_NAMES[P.team] + ' team.' : '') + ' Other players can see you once you drop in.';
   paused = true; openLoadout('match');
 }
 function exitOnline() {
@@ -1927,6 +2226,20 @@ function gunModel(id, M, showcase) {
     B(.15, .15, .04, acc, 0, -.02, -.3); B(.15, .15, .04, acc, 0, -.02, -.58); B(.05, .14, .08, met, 0, .12, .02); B(.06, .12, .08, body, 0, -.16, .1);
     mz = [0, -.02, -.64]; base = [.24, -.24, -.4];
   }
+  if (id === 'pumpkin') {
+    B(.13, .13, .62, body, 0, .02, 0); B(.3, .26, .3, acc, 0, .03, -.42); B(.05, .09, .05, met, 0, .2, -.42); B(.16, .05, .02, met, 0, .04, -.58);
+    B(.05, .14, .08, met, 0, -.12, .04); B(.15, .15, .05, met, 0, .02, .3);
+    mz = [0, .03, -.6]; base = [.26, -.22, -.44];
+  }
+  if (id === 'scythe') {
+    B(.05, .05, 1.3, body, 0, 0, -.2); B(.04, .5, .08, met, 0, .26, -.84); B(.04, .1, .4, met, 0, .48, -.68); B(.045, .06, .2, acc, 0, -.02, .25);
+    mz = [0, .3, -.84]; base = [.3, -.28, -.2];
+  }
+  if (id === 'portal') {
+    B(.1, .12, .32, body, 0, 0, 0); B(.09, .09, .14, acc, 0, 0, -.22); B(.06, .06, .08, met, 0, 0, -.32); B(.12, .03, .2, acc, 0, .075, -.02);
+    B(.05, .12, .06, body, 0, -.1, .08, -.2); B(.03, .03, .03, met, .06, .03, -.1);
+    mz = [0, 0, -.38]; base = [.22, -.2, -.4];
+  }
   if (id === 'rocket') {
     B(.15, .15, .8, body, 0, .02, -.1); B(.19, .19, .07, met, 0, .02, -.5); B(.19, .19, .07, met, 0, .02, .3); B(.12, .12, .04, acc, 0, .02, -.54);
     B(.05, .14, .08, met, 0, -.12, .02); B(.04, .06, .12, acc, 0, .12, -.1); B(.04, .1, .05, met, 0, -.1, -.22);
@@ -1934,7 +2247,8 @@ function gunModel(id, M, showcase) {
   }
   if (showcase) return g;
   const muzzle = new THREE.Object3D(); muzzle.position.set(...mz); g.add(muzzle);
-  const ARMS = { revolver: [[0, -.1, .1], [-.03, -.11, .14]], ak: [[0, -.09, .1], [0, -.05, -.26]], minigun: [[0, -.15, .1], [0, .12, .02]], ar: [[0, -.09, .12], [0, -.04, -.26]], smg: [[0, -.1, .06], [0, -.14, -.07]], shotgun: [[0, -.08, .14], [0, -.06, -.32]],
+  if (id === 'minigun') g.scale.setScalar(.72);   // smaller so it doesn't cover the screen
+  const ARMS = { pumpkin: [[0, -.14, .04], [0, -.08, -.2]], scythe: [[0, -.03, .1], [0, -.03, -.3]], portal: [[0, -.1, .08], [0, -.06, -.16]], revolver: [[0, -.1, .1], [-.03, -.11, .14]], ak: [[0, -.09, .1], [0, -.05, -.26]], minigun: [[0, -.15, .1], [0, .12, .02]], ar: [[0, -.09, .12], [0, -.04, -.26]], smg: [[0, -.1, .06], [0, -.14, -.07]], shotgun: [[0, -.08, .14], [0, -.06, -.32]],
     sniper: [[0, -.08, .2], [0, -.04, -.28]], pistol: [[0, -.1, .06], [-.03, -.11, .1]], burst: [[0, -.09, .1], [0, -.05, -.24]], rocket: [[0, -.14, .02], [0, -.08, -.3]] };
   addArms(g, ARMS[id][0], ARMS[id][1]);
   const flash = new THREE.Sprite(flashMat); flash.position.set(...mz); flash.position.z -= .05; flash.scale.set(.32, .32, 1); flash.visible = false; flash.renderOrder = 30; g.add(flash);
@@ -1964,6 +2278,7 @@ function updateVM(dt) {
     v.g.position.set(v.base[0] * (1 - Wp.aimT * .9) + bxo, v.base[1] + by + Wp.aimT * .07 - rl * .15, v.base[2] + Wp.kick);
     v.g.rotation.set(rl + Wp.kick * 1.5, 0, pump * .25);
     if (w.spinup) v.g.position.x += (Math.random() - .5) * .004 * Wp.spin;
+    if (w.melee) { const a = Wp.swingT > 0 ? Math.sin((1 - Wp.swingT / .35) * Math.PI) : 0; v.g.rotation.set(-.2 - a * .9, a * .9, .3 + a * 1.2); v.g.position.x -= a * .25; }
     v.flash.visible = flashT > 0 && !(w.scope && Wp.aimT > .8);
     if (v.flash.visible) { flashMat.rotation = Math.random() * 6.28; const s = .22 + Math.random() * .16; v.flash.scale.set(s, s, 1); }
   }
@@ -1976,7 +2291,7 @@ const muzzlePos = new V3();
 function startReload() {
   if (cw() < 0) return;
   const w = WEAPONS[cw()], g = guns[cw()];
-  if (Wp.reload > 0 || g.mag >= w.mag) return;
+  if (w.noAmmo || Wp.reload > 0 || g.mag >= w.mag) return;
   if (g.reserve <= 0) { msg('Out of ammo. Grab an ammo crate.'); sfx('empty'); return; }
   Wp.reload = Wp.reloadMax = w.reload; Wp.aim = false; Wp.burstLeft = 0; sfx('reload');
 }
@@ -1988,11 +2303,14 @@ function tryFire() {
   if (cw() < 0 || P.dead || Wp.cd > 0 || Wp.reload > 0 || !match.active || Wp.burstLeft > 0 || chatOpen) return;
   if (WEAPONS[cw()].spinup && Wp.spin < 1) return;
   const g = guns[cw()];
+  if (WEAPONS[cw()].noAmmo) { fireGun(WEAPONS[cw()], g); return; }
   if (g.mag <= 0) { if (g.reserve > 0) startReload(); else { msg('Out of ammo. Grab an ammo crate.'); sfx('empty'); Wp.cd = Wp.cdMax = .3; } return; }
   fireGun(WEAPONS[cw()], g);
 }
 function fireGun(w, g) {
   Wp.cd = Wp.cdMax = w.rate;
+  if (w.melee) { swingScythe(); return; }
+  if (w.portal) { firePortal(); Wp.kick = w.kick; return; }
   if (w.rocket) { g.mag--; Wp.kick = w.kick; sfx('rocket'); fireRocket(w); flashT = .06; addShake(.15); P.pitch = Math.min(1.5, P.pitch + w.recoil); return; }
   fireShot(w, g);
   if (w.burst) { Wp.burstLeft = w.burst - 1; Wp.burstT = w.burstGap; }
@@ -2014,7 +2332,7 @@ function fireShot(w, g) {
     if (!h) continue;
     const e = h.object.userData.ent;
     const far = w.falloff && h.distance > w.falloff ? .5 : 1;
-    if (e.isBot || e.isRemote) {
+    if (e.isBot || e.isRemote || e.isZombie) {
       const head = h.object.userData.part === 'head', d = (head ? w.head : w.dmg) * far;
       const o = hitsOn.get(e) || { d: 0, head: false }; o.d += d; o.head = o.head || head; o.p = h.point; hitsOn.set(e, o);
       burstFx(scene, h.point, [0xff5d6c, 0xffffff], 3, 2.2, .6, .3, 10);
@@ -2024,11 +2342,13 @@ function fireShot(w, g) {
       if (isStruct(e)) structHits.set(e, (structHits.get(e) || 0) + w.dmg * far);
     }
   }
-  const list = [];
+  const list = [], zl = [];
   for (const [e, o] of hitsOn) {
-    if (e.isBot) { if (!e.shield) dmgNum(o.p, Math.round(o.d), o.head); damageBot(e, o.d, o.head, P); }
+    if (e.isZombie) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head); zl.push({ z: e.id, dmg: Math.round(o.d), head: o.head }); }
+    else if (e.isBot) { if (!e.shield) dmgNum(o.p, Math.round(o.d), o.head); damageBot(e, o.d, o.head, P); }
     else if (!(e.shieldUntil > clock)) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head); list.push({ id: e.id, dmg: Math.round(o.d), head: o.head }); }
   }
+  if (zl.length) hitZombies(cw(), zl);
   if (mode === 'online') {
     if (list.length) netSend({ t: 'hit', w: cw(), list });
     const sl = []; for (const [s, d] of structHits) sl.push({ key: s.key, dmg: Math.round(d) });
@@ -2156,8 +2476,252 @@ tbtn('tChat', () => openChat());
 addEventListener('touchstart', () => { if (!touchSeen) { touchSeen = true; if (look.touch === 'auto' && !isTouch) applyTouchMode(); } }, { passive: true });
 document.querySelectorAll('#buildbar span').forEach(s => s.addEventListener('click', () => { if (isTouch) Wp.piece = s.dataset.p; }));
 
+/* ================= ZOMBIES (Halloween mode) ================= */
+const ZTYPE = { s: 'small', b: 'big', g: 'giant' };
+const ZINFO = { small: { scale: 1, rad: .45, hp: 75, name: 'Zombie', cr: 1 }, big: { scale: 2, rad: .85, hp: 150, name: 'Big Zombie', cr: 2 }, giant: { scale: 4, rad: 1.7, hp: 1000, name: 'THE GIANT', cr: 15 } };
+const ZS = { sim: null, wave: 0, state: 'intermission', timer: 0, left: 0 };
+const zombieEnts = new Map(), bombVis = new Map();
+const zSkin = LM(0x7fb069), zPants = LM(0x3a3046);
+const zFaceTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 16; const g = c.getContext('2d');
+  g.fillStyle = '#7fb069'; g.fillRect(0, 0, 16, 16); g.fillStyle = '#5a8a48'; g.fillRect(2, 2, 3, 2); g.fillRect(11, 12, 3, 2);
+  g.fillStyle = '#ff2a2a'; g.fillRect(3, 6, 3, 3); g.fillRect(10, 6, 3, 3); g.fillStyle = '#ffd0d0'; g.fillRect(4, 7, 1, 1); g.fillRect(11, 7, 1, 1);
+  g.fillStyle = '#2a1a1a'; g.fillRect(5, 11, 6, 2); g.fillStyle = '#e8e0c8'; g.fillRect(6, 11, 1, 1); g.fillRect(9, 11, 1, 1);
+  const t = new THREE.CanvasTexture(c); t.magFilter = t.minFilter = THREE.NearestFilter; return t; })();
+const zFaceMat = new THREE.MeshLambertMaterial({ map: zFaceTex }), zHead = [zSkin, zSkin, zSkin, zSkin, zFaceMat, zSkin];
+const Z_SHIRTS = [0x5a4a6a, 0x6a4a3a, 0x3a5a6a, 0x5a3a3a, 0x4a5a3a];
+const ringGeo = new THREE.RingGeometry(.92, 1, 40), discGeo = new THREE.CircleGeometry(1, 40), bombGeo = new THREE.SphereGeometry(.45, 10, 8);
+const bombMat = LM(0x222222);
+function makeZombie(id, type, x, z) {
+  const I = ZINFO[type];
+  const e = { isZombie: true, id, type, name: I.name, pos: new V3(x, 0, z), tpos: new V3(x, 0, z), yaw: 0, tyaw: 0, hp: I.hp, max: I.hp, scale: I.scale, rad: I.rad, dead: false, swingT: 0 };
+  makeAvatar(e, null, pickAny(Z_SHIRTS), type === 'giant' ? 'horns' : 'none', scene, { skin: zSkin, head: zHead, pants: zPants });
+  setAvatarGun(e, 'scythe', 'classic');
+  e.bar = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x3ddc84 })); e.bar.scale.set(1, .1, 1); e.bar.position.y = 2.3; e.group.add(e.bar);
+  e.group.scale.setScalar(I.scale); e.group.position.copy(e.pos);
+  zombieEnts.set(id, e); return e;
+}
+function removeZombie(e, fx) {
+  if (fx) burstFx(scene, new V3(e.pos.x, e.scale, e.pos.z), [0x7fb069, 0x3a5a2a, 0xffffff], 12 + 8 * e.scale, 4 + e.scale, 2, .8, 12);
+  e.bar.material.dispose(); disposeAvatar(e); zombieEnts.delete(e.id);
+}
+function clearZombies() {
+  for (const e of [...zombieEnts.values()]) removeZombie(e, false);
+  for (const b of bombVis.values()) scene.remove(b.g); bombVis.clear();
+  $('bossbar').hidden = true;
+}
+function applyZSnap(s) {
+  ZS.wave = s.w; ZS.state = s.s; ZS.timer = s.t; ZS.left = s.left;
+  const seen = new Set(); let changed = false;
+  for (const [id, t, x, z, yaw, hp, swing] of s.z) {
+    seen.add(id);
+    let e = zombieEnts.get(id);
+    if (!e) { e = makeZombie(id, ZTYPE[t] || 'small', x, z); changed = true; if (Math.random() < .3) sfx('groan'); }
+    e.tpos.set(x, 0, z); e.tyaw = yaw;
+    if (hp < e.hp) e.flash = .08;
+    if (hp !== e.hp) { e.hp = hp; e.bar.scale.x = Math.max(.001, hp / e.max); e.bar.material.color.setHex(hp / e.max < .4 ? 0xff4d5e : 0x3ddc84); }
+    if (swing && !e.swingOn) e.swingT = .45; e.swingOn = !!swing;
+  }
+  for (const e of [...zombieEnts.values()]) if (!seen.has(e.id)) { removeZombie(e, true); changed = true; }
+  if (changed) rebuildTargets();
+  const bseen = new Set();
+  for (const [id, x, z, t, r] of s.b) {
+    bseen.add(id);
+    let b = bombVis.get(id);
+    if (!b) {
+      const g = new THREE.Group(); g.position.set(x, .06, z);
+      const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xff2020, transparent: true, opacity: .9, side: THREE.DoubleSide, depthWrite: false }));
+      const fill = new THREE.Mesh(discGeo, new THREE.MeshBasicMaterial({ color: 0xff2020, transparent: true, opacity: .35, side: THREE.DoubleSide, depthWrite: false }));
+      ring.rotation.x = fill.rotation.x = -Math.PI / 2; ring.scale.setScalar(r); fill.scale.setScalar(.01);
+      const bomb = new THREE.Mesh(bombGeo, bombMat); g.add(ring); g.add(fill); g.add(bomb); scene.add(g);
+      b = { g, ring, fill, bomb, t0: t, t, r }; bombVis.set(id, b);
+      if (P.pos.distanceTo(g.position) < 30) sfx('whistle');
+    }
+    b.t = t;
+  }
+  for (const [id, b] of bombVis) if (!bseen.has(id)) { scene.remove(b.g); b.ring.material.dispose(); b.fill.material.dispose(); bombVis.delete(id); }
+}
+function updateZombies(dt) {
+  const k = Math.min(1, dt * 10); let giant = null;
+  for (const e of zombieEnts.values()) {
+    const ox = e.pos.x, oz = e.pos.z;
+    e.pos.lerp(e.tpos, k);
+    let dy = e.tyaw - e.yaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy)); e.yaw += dy * k;
+    e.group.position.copy(e.pos); e.group.rotation.y = e.yaw;
+    const vx = (e.pos.x - ox) / Math.max(dt, .001) / e.scale, vz = (e.pos.z - oz) / Math.max(dt, .001) / e.scale;
+    animateAvatar(e, vx * 1.6, vz * 1.6, dt, false, -.1);
+    if (e.swingT > 0) { e.swingT -= dt; const a = Math.sin((1 - e.swingT / .45) * Math.PI); e.parts.rig.rotation.x = -1.4 * a; e.parts.rig.rotation.z = .6 * a; }
+    if (e.type === 'giant') giant = e;
+  }
+  for (const b of bombVis.values()) {
+    b.t = Math.max(0, b.t - dt); const p = 1 - b.t / Math.max(.01, b.t0);
+    b.fill.scale.setScalar(Math.max(.01, b.r * p)); b.ring.material.opacity = .6 + .4 * Math.sin(clock * 18);
+    b.bomb.position.y = .5 + b.t * 22; b.bomb.visible = b.t < 1.2;
+  }
+  $('bossbar').hidden = !giant;
+  if (giant) $('bossfill').style.width = (100 * giant.hp / giant.max) + '%';
+}
+function hitZombies(W, list) {
+  if (mode === 'online') { netSend({ t: 'zhit', w: W, list }); return; }
+  if (!ZS.sim) return;
+  for (const h of list) { const res = ZS.sim.damage(h.z, h.dmg); if (res && res.killed) onZKill({ z: h.z, k: 'me', type: res.type, head: h.head }); }
+}
+function onZKill(m) {
+  const mine = m.k === 'me' || m.k === NET.id;
+  if (!mine) { const kp = roomPlayer(m.k); if (kp) kp.kills++; return; }
+  P.kills++; stats.kills++; saveStats(); sfx('kill');
+  const I = ZINFO[m.type] || ZINFO.small;
+  killBanner(I.name); addCrystals(I.cr, m.type === 'giant' ? 'GIANT SLAIN!' : '');
+  WEAPONS.forEach((w, i) => { guns[i].reserve = Math.min(w.reserve, guns[i].reserve + Math.ceil(w.mag / 3)); });
+  if (NET.room) { const me = roomPlayer(NET.id); if (me) me.kills++; }
+}
+function waveBanner(big, small) {
+  const el = $('wavebanner'); el.innerHTML = '<div class="wb-big">' + esc(big) + '</div>' + (small ? '<div class="wb-small">' + esc(small) + '</div>' : '');
+  el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+}
+function onZEvent(ev) {
+  if (ev.type === 'boom') {
+    const p = new V3(ev.x, .3, ev.z); boomFx(p, 1.6); burstFx(scene, p, [0x333333, 0xff5a1a, 0xffd23f], 24, 9, 4, .9, 14);
+    const d = P.pos.distanceTo(p); if (d < 60) sfx('boom'); if (d < 16) addShake(.6 * (1 - d / 16));
+  } else if (ev.type === 'clear') { waveBanner('Wave ' + ev.wave + ' cleared!', 'Next wave in 8 seconds'); addCrystals(2, 'wave bonus'); }
+  else if (ev.type === 'giant') { waveBanner('THE GIANT IS COMING!', 'Watch the sky for red circles'); sfx('groan'); addShake(.4); }
+  else if (ev.type === 'wave' && mode !== 'online') onZWave(ev.wave, ev.wave >= 5 ? 1 : 3);
+  else if (ev.type === 'won' && mode !== 'online') endMatch(null, 'won', { zres: 'won' });
+}
+function onZWave(wave, lives) {
+  P.lives = lives; ZS.wave = wave;
+  if (P.dead) { P.out = false; P.deathT = .4; }
+  waveBanner('Wave ' + wave + ' of 5', wave >= 5 ? 'Final wave! One life only.' : (wave >= 4 ? 'Big zombies and THE GIANT. ' : '') + lives + ' lives this wave');
+  lastHud = '';
+}
+function zDeathLocal(cause) {
+  if (P.dead) return;
+  P.lives = Math.max(0, (P.lives || 1) - 1); P.deaths++; stats.deaths++; saveStats();
+  P.out = P.lives <= 0;
+  showDeath(cause === 'bomb' ? "the Giant's bomb" : cause === 'self' ? 'your own pumpkin' : 'a zombie');
+  if (P.out) $('killer').textContent += '. Out until the next wave.';
+  if (mode !== 'online' && P.out) endMatch(null, 'wiped', { zres: 'wiped' });
+}
+function zHurtLocal(dmg) {
+  if (P.dead || P.shield > 0 || !match.active) return;
+  P.hp -= dmg; vigT = .35; sfx('hurt'); addShake(.12);
+  if (P.hp <= 0) zDeathLocal('zombie');
+}
+function startPracticeZombies() {
+  ZS.sim = makeZombieSim({
+    players: () => [{ id: 'me', x: P.pos.x, z: P.pos.z, y: P.pos.y, alive: !P.dead }],
+    hurt: (id, dmg) => zHurtLocal(dmg),
+    bombHit: () => { if (!P.dead && P.shield <= 0) zDeathLocal('bomb'); },
+    event: (ev) => onZEvent(ev),
+  });
+  P.lives = 3; P.out = false;
+}
+function selfDamage(d) {
+  if (mode === 'online') { netSend({ t: 'selfdmg', dmg: d }); vigT = .35; sfx('hurt'); return; }
+  P.hp -= d; vigT = .35; sfx('hurt');
+  if (P.hp <= 0) { if (zombiesOn()) zDeathLocal('self'); else { P.deaths++; stats.deaths++; saveStats(); showDeath('your own pumpkin'); feed(nameHTML(P.name, true, P.team) + ' blew themselves up'); } }
+}
+
+/* ================= SCYTHE (melee) ================= */
+const SCYTHE_W = WEAPONS.findIndex(w => w.id === 'scythe'), PORTAL_W = WEAPONS.findIndex(w => w.id === 'portal');
+function swingScythe() {
+  Wp.swingT = .35; sfx('swing');
+  const fwd = new V3(); camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
+  const targets = [];
+  const consider = (e, rad, h) => {
+    const dx = e.pos.x - P.pos.x, dz = e.pos.z - P.pos.z, dd = Math.hypot(dx, dz), d = dd - rad;
+    if (d > 2.8 || Math.abs(e.pos.y - P.pos.y) > h) return;
+    if (d > .3 && (dx * fwd.x + dz * fwd.z) / Math.max(.01, dd) < .35) return;
+    targets.push(e);
+  };
+  for (const z of zombieEnts.values()) if (!z.dead) consider(z, z.rad, 2.5 * z.scale);
+  if (!zombiesOn()) for (const e of others()) if (!e.dead && enemyOf(P, e)) consider(e, .4, 2.2);
+  const dmg = WEAPONS[SCYTHE_W].dmg, list = [], zl = [];
+  for (const e of targets.slice(0, 5)) {
+    const at = new V3(e.pos.x, (e.pos.y || 0) + 1.4 * (e.scale || 1), e.pos.z);
+    burstFx(scene, at, [0xff5d6c, 0xffffff], 4, 2.5, .6, .3, 10);
+    if (e.isZombie) { zl.push({ z: e.id, dmg, head: false }); dmgNum(at, dmg, false); e.flash = .08; }
+    else if (e.isBot) { if (!e.shield) dmgNum(at, dmg, false); damageBot(e, dmg, false, P); }
+    else if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(at, dmg, false); e.flash = .08; }
+  }
+  if (targets.length) { hitmarker(false); addShake(.06); }
+  if (zl.length) hitZombies(SCYTHE_W, zl);
+  if (list.length && mode === 'online') netSend({ t: 'hit', w: SCYTHE_W, list });
+}
+
+/* ================= PORTAL GUN ================= */
+const portals = [null, null], remotePortals = new Map();
+let portalNext = 0, portalCd = 0;
+const portalGeo = new THREE.TorusGeometry(.75, .11, 8, 28), portalDiscGeo = new THREE.CircleGeometry(.68, 24);
+function portalMesh(i) {
+  const g = new THREE.Group(), col = i ? 0x2b8cff : 0xff8a1a;
+  g.add(new THREE.Mesh(portalGeo, new THREE.MeshBasicMaterial({ color: col })));
+  g.add(new THREE.Mesh(portalDiscGeo, new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .35, side: THREE.DoubleSide, depthWrite: false })));
+  scene.add(g); return g;
+}
+function disposePortal(pt) { if (!pt) return; scene.remove(pt.g); pt.g.traverse(o => { if (o.material) o.material.dispose(); }); }
+function placePortal(store, i, pos, n) {
+  disposePortal(store[i]);
+  const g = portalMesh(i); g.position.copy(pos); g.lookAt(pos.clone().add(n));
+  store[i] = { g, pos: pos.clone(), n: n.clone(), i };
+}
+function clearPortals() { disposePortal(portals[0]); disposePortal(portals[1]); portals[0] = portals[1] = null; for (const s of remotePortals.values()) { disposePortal(s[0]); disposePortal(s[1]); } remotePortals.clear(); portalNext = 0; }
+function firePortal() {
+  camera.updateMatrixWorld(); ray.setFromCamera({ x: 0, y: 0 }, camera); ray.far = 120;
+  const h = ray.intersectObjects(rayTargets, false).find(x => { const e = x.object.userData.ent; return e && !e.isBot && !e.isRemote && !e.isZombie; });
+  vms[cw()].muzzle.getWorldPosition(muzzlePos);
+  if (!h || !h.face) { msg('Aim at a wall or the floor'); sfx('empty'); return; }
+  const n = h.face.normal.clone().transformDirection(h.object.matrixWorld);
+  const pos = h.point.clone().addScaledVector(n, .06); if (Math.abs(n.y) < .5) pos.y = Math.max(pos.y, 1);
+  const i = portalNext; portalNext = 1 - portalNext;
+  placePortal(portals, i, pos, n); tracer(muzzlePos, h.point, i ? 0x2b8cff : 0xff8a1a); sfx('portal'); flashT = .05;
+  if (mode === 'online') netSend({ t: 'pt', i, p: [rd(pos.x), rd(pos.y), rd(pos.z)], n: [rd(n.x), rd(n.y), rd(n.z)] });
+}
+function updatePortals(dt) {
+  portalCd = Math.max(0, portalCd - dt);
+  const spin = (pt) => { if (pt) pt.g.children[1].rotation.z += dt * 2; };
+  spin(portals[0]); spin(portals[1]);
+  if (!portals[0] || !portals[1] || portalCd > 0 || P.dead || !match.active) return;
+  const c = new V3(P.pos.x, P.pos.y + 1, P.pos.z);
+  for (let i = 0; i < 2; i++) {
+    if (c.distanceTo(portals[i].pos) < 1.05) {
+      const o = portals[1 - i], out = o.pos.clone().addScaledVector(o.n, 1.1);
+      const feet = o.n.y > .5 ? o.pos.y + .1 : o.n.y < -.5 ? o.pos.y - 2.2 : o.pos.y - 1;
+      P.pos.set(out.x, Math.max(0, feet), out.z);
+      if (Math.abs(o.n.y) < .5) P.yaw = Math.atan2(-o.n.x, -o.n.z);
+      P.vy = Math.max(P.vy, 0); portalCd = 1; sfx('portal');
+      burstFx(scene, o.pos, [o.i ? 0x2b8cff : 0xff8a1a, 0xffffff], 16, 3, 1, .5, 0);
+      break;
+    }
+  }
+}
+
+/* ================= CLASH CRYSTALS ON THE MAP ================= */
+const pickups = [];
+let pickupT = 10;
+const crystalGeo = new THREE.OctahedronGeometry(.35, 0), crystalMat = new THREE.MeshLambertMaterial({ color: 0x7fe7ff, emissive: 0x2a8cff, emissiveIntensity: .8 });
+function spawnPickup() {
+  if (pickups.length >= 3) return;
+  let sp = null;
+  for (let i = 0; i < 60 && !sp; i++) { const q = randomFreeSpot(null, 0); if (!circleArena || Math.hypot(q.x, q.z) < 28) sp = q; }
+  if (!sp) return;
+  const m = new THREE.Mesh(crystalGeo, crystalMat), big = Math.random() < .12; m.position.set(sp.x, 1, sp.z); m.castShadow = SHADOWS; if (big) m.scale.setScalar(1.6);
+  scene.add(m); pickups.push({ m, val: big ? 3 : 1 });
+}
+function updatePickups(dt) {
+  if (!match.active) return;
+  pickupT -= dt; if (pickupT <= 0) { pickupT = 22 + Math.random() * 16; spawnPickup(); }
+  for (let i = pickups.length - 1; i >= 0; i--) {
+    const p = pickups[i]; p.m.rotation.y += dt * 2; p.m.position.y = 1 + Math.sin(clock * 3 + i) * .15;
+    if (!P.dead && Math.hypot(P.pos.x - p.m.position.x, P.pos.z - p.m.position.z) < 1.2 && Math.abs(P.pos.y + 1 - p.m.position.y) < 1.6) {
+      addCrystals(p.val, 'found'); sfx('crystal'); burstFx(scene, p.m.position, [0x7fe7ff, 0xffffff], 14, 3, 1, .6, 4);
+      scene.remove(p.m); pickups.splice(i, 1);
+    }
+  }
+}
+function clearPickups() { for (const p of pickups) scene.remove(p.m); pickups.length = 0; pickupT = 10; }
+
 /* ================= screens ================= */
-const screens = ['s-menu', 's-locker', 's-loadout', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
+const screens = ['s-menu', 's-locker', 's-loadout', 's-shop', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
 let current = 's-menu';
 function show(id) {
   current = id;
@@ -2167,6 +2731,7 @@ function show(id) {
   $('touch').hidden = !(isTouch && match.active && !id);
   if (id !== null && chatOpen) closeChat();
   $('gchat').hidden = !match.active;
+  $('shopbtn').hidden = $('gamelog').hidden = id !== 's-menu';
   if (id !== null) { mouseL = false; resetJoy(); T.lookId = T.fireId = null; keys.Space = false; }
   if (id === 's-menu') mountPreview('pvMenu');
   if (id === 's-locker') mountPreview('pvLocker');
@@ -2373,8 +2938,16 @@ function finishPracticeVote() {
   timers.push(setTimeout(() => preparePractice(mapWin, modeWin), 1600));
 }
 function preparePractice(mapId, modeId) {
+  if (MODES[modeId].zombies) mapId = 'pumpkin';
   mode = 'offline'; removeBots(); match.mode = modeId; buildMap(mapId);
   const M = MODES[modeId];
+  if (M.zombies) {
+    P.team = 0; bots = []; rebuildTargets();
+    match.map = mapId; match.time = 0; match.limit = 0; match.active = true;
+    resetForMatch(); startPracticeZombies(); respawnPlayer();
+    $('gchatlog').innerHTML = '';
+    openLoadout('match'); return;
+  }
   const gunsFor = M.weapons ? ['sniper', 'pistol', 'sniper'] : Object.keys(BOTGUNS);
   P.team = 0;
   bots = lobby.map((l, i) => makeBot(l.name, l.color, pickAny(gunsFor), l.hat, l.effect, M.teams ? (i < 2 ? 0 : 1) : i + 1));
@@ -2392,7 +2965,7 @@ function preparePractice(mapId, modeId) {
 
 /* ---- loadout screen + gun shop (Clash Crystals) ---- */
 let loCtx = 'menu', loPick = 0, loArmed = null, loDraft = [];
-const RARITY_BG = { common: 'linear-gradient(180deg,#2a2d35,#9aa3b5)', rare: 'linear-gradient(180deg,#123a7a,#4f8fe8)', epic: 'linear-gradient(180deg,#3a1468,#8c4be0)', legendary: 'linear-gradient(180deg,#5a3a00,#e0a922)' };
+const RARITY_BG = { common: 'linear-gradient(180deg,#2a2d35,#9aa3b5)', rare: 'linear-gradient(180deg,#123a7a,#4f8fe8)', epic: 'linear-gradient(180deg,#3a1468,#8c4be0)', legendary: 'linear-gradient(180deg,#5a3a00,#e0a922)', limited: 'linear-gradient(180deg,#5a1a00,#ff7a1a)' };
 const icon = { r: null, scene: new THREE.Scene(), cam: new THREE.PerspectiveCamera(28, 1.6, .1, 20), cache: new Map() };
 function gunImage(id, skin) {
   const key = id + '|' + skin; if (icon.cache.has(key)) return icon.cache.get(key);
@@ -2416,9 +2989,10 @@ function gunImage(id, skin) {
 function fmtLeft(ms) { const s = Math.max(0, Math.floor(ms / 1000)); return String(Math.floor(s / 3600)).padStart(2, '0') + ':' + String(Math.floor(s / 60) % 60).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
 function openLoadout(ctx) {
   loCtx = ctx; loArmed = null; loPick = 0;
-  loDraft = ctx === 'match' ? (MODES[match.mode].weapons ? MODES[match.mode].weapons.slice() : matchLoadout()) : look_lo().slice();
+  loDraft = ctx === 'match' ? (MODES[match.mode].weapons ? MODES[match.mode].weapons.slice() : look_lo().filter(canUseGun)) : look_lo().slice();
   $('lohead').textContent = ctx === 'menu' ? 'Loadout' : (ctx === 'pause' ? 'Change loadout' : MODES[match.mode].name + ' on ' + MAPS[match.map].name);
   $('losub').textContent = MODES[match.mode].weapons && ctx !== 'menu' ? 'Snipers Only: everyone gets the same guns this match.'
+    : zombiesOn() && ctx !== 'menu' ? 'Zombies: the Halloween RPG is added as your first slot, plus your first 3 picks here.'
     : ctx === 'pause' ? 'Pick up to 4 guns. Your new loadout starts when you respawn.' : 'Pick up to 4 guns. Click a slot, then a gun. Locked guns cost Clash Crystals.';
   $('lodrop').textContent = ctx === 'match' ? 'Drop in' : 'Save loadout';
   renderLoadout(); show('s-loadout');
@@ -2439,6 +3013,7 @@ function renderLoadout() {
   let grid = '<button class="locard random" data-g="random"' + (fixed ? ' disabled' : '') + '><svg viewBox="0 0 24 24" width="54" height="54" aria-hidden="true"><path fill="currentColor" d="M17 3l4 4-4 4V8h-2.6l-7 8H4v-2h2.6l7-8H17V3zM4 6h3.4l2.3 2.6-1.3 1.6L6.6 8H4V6zm10.6 8.4l1.3-1.6L17.4 14H17v-3l4 4-4 4v-3h-2.6l-1.9-2.6z"/></svg><span>Random</span></button>';
   for (const i of order) {
     const w = WEAPONS[i], [price, rarity] = GUN_INFO[w.id], owned = ownsGun(i), onTrial = !owned && trial.guns.includes(i), usable = owned || onTrial;
+    if (rarity === 'limited' && !owned && !limitedOpen()) continue;
     const armed = loArmed === i, inLo = loDraft.includes(i);
     grid += '<button class="locard ' + rarity + (usable ? '' : ' locked') + (inLo ? ' inlo' : '') + (armed ? ' armed' : '') + '" data-g="' + i + '" style="background:' + (onTrial ? 'linear-gradient(180deg,#3a0f78,#9b30ff)' : usable ? RARITY_BG.common : RARITY_BG[rarity]) + '"' + (fixed ? ' disabled' : '') + '>' +
       '<img alt="" src="' + gunImage(w.id, look.gunSkin) + '">' +
@@ -2462,6 +3037,7 @@ function pickCard(g) {
   }
   const i = +g, w = WEAPONS[i], price = GUN_INFO[w.id][0];
   if (!canUseGun(i)) {
+    if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen()) return;
     if (loArmed !== i) { loArmed = i; renderLoadout(); return; }
     if (wallet.crystals < price) { sfx('empty'); return; }
     wallet.crystals -= price; wallet.guns.push(i); saveWallet(); sfx('buy'); loArmed = null;
@@ -2483,6 +3059,71 @@ function confirmLoadout() {
   dropIn();
 }
 setInterval(() => { if (current === 's-loadout' && document.querySelector('.free')) renderLoadout(); }, 1000);
+
+
+/* ---- SHOP (bottom-right button on the main menu) ---- */
+let shopTab = 'guns', shopArmed = null;
+function statBars(w) {
+  const dmg = w.melee ? w.dmg : w.dmg * Math.max(1, w.pellets || 1), rate = w.rate ? 1 / w.rate : 0;
+  const row = (label, val, pct, txt) => '<div class="sb"><span>' + label + '</span><div class="sbar"><div style="width:' + Math.max(3, Math.min(100, pct)) + '%"></div></div><b>' + txt + '</b></div>';
+  return row('Damage', dmg, dmg / 200 * 100, w.portal ? '0' : String(Math.round(dmg))) +
+    row('Fire rate', rate, rate / 16 * 100, rate.toFixed(1) + '/s') +
+    row('Reload', w.reload, w.noAmmo ? 100 : (4 - w.reload) / 4 * 100, w.noAmmo ? 'none' : w.reload.toFixed(1) + 's') +
+    row('Ammo', w.mag, w.noAmmo ? 100 : w.mag / 120 * 100, w.noAmmo ? '∞' : String(w.mag));
+}
+function openShop(tab) { if (tab) shopTab = tab; shopArmed = null; renderShop(); show('s-shop'); }
+function renderShop() {
+  document.querySelectorAll('.shoptab').forEach(b => b.setAttribute('aria-selected', b.dataset.t === shopTab ? 'true' : 'false'));
+  $('shopcr').textContent = wallet.crystals.toLocaleString();
+  const trial = trialInfo(); let html = '';
+  if (shopTab === 'guns') {
+    const order = WEAPONS.map((w, i) => i).sort((a, b) => GUN_INFO[WEAPONS[a].id][0] - GUN_INFO[WEAPONS[b].id][0]);
+    for (const i of order) {
+      const w = WEAPONS[i], [price, rarity] = GUN_INFO[w.id], owned = ownsGun(i), onTrial = !owned && trial.guns.includes(i);
+      const limited = rarity === 'limited', ended = limited && !limitedOpen();
+      if (ended && !owned) continue;
+      let btn;
+      if (owned) btn = '<button class="ghost" disabled>Owned ✓</button>';
+      else if (shopArmed === 'g' + i) btn = wallet.crystals >= price ? '<button data-buy="g' + i + '">Confirm ' + price + ' 💎</button>' : '<button disabled>Need ' + (price - wallet.crystals) + ' more 💎</button>';
+      else btn = '<button data-buy="g' + i + '">Buy · ' + price + ' 💎</button>';
+      const tag = limited ? '<em class="rar limited">LIMITED · ' + Math.max(0, Math.ceil((LIMITED_END - Date.now()) / 864e5)) + 'd left</em>' : '<em class="rar ' + rarity + '">' + rarity.toUpperCase() + '</em>';
+      html += '<div class="shopcard ' + rarity + '"><div class="simg"><img alt="" src="' + gunImage(w.id, look.gunSkin) + '">' + (onTrial ? '<i class="trial">FREE NOW</i>' : '') + '</div>' +
+        '<div class="sbody"><div class="stitle"><b>' + w.name + '</b>' + tag + '</div><div class="stats">' + statBars(w) + '</div>' + btn + '</div></div>';
+    }
+  } else {
+    for (const [id, S] of Object.entries(GUN_SKINS)) {
+      const owned = ownsSkin(id), on = look.gunSkin === id;
+      let btn;
+      if (on) btn = '<button class="ghost" disabled>Equipped ✓</button>';
+      else if (owned) btn = '<button class="ghost" data-equip="' + id + '">Equip</button>';
+      else if (shopArmed === 's' + id) btn = wallet.crystals >= S.price ? '<button data-buy="s' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
+      else btn = '<button data-buy="s' + id + '">Buy · ' + S.price + ' 💎</button>';
+      html += '<div class="shopcard skin ' + S.rarity + '"><div class="simg"><img alt="" src="' + gunImage('ak', id) + '">' + (S.isNew ? '<i class="trial">NEW</i>' : '') + '</div>' +
+        '<div class="sminis"><img alt="" src="' + gunImage('sniper', id) + '"><img alt="" src="' + gunImage('pistol', id) + '"><img alt="" src="' + gunImage('rocket', id) + '"></div>' +
+        '<div class="sbody"><div class="stitle"><b>' + S.name + '</b><em class="rar ' + S.rarity + '">' + S.rarity.toUpperCase() + '</em></div>' + btn + '</div></div>';
+    }
+  }
+  $('shopgrid').innerHTML = html;
+  $('shopgrid').querySelectorAll('[data-buy]').forEach(b => b.addEventListener('click', () => shopBuy(b.dataset.buy)));
+  $('shopgrid').querySelectorAll('[data-equip]').forEach(b => b.addEventListener('click', () => { equipSkin(b.dataset.equip); renderShop(); }));
+}
+function equipSkin(id) { look.gunSkin = id; saveLook(); rebuildPreview(); rebuildViewmodels(); sendHello(); renderSkinShop(); }
+function shopBuy(key) {
+  if (shopArmed !== key) { shopArmed = key; renderShop(); return; }
+  if (key[0] === 'g') {
+    const i = +key.slice(1), w = WEAPONS[i], price = GUN_INFO[w.id][0];
+    if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen()) return;
+    if (wallet.crystals < price || ownsGun(i)) return;
+    wallet.crystals -= price; wallet.guns.push(i); saveWallet(); sfx('buy');
+  } else {
+    const id = key.slice(1), S = GUN_SKINS[id]; if (wallet.crystals < S.price || ownsSkin(id)) return;
+    wallet.crystals -= S.price; wallet.skins.push(id); saveWallet(); sfx('buy'); equipSkin(id);
+  }
+  shopArmed = null; renderShop();
+}
+document.querySelectorAll('.shoptab').forEach(b => b.addEventListener('click', () => { shopTab = b.dataset.t; shopArmed = null; renderShop(); }));
+$('shopbtn').addEventListener('click', () => openShop());
+$('shopclose').addEventListener('click', () => show('s-menu'));
 
 /* ---- shared match flow ---- */
 function pause() {
@@ -2514,7 +3155,12 @@ function endMatch(list, reason, extra) {
   const st = list || standings(), place = st.findIndex(f => f.isPlayer) + 1, M = MODES[match.mode];
   const timeUp = reason ? reason === 'time' : match.time <= 0;
   let title, won, sub;
-  if (M.teams) {
+  if (M.zombies) {
+    const res = (extra && extra.zres) || reason;
+    won = res === 'won';
+    title = won ? 'You survived!' : 'The zombies win';
+    sub = won ? 'All 5 waves cleared, the Giant is down! ' : 'Everyone was taken out on wave ' + ((extra && extra.wave) || ZS.wave || 1) + '. ';
+  } else if (M.teams) {
     const [a, b] = match.teamScores;
     const winTeam = extra && extra.winTeam != null ? extra.winTeam : (a === b ? -1 : a > b ? 0 : 1);
     title = winTeam === -1 ? "It's a tie!" : TEAM_NAMES[winTeam] + ' team wins';
@@ -2527,10 +3173,11 @@ function endMatch(list, reason, extra) {
     sub = 'You placed #' + place + ' of ' + st.length + '. ';
   }
   $('wintitle').textContent = title;
-  $('winsub').textContent = (timeUp ? 'Time ran out on ' : 'Match over on ') + MAPS[match.map].name + '. ' + sub + (mode === 'online' ? 'Back to the lobby in a few seconds.' : '');
+  $('winsub').textContent = (M.zombies ? '' : (timeUp ? 'Time ran out on ' : 'Match over on ') + MAPS[match.map].name + '. ') + sub + (mode === 'online' ? 'Back to the lobby in a few seconds.' : '');
   $('resbody').innerHTML = st.map((f, i) => rowHTML(f, i)).join('');
   stats.matches++; if (won) stats.wins++; saveStats();
-  const online = mode === 'online', earned = (online ? 10 : 5) + (won ? (online ? 50 : 25) : 0);
+  const online = mode === 'online', earned = M.zombies ? (won ? 25 : 2) : (online ? 3 : 1) + (won ? (online ? 15 : 5) : 0);
+  ZS.sim = null; clearZombies(); clearPortals();
   addCrystals(earned); $('winsub').textContent += ' You earned ' + earned + ' Clash Crystals' + (won ? ' (win bonus included).' : '.');
   $('again').hidden = mode === 'online';
   $('tomenu').textContent = mode === 'online' ? 'Leave lobby' : 'Main menu';
@@ -2616,7 +3263,7 @@ function updateWeapons(dt) {
       else { Wp.burstLeft--; Wp.burstT = w.burstGap; fireShot(w, g); }
     }
   }
-  nadeCd = Math.max(0, nadeCd - dt);
+  nadeCd = Math.max(0, nadeCd - dt); Wp.swingT = Math.max(0, (Wp.swingT || 0) - dt);
   if (cw() >= 0) {
     const w = WEAPONS[cw()];
     if (w.spinup) { const was = Wp.spin; Wp.spin = mouseL && !P.dead && Wp.reload <= 0 ? Math.min(1, Wp.spin + dt / w.spinup) : Math.max(0, Wp.spin - dt * 2); if (was === 0 && Wp.spin > 0) sfx('spin'); }
@@ -2642,12 +3289,13 @@ function updateHud(dt) {
   if (!match.active) return;
   $('hpfill').style.width = P.hp + '%'; $('hpfill').style.background = P.hp < 35 ? 'var(--danger)' : 'var(--hp)';
   const gun = cw() >= 0 ? guns[cw()] : null, w = gun && WEAPONS[cw()];
-  const sig = [Math.ceil(P.hp), Wp.cur, P.nades, LO.join(','), gun ? gun.mag : '', gun ? gun.reserve : '', P.mats, Wp.piece, guns.map(g => g.mag + '/' + g.reserve).join(','), match.teamScores.join('-'), match.mode].join('|');
+  const sig = [Math.ceil(P.hp), Wp.cur, P.nades, LO.join(','), P.lives, ZS.wave, gun ? gun.mag : '', gun ? gun.reserve : '', P.mats, Wp.piece, guns.map(g => g.mag + '/' + g.reserve).join(','), match.teamScores.join('-'), match.mode].join('|');
   if (sig !== lastHud) {
     lastHud = sig;
     $('hptext').textContent = Math.ceil(P.hp);
     $('wname').textContent = w ? w.name : 'Build mode';
-    $('mag').textContent = gun ? gun.mag : P.mats; $('reserve').textContent = gun ? ' / ' + gun.reserve : ' wood';
+    $('mag').textContent = gun ? (w.noAmmo ? '∞' : gun.mag) : P.mats; $('reserve').textContent = gun ? (w.noAmmo ? '' : ' / ' + gun.reserve) : ' wood';
+    $('lives').innerHTML = zombiesOn() ? '❤'.repeat(Math.max(0, P.lives || 0)) + '<span>' + '❤'.repeat(Math.max(0, (ZS.wave >= 5 ? 1 : 3) - (P.lives || 0))) + '</span>' : '';
     $('mag').style.color = gun && gun.mag <= Math.ceil(w.mag * .25) ? 'var(--danger)' : '';
     $('mats').textContent = 'Wood ' + P.mats;
     slotEls.forEach((el, i) => {
@@ -2679,7 +3327,10 @@ function updateHud(dt) {
   const scoped = scopeGun() && Wp.aimT > .8 && !P.dead;
   $('scope').hidden = !scoped; $('cross').style.visibility = scoped ? 'hidden' : 'visible';
   $('shieldtag').hidden = !(P.shield > 0 && !P.dead);
-  $('timer').textContent = fmtTime(match.time); $('timer').style.color = match.time < 30 ? 'var(--danger)' : '';
+  if (zombiesOn()) {
+    $('timer').textContent = 'Wave ' + Math.max(1, ZS.wave) + ' / 5'; $('timer').style.color = '#ff9a3d';
+    $('goal').textContent = ZS.state === 'intermission' ? (ZS.wave ? 'Next wave in ' + ZS.timer : 'Get ready! First wave in ' + ZS.timer) : 'Zombies left: ' + ZS.left;
+  } else { $('timer').textContent = fmtTime(match.time); $('timer').style.color = match.time < 30 ? 'var(--danger)' : ''; }
   miniT -= dt;
   if (miniT <= 0) {
     miniT = .25; const st = standings(); const top = st.slice(0, 3); const me = st.find(f => f.isPlayer); if (me && !top.includes(me)) top.push(me);
@@ -2701,21 +3352,25 @@ function loop(now) {
     if (mode === 'online') {
       match.time -= dt;
       if (!paused) {
-        if (P.dead) { P.deathT -= dt; if (P.deathT <= 0) respawnPlayer(); } else updatePlayer(dt);
+        if (P.dead) { if (!P.out) { P.deathT -= dt; if (P.deathT <= 0) respawnPlayer(); } } else updatePlayer(dt);
         updateWeapons(dt); updateCrates(dt);
       }
       updateRemotes(dt); netTick(dt); updateRockets(dt); updateNades(dt); updateFx(dt);
+      if (zombiesOn()) updateZombies(dt); updatePortals(dt); if (!paused) updatePickups(dt);
     } else if (!paused) {
       match.time -= dt; if (match.time <= 0) endMatch();
       if (match.active) {
-        if (P.dead) { P.deathT -= dt; if (P.deathT <= 0) respawnPlayer(); } else updatePlayer(dt);
+        if (P.dead) { if (!P.out) { P.deathT -= dt; if (P.deathT <= 0) respawnPlayer(); } } else updatePlayer(dt);
         updateWeapons(dt);
         for (const b of bots) updateBot(b, dt);
         updateCrates(dt); updateRockets(dt); updateNades(dt); updateFx(dt);
+        if (ZS.sim && match.active) { ZS.sim.update(dt); if (ZS.sim) applyZSnap(ZS.sim.snapshot()); }
+        if (match.active) { if (zombiesOn()) updateZombies(dt); updatePortals(dt); updatePickups(dt); }
       }
     }
   }
   updateParts(dt); updateDmgNums(dt); updateClouds(dt); updateSelfAvatar(dt);
+  for (const t of rainbowTex) t.offset.x = (t.offset.x + dt * .35) % 1;
   if (match.active) {
     camera.position.set(P.pos.x, P.pos.y + (P.dead ? .4 : EYE), P.pos.z);
     camera.rotation.set(P.pitch, P.yaw, P.dead ? .4 : 0);
@@ -2732,6 +3387,7 @@ function loop(now) {
   renderer.render(scene, camera);
   renderPreview(dt);
 }
+if (innerWidth < 760) $('gamelog').querySelector('details').open = false;
 show('s-menu');
 connect();
 requestAnimationFrame(loop);
