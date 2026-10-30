@@ -48,6 +48,12 @@ const PIECES = { wall: 150, floor: 120, ramp: 120 };
 const HATS = ['none', 'cap', 'crown', 'cowboy', 'horns', 'halo', 'tophat', 'headphones'];
 const EFFECTS = ['sparks', 'confetti', 'pixels', 'fire'];
 const GUN_SKINS = ['classic', 'gold', 'neon', 'camo', 'frost', 'lava', 'candy', 'galaxy', 'rainbow'];
+const MYTHICS = { // Mythical skin -> the weapon it belongs to
+  dragonfire: 'ar', voltage: 'smg', thunderclap: 'shotgun', starfall: 'sniper', royal: 'pistol', phantom: 'burst', doomsday: 'rocket', outlaw: 'revolver',
+  viper: 'ak', overdrive: 'minigun', headless: 'pumpkin', reaper: 'scythe', inferno: 'scythe', frostbite: 'scythe', celestial: 'scythe', quantum: 'portal',
+};
+const PLACE_BONUS = [100, 50, 25];   // Clash Crystals for 1st, 2nd and 3rd place
+const PLACE_MIN_PLAYERS = 4;         // ...only when at least 4 players are in the match
 const ZOMBIE_LIVES = [3, 3, 3, 3, 1];   // lives per wave
 /* ===== Zombie wave simulation (shared by the server and the game page) ===== */
 function makeZombieSim(opts) {
@@ -57,12 +63,13 @@ function makeZombieSim(opts) {
     big: { hp: 150, speed: 2.7, reach: 2.4, dmg: 10, cd: 1.1, scale: 2, rad: .85 },
     giant: { hp: 1000, speed: 1.7, reach: 4.2, dmg: 30, cd: 1.6, scale: 4, rad: 1.7 },
   };
-  const WAVES = [{ small: 6, big: 2 }, { small: 9, big: 3 }, { small: 12, big: 5 }, { big: 8, giant: 1 }, { big: 12, giant: 1 }];
+  const WAVES = [{ small: 24, big: 8 }, { small: 36, big: 12 }, { small: 48, big: 20 }, { big: 32, giant: 1 }, { big: 48, giant: 1 }];
+  const MAX_ALIVE = 36; // more wait in line so the game stays smooth
   const S = { wave: 0, state: 'intermission', timer: 6, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1 };
   const r2 = (v) => Math.round(v * 100) / 100;
   function startWave() {
     S.wave++; S.state = 'fighting';
-    const W = WAVES[S.wave - 1], k = 1 + .5 * Math.max(0, S.nplayers - 1);
+    const W = WAVES[S.wave - 1], k = 1 + .35 * Math.max(0, S.nplayers - 1);
     const list = [];
     for (let i = 0; i < Math.round((W.small || 0) * k); i++) list.push('small');
     for (let i = 0; i < Math.round((W.big || 0) * k); i++) list.push('big');
@@ -80,7 +87,7 @@ function makeZombieSim(opts) {
     if (S.state === 'intermission') { S.timer -= dt; if (S.timer <= 0) startWave(); return; }
     if (S.state !== 'fighting') return;
     const ps = opts.players().filter(p => p.alive);
-    if (S.queue.length) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.7 : 1.0; } }
+    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? .9 : .5; } }
     for (const z of S.zombies) {
       const T = TYPES[z.type]; z.swing = Math.max(0, z.swing - dt); z.cd -= dt;
       let best = null, bd = Infinity;
@@ -180,7 +187,7 @@ function roomInfo(room) {
     choices: room.choices, votes: t.maps, modeChoices: MODE_IDS, modeVotes: t.modes, map: room.map, mode: room.mode,
     limit: limitOf(room), teamScores: room.teamScores,
     timeLeft: room.state === 'playing' ? Math.max(0, (room.endsAt - Date.now()) / 1000) : 0,
-    players: [...room.players.values()].map(p => ({ id: p.id, name: p.name, color: p.color, hat: p.hat, effect: p.effect, gunSkin: p.gunSkin, team: p.team, kills: p.kills, deaths: p.deaths })),
+    players: [...room.players.values()].map(p => ({ id: p.id, name: p.name, color: p.color, hat: p.hat, effect: p.effect, gunSkin: p.gunSkin, mythic: p.mythic, team: p.team, kills: p.kills, deaths: p.deaths, assists: p.assists || 0 })),
   };
 }
 const sendRoom = (room) => broadcast(room, roomInfo(room));
@@ -190,7 +197,7 @@ function startMsg(room) {
     timeLeft: Math.max(0, (room.endsAt - Date.now()) / 1000), structs: [...room.structs.values()] };
 }
 function resetPlayer(p) {
-  p.kills = 0; p.deaths = 0; p.hp = 100; p.dead = true; p.diedAt = 0; p.spawnAt = 0;
+  p.kills = 0; p.deaths = 0; p.assists = 0; p.hp = 100; p.dead = true; p.diedAt = 0; p.spawnAt = 0; p.dmgBy = new Map();
   p.lastShot = WEAPONS.map(() => 0); p.lastStruct = WEAPONS.map(() => 0);
 }
 function smallerTeam(room, except) {
@@ -274,7 +281,7 @@ function endMatch(room, reason) {
   room.state = 'results'; room.countdown = RESULTS_TIME;
   const all = [...room.players.values()];
   const standings = all.slice().sort((a, b) => b.kills - a.kills || a.deaths - b.deaths)
-    .map(p => ({ id: p.id, name: p.name, kills: p.kills, deaths: p.deaths, team: p.team }));
+    .map(p => ({ id: p.id, name: p.name, kills: p.kills, deaths: p.deaths, assists: p.assists || 0, team: p.team }));
   let winTeam = null; const winners = new Set();
   if (room.mode === 'zombies') {
     if (reason === 'won') all.forEach(p => winners.add(p.id));
@@ -282,7 +289,9 @@ function endMatch(room, reason) {
     const [a, b] = room.teamScores; winTeam = a === b ? -1 : (a > b ? 0 : 1);
     if (winTeam >= 0) all.filter(p => p.team === winTeam).forEach(p => winners.add(p.id));
   } else if (standings[0] && standings[0].kills > 0) winners.add(standings[0].id);
-  broadcast(room, { t: 'end', reason, standings, mode: room.mode, teamScores: room.teamScores, winTeam, winners: [...winners], wave: room.sim ? room.sim.S.wave : 0 });
+  const place = {};
+  if (all.length >= PLACE_MIN_PLAYERS) standings.slice(0, 3).forEach((q, i) => { if (q.kills > 0) place[q.id] = PLACE_BONUS[i]; });
+  broadcast(room, { t: 'end', reason, standings, mode: room.mode, teamScores: room.teamScores, winTeam, winners: [...winners], place, players: all.length, wave: room.sim ? room.sim.S.wave : 0 });
   room.sim = null;
   // leaderboard
   for (const p of all) {
@@ -296,12 +305,15 @@ function endMatch(room, reason) {
 const lbTop = () => [...leaderboard.values()].sort((a, b) => b.wins - a.wins || b.kills - a.kills).slice(0, 10);
 
 function applyDamage(room, attacker, target, dmg, head, w) {
-  target.hp -= dmg;
+  target.hp -= dmg; target.dmgBy.set(attacker.id, Date.now());
   if (target.hp <= 0) {
     target.hp = 0; target.dead = true; target.diedAt = Date.now(); target.deaths++;
     attacker.kills++; attacker.hp = Math.min(100, attacker.hp + 25);
     if (isTeams(room)) room.teamScores[attacker.team]++;
-    broadcast(room, { t: 'kill', k: attacker.id, v: target.id, head: !!head, w, ts: room.teamScores });
+    const as = [];  // assists: anyone else who hurt the victim in the last 10 seconds
+    for (const [id, t] of target.dmgBy) { const q = room.players.get(id); if (q && id !== attacker.id && Date.now() - t < 10000) { q.assists = (q.assists || 0) + 1; as.push(id); } }
+    target.dmgBy.clear();
+    broadcast(room, { t: 'kill', k: attacker.id, v: target.id, head: !!head, w, ts: room.teamScores, as });
     broadcast(room, { t: 'hp', id: attacker.id, hp: attacker.hp });
     const lim = limitOf(room);
     if (isTeams(room) ? room.teamScores[attacker.team] >= lim : attacker.kills >= lim) endMatch(room, 'kills');
@@ -349,6 +361,8 @@ function handle(p, m) {
       p.name = cleanName(m.name); p.color = int(m.color, 0, 7);
       p.hat = HATS.includes(m.hat) ? m.hat : 'none'; p.effect = EFFECTS.includes(m.effect) ? m.effect : 'sparks';
       p.gunSkin = GUN_SKINS.includes(m.gunSkin) ? m.gunSkin : 'classic';
+      p.mythic = {};
+      if (m.mythic && typeof m.mythic === 'object') for (const [w, id] of Object.entries(m.mythic).slice(0, 20)) if (MYTHICS[id] === w) p.mythic[w] = id;
       if (p.room) sendRoom(p.room);
       break;
     case 'quick': {
@@ -391,7 +405,7 @@ function handle(p, m) {
       if (room.mode === 'zombies' && p.out) return;
       const x = num(m.x, -40, 40), y = num(m.y, 0, 80), z = num(m.z, -40, 40);
       if (x === null || y === null || z === null) return;
-      p.x = x; p.y = y; p.z = z; p.dead = false; p.hp = 100; p.spawnAt = now;
+      p.x = x; p.y = y; p.z = z; p.dead = false; p.hp = 100; p.spawnAt = now; p.dmgBy.clear();
       broadcast(room, { t: 'spawn', id: p.id, x, y, z });
       broadcast(room, { t: 'hp', id: p.id, hp: 100 }); break;
     }
@@ -406,9 +420,18 @@ function handle(p, m) {
       const w = int(m.w, 0, WEAPONS.length - 1), spec = WEAPONS[w];
       if (now - (p.lastZ || [])[w] < spec.rate * 1000 * 0.5) return;
       (p.lastZ = p.lastZ || [])[w] = now;
+      room.zdmg = room.zdmg || new Map();
       for (const h of m.list.slice(0, 12)) {
-        const res = room.sim && room.sim.damage(int(h && h.z, 0, 1e9), num(h.dmg, 0, spec.max) || 0);
-        if (res && res.killed) { p.kills++; broadcast(room, { t: 'zkill', z: h.z, k: p.id, type: res.type, head: !!h.head }); }
+        const zid = int(h && h.z, 0, 1e9);
+        const res = room.sim && room.sim.damage(zid, num(h.dmg, 0, spec.max) || 0);
+        if (!res) continue;
+        let set = room.zdmg.get(zid); if (!set) { set = new Set(); room.zdmg.set(zid, set); } set.add(p.id);
+        if (res.killed) {
+          p.kills++;
+          const as = [...set].filter(id => id !== p.id && room.players.has(id)); as.forEach(id => { const q = room.players.get(id); q.assists = (q.assists || 0) + 1; });
+          room.zdmg.delete(zid);
+          broadcast(room, { t: 'zkill', z: zid, k: p.id, type: res.type, head: !!h.head, as, w });
+        }
       }
       break;
     }
@@ -478,7 +501,7 @@ function handle(p, m) {
 }
 
 wss.on('connection', (ws) => {
-  const p = { id: nextId++, ws, name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', team: 0, room: null, x: 0, y: 0, z: 0, yaw: 0, pitch: 0, w: 0 };
+  const p = { id: nextId++, ws, name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', mythic: {}, team: 0, room: null, x: 0, y: 0, z: 0, yaw: 0, pitch: 0, w: 0 };
   resetPlayer(p); players.set(p.id, p);
   send(p, { t: 'welcome', id: p.id, online: players.size });
   send(p, { t: 'lb', top: lbTop() });
