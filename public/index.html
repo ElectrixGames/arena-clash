@@ -367,6 +367,48 @@ body.touch #hpbox{top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));l
 body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 @media (max-width:760px){#gamelog{bottom:auto;top:calc(10px + env(safe-area-inset-top,0px));width:calc(100vw - 20px);left:10px}#gamelog details:not([open]){width:auto}.shopgrid{grid-template-columns:1fr}}
 
+
+/* ============ V1.4 revamp ============ */
+.badge.v14{background:linear-gradient(90deg,#ff5fd8,#7fe7ff);box-shadow:0 3px 0 #6a2a8a;margin-left:-4px}
+.card{position:relative}
+.card::before{content:"";position:absolute;inset:-2px;border-radius:28px;padding:2px;background:linear-gradient(120deg,rgba(255,178,31,.0),rgba(255,178,31,.55),rgba(127,231,255,.55),rgba(255,95,216,.0));background-size:300% 100%;animation:edge 6s linear infinite;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+@keyframes edge{0%{background-position:0% 0}100%{background-position:300% 0}}
+.missionbox{padding:10px 12px}
+.mhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}.mhead b{font-size:18px;color:var(--gold1)}
+.mission{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:7px 9px;margin-top:6px}
+.mission.done{border-color:var(--gold2);box-shadow:0 0 12px rgba(255,178,31,.25)}.mission.claimed{opacity:.55}
+.mtop{display:flex;justify-content:space-between;align-items:center}.mtop b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:16px}
+.mrew{display:inline-flex;align-items:center;gap:4px;font-family:"Lilita One",sans-serif;color:#c9f6ff}.mrew .crico{width:11px;height:13px}
+.mdesc{font-size:12px;color:var(--muted);margin:1px 0 5px}
+.mbar{position:relative;height:14px;border-radius:7px;background:rgba(0,0,0,.45);overflow:hidden}
+.mbar div{height:100%;background:linear-gradient(90deg,#3ddc84,#7fe7ff)}
+.mbar span{position:absolute;inset:0;text-align:center;font-size:10px;font-weight:800;line-height:14px;text-shadow:0 1px 2px #000}
+.mclaim{font-size:15px;padding:6px 10px;margin-top:6px}.mstate{font-size:12px;color:var(--hp);margin-top:4px}
+.stats4{grid-template-columns:repeat(5,1fr)}
+#assisttoast{position:absolute;left:50%;top:calc(22% + 132px);transform:translateX(-50%);font-weight:600;font-size:15px;color:#7fe7ff;text-shadow:0 2px 3px rgba(0,0,0,.8);opacity:0;white-space:nowrap}
+#assisttoast.show{animation:crt 1.6s ease forwards}
+.kfw{display:inline-flex;vertical-align:middle;color:#fff;opacity:.9}.kfw svg{width:34px;height:16px;fill:currentColor}
+.kf small{color:var(--muted)}.kf .hs{font-size:10px;font-weight:800;background:#ff4d5e;color:#fff;border-radius:4px;padding:1px 4px}
+.podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:end;margin:4px 0 14px}
+.pod .pname{text-align:center;font-family:"Lilita One",sans-serif;font-size:17px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod.me .pname{color:var(--hp)}
+.pstep{border-radius:10px 10px 4px 4px;text-align:center;padding:8px 4px;box-shadow:0 4px 0 rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.35)}
+.pstep b{display:block;font-family:"Lilita One",sans-serif;font-weight:400;font-size:26px;color:#1c1206}
+.pstep span{font-size:12px;color:#1c1206;font-weight:600}
+.pstep em{display:inline-flex;align-items:center;gap:3px;margin-top:4px;font-style:normal;font-family:"Lilita One",sans-serif;font-size:14px;background:rgba(0,0,0,.35);color:#c9f6ff;border-radius:6px;padding:1px 6px}
+.p1 .pstep{background:linear-gradient(180deg,#ffe066,#e0a922);height:96px}.p2 .pstep{background:linear-gradient(180deg,#eef2f7,#9aa3b5);height:74px}.p3 .pstep{background:linear-gradient(180deg,#f0b27a,#b5703d);height:58px}
+.rar.mythical,.shopcard.mythical .rar{background:linear-gradient(90deg,#ff3cac,#ff8a00,#ff3cac);background-size:200% 100%;animation:edge 3s linear infinite;color:#fff}
+.shopcard.mythical{border-color:rgba(255,60,172,.5);box-shadow:0 4px 0 rgba(0,0,0,.35),0 0 18px rgba(255,60,172,.25)}
+.shopcard.mythical .simg{background:radial-gradient(circle at 50% 40%,#ff5fd8,#3a0a3a 75%)}
+.shoptab.mythic{background:linear-gradient(90deg,rgba(255,60,172,.35),rgba(255,138,0,.35))}
+.shoptab.mythic[aria-selected="true"]{background:linear-gradient(90deg,#ff3cac,#ff8a00);color:#fff}
+.scythenote{grid-column:1/-1;font-size:13px;color:var(--muted);background:rgba(255,60,172,.1);border:1px solid rgba(255,60,172,.3);border-radius:10px;padding:8px 10px}.scythenote b{color:#fff}
+.glbody h4.old{margin-top:14px;color:var(--muted)}
+#quick{background:linear-gradient(180deg,#9dff6a,#3ddc84 60%,#22b865);box-shadow:0 6px 0 #127a3f,inset 0 2px 0 rgba(255,255,255,.7);border-color:rgba(0,40,10,.5)}
+#quick:active:not(:disabled){box-shadow:0 2px 0 #127a3f}
+
+.wtag{left:8px;right:auto;background:rgba(0,0,0,.55)!important;color:#fff!important}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -391,8 +433,9 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <div class="panel" id="hpbox"><div id="hprow"><span class="small">Health <b id="lives"></b></span><span id="hptext" class="display">100</span></div><div id="hpbar"><div id="hpfill"></div></div></div>
   <div id="slots"></div>
   <div id="crtoast"></div>
+  <div id="assisttoast"></div>
   <div class="panel" id="ammobox"><div id="nadebox" title="Grenades (G)"><span class="nadeico"></span><b id="nades">2</b><small>G</small></div><div id="wname" class="small">Assault Rifle</div><div><span id="mag" class="display">30</span><span id="reserve" class="display"> / 120</span></div><div id="mats">Wood 200</div></div>
-  <div id="board" hidden><table><thead><tr><th>Player</th><th class="n">Kills</th><th class="n">Deaths</th></tr></thead><tbody id="boardbody"></tbody></table></div>
+  <div id="board" hidden><table><thead><tr><th>Player</th><th class="n">K</th><th class="n">A</th><th class="n">D</th></tr></thead><tbody id="boardbody"></tbody></table></div>
   <div id="gchat" hidden><div id="gchatlog"></div><div id="gchatbox" hidden><div id="qchips"></div><input id="gchatin" maxlength="120" placeholder="Type a message. Enter sends, Esc cancels" autocomplete="off" aria-label="Chat message"></div></div>
   <div id="vignette"></div>
   <div id="death" hidden><div class="big display">Eliminated</div><div class="small" id="killer"></div></div>
@@ -417,20 +460,32 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 <button id="shopbtn" hidden><span class="crico"></span>Shop</button>
 <aside id="gamelog" hidden>
   <details open>
-    <summary><b>Game Log</b> <span class="ver">V1.3</span></summary>
+    <summary><b>Game Log</b> <span class="ver">V1.4</span></summary>
     <div class="glbody">
+      <h4>V1.4: Rewards Revamp</h4>
+      <ul>
+        <li>🏆 Top 3 bonuses: <b>100 / 50 / 25</b> Clash Crystals for 1st, 2nd and 3rd (matches with 4+ players).</li>
+        <li>🤝 <b>Assists</b> are here! Help with a kill to earn 1 crystal.</li>
+        <li>💎 Kills give <b>2</b> crystals and headshot kills give <b>3</b>.</li>
+        <li>📋 <b>Daily Missions</b> like Zombie Slayer, Sharpshooter and Grim Reaper.</li>
+        <li>🧟 Every zombie wave now has <b>double</b> the zombies.</li>
+        <li>⚔️ The <b>Scythe</b> is reworked: right-click to <b>dash</b>, faster movement and a brand new look.</li>
+        <li>✦ <b>Mythical skins for every weapon</b>: Dragonfire, Voltage, Starfall, Crimson Viper, Headless Horseman and more (16 total).</li>
+        <li>✨ Revamped menus, kill feed weapon icons, results podium and K/A/D scoreboards.</li>
+      </ul>
+      <div class="soon">V1.5 coming soon!</div>
+      <h4 class="old">V1.3</h4>
       <h4>V1.3: The biggest update ever!</h4>
       <ul>
         <li>🎃 <b>Zombies mode</b> on the new Halloween map, Pumpkin Hollow. Survive 5 waves and the Giant.</li>
         <li>🗺️ 2 new maps: <b>Temple Ruins</b> and <b>Crystal Caverns</b>.</li>
         <li>🔫 3 new weapons: <b>Halloween RPG</b> (limited), <b>Scythe</b> and <b>Portal Gun</b>.</li>
-        <li>💎 Clash Crystals now appear on maps, and are harder to earn.</li>
+        <li>💎 Clash Crystals now appear on maps! Grab them for bonus crystals.</li>
         <li>🌈 New <b>Rainbow</b> skin. Skins and guns cost more.</li>
         <li>🛒 New <b>Shop</b> with damage, fire rate and reload stats.</li>
         <li>💣 Grenades buffed (bigger blast, 3 per life). Minigun is smaller and a bit slower.</li>
         <li>❤️ Health bar moved to the bottom left during play.</li>
       </ul>
-      <div class="soon">V1.4 coming soon!</div>
     </div>
   </details>
 </aside>
@@ -439,7 +494,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <section class="card wide" id="s-menu">
     <div class="menugrid">
       <div>
-        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span></div>
+        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.4</span></div>
         <p>Up to 8 players. Free-for-all, Team Deathmatch or Snipers Only, voted on by the lobby.</p>
         <label for="pname">Your name</label>
         <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
@@ -453,7 +508,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
           <summary>Controls</summary>
           <div class="keys">
             <kbd>WASD</kbd><span>Move (Shift sprint, Space jump)</span>
-            <kbd>Mouse</kbd><span>Shoot. Right-click to aim, or scope with the sniper</span>
+            <kbd>Mouse</kbd><span>Shoot. Right-click to aim, scope with the sniper, or dash with the Scythe</span>
             <kbd>1 to 4</kbd><span>Your loadout guns (pick them on the Loadout screen)</span>
             <kbd>5</kbd><span>Build mode (Z wall, X floor, C ramp)</span>
             <kbd>G</kbd><span>Throw a grenade (3 per life)</span>
@@ -469,6 +524,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
         <div class="crbar"><span class="crico"></span><b class="crystals">0</b><span>Clash Crystals</span></div>
         <div class="preview" id="pvMenu"></div>
         <div class="row" style="margin-top:0"><button class="ghost" id="openLoadout">Loadout</button><button class="ghost" id="openLocker">Customize</button></div>
+        <div class="statbox missionbox"><div class="mhead"><b class="display">Daily Missions</b><span class="small" id="mreset"></span></div><div id="missions"></div></div>
         <div class="statbox"><div class="small">Touch controls</div><div class="chips" id="touchmode" role="radiogroup" aria-label="Touch controls" style="margin:6px 0 0"></div></div>
         <div class="statbox"><div class="small">Your stats</div><div class="stats4" id="mystats"></div></div>
         <div class="statbox"><div class="small">Server leaderboard (wins)</div><ol id="lb"></ol><div class="small" id="lbnote">Resets whenever the server restarts.</div></div>
@@ -524,7 +580,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 
   <section class="card wide" id="s-shop" hidden>
     <div class="votehead"><h2 class="display">Shop</h2><div class="crbar"><span class="crico"></span><b id="shopcr">0</b><span>Clash Crystals</span></div></div>
-    <div class="tabs" role="tablist"><button class="shoptab" role="tab" data-t="guns">Weapons</button><button class="shoptab" role="tab" data-t="skins">Skins</button></div>
+    <div class="tabs" role="tablist"><button class="shoptab" role="tab" data-t="guns">Weapons</button><button class="shoptab" role="tab" data-t="skins">Skins</button><button class="shoptab mythic" role="tab" data-t="mythic">✦ Mythical</button></div>
     <p class="small">Click Buy, then Confirm. Earn Clash Crystals from kills, wins, zombie waves and crystals you find on the map.</p>
     <div class="shopgrid" id="shopgrid"></div>
     <div class="row"><button class="ghost" id="shopclose">Back</button></div>
@@ -555,7 +611,8 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <section class="card" id="s-results" hidden>
     <h2 class="display" id="wintitle">You win!</h2>
     <p id="winsub"></p>
-    <table><thead><tr><th>#</th><th>Player</th><th class="n">Kills</th><th class="n">Deaths</th></tr></thead><tbody id="resbody"></tbody></table>
+    <div class="podium" id="podium"></div>
+    <table><thead><tr><th>#</th><th>Player</th><th class="n">K</th><th class="n">A</th><th class="n">D</th></tr></thead><tbody id="resbody"></tbody></table>
     <div class="row"><button id="again">Play again</button></div>
     <div class="row"><button class="ghost" id="tomenu">Main menu</button></div>
   </section>
@@ -917,7 +974,7 @@ const SFX = { ar: ['square', 220, 60, .07, .05], smg: ['square', 300, 90, .05, .
   pistol: ['square', 380, 120, .07, .05], burst: ['square', 250, 70, .06, .045], rocket: ['sawtooth', 180, 70, .3, .07], boom: ['sawtooth', 90, 25, .55, .13],
   bot: ['square', 200, 70, .06, .018], hit: ['sine', 1100, 900, .06, .06], head: ['sine', 1500, 1300, .09, .08],
   build: ['square', 140, 90, .08, .05], hurt: ['sawtooth', 110, 60, .15, .06], kill: ['triangle', 660, 990, .2, .08], reload: ['triangle', 500, 700, .06, .04],
-  pickup: ['triangle', 520, 1040, .18, .07], throw: ['triangle', 300, 160, .12, .05], buy: ['triangle', 660, 1320, .25, .08], spin: ['sawtooth', 60, 140, .08, .02], portal: ['sine', 300, 1200, .3, .07], swing: ['triangle', 900, 300, .14, .05], groan: ['sawtooth', 120, 70, .45, .025], crystal: ['sine', 1200, 2400, .15, .06], whistle: ['sine', 1400, 500, .9, .03], empty: ['square', 900, 850, .03, .03], tick: ['sine', 880, 880, .05, .04], chat: ['sine', 700, 760, .06, .03] };
+  pickup: ['triangle', 520, 1040, .18, .07], throw: ['triangle', 300, 160, .12, .05], buy: ['triangle', 660, 1320, .25, .08], spin: ['sawtooth', 60, 140, .08, .02], portal: ['sine', 300, 1200, .3, .07], dash: ['sawtooth', 200, 900, .22, .06], swing: ['triangle', 900, 300, .14, .05], groan: ['sawtooth', 120, 70, .45, .025], crystal: ['sine', 1200, 2400, .15, .06], whistle: ['sine', 1400, 500, .9, .03], empty: ['square', 900, 850, .03, .03], tick: ['sine', 880, 880, .05, .04], chat: ['sine', 700, 760, .06, .03] };
 function sfx(type) {
   try {
     if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1021,12 +1078,13 @@ function makeZombieSim(opts) {
     big: { hp: 150, speed: 2.7, reach: 2.4, dmg: 10, cd: 1.1, scale: 2, rad: .85 },
     giant: { hp: 1000, speed: 1.7, reach: 4.2, dmg: 30, cd: 1.6, scale: 4, rad: 1.7 },
   };
-  const WAVES = [{ small: 6, big: 2 }, { small: 9, big: 3 }, { small: 12, big: 5 }, { big: 8, giant: 1 }, { big: 12, giant: 1 }];
+  const WAVES = [{ small: 24, big: 8 }, { small: 36, big: 12 }, { small: 48, big: 20 }, { big: 32, giant: 1 }, { big: 48, giant: 1 }];
+  const MAX_ALIVE = 36; // more wait in line so the game stays smooth
   const S = { wave: 0, state: 'intermission', timer: 6, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1 };
   const r2 = (v) => Math.round(v * 100) / 100;
   function startWave() {
     S.wave++; S.state = 'fighting';
-    const W = WAVES[S.wave - 1], k = 1 + .5 * Math.max(0, S.nplayers - 1);
+    const W = WAVES[S.wave - 1], k = 1 + .35 * Math.max(0, S.nplayers - 1);
     const list = [];
     for (let i = 0; i < Math.round((W.small || 0) * k); i++) list.push('small');
     for (let i = 0; i < Math.round((W.big || 0) * k); i++) list.push('big');
@@ -1044,7 +1102,7 @@ function makeZombieSim(opts) {
     if (S.state === 'intermission') { S.timer -= dt; if (S.timer <= 0) startWave(); return; }
     if (S.state !== 'fighting') return;
     const ps = opts.players().filter(p => p.alive);
-    if (S.queue.length) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.7 : 1.0; } }
+    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? .9 : .5; } }
     for (const z of S.zombies) {
       const T = TYPES[z.type]; z.swing = Math.max(0, z.swing - dt); z.cd -= dt;
       let best = null, bd = Infinity;
@@ -1163,6 +1221,7 @@ const ICONS = {
   minigun: [[4, 4, 16, 10], [20, 5, 16, 2], [20, 8, 16, 2], [20, 11, 16, 2], [8, 14, 4, 4]],
   pumpkin: [[2, 6, 22, 6], [22, 3, 12, 12], [26, 1, 3, 3], [8, 12, 4, 5]],
   scythe: [[2, 15, 30, 2], [26, 2, 4, 14], [16, 1, 12, 3], [12, 3, 6, 2]],
+  nade: [[14, 5, 10, 12], [16, 2, 6, 3], [23, 3, 3, 6]],
   portal: [[4, 5, 18, 8], [22, 6, 8, 6], [30, 7, 6, 4], [8, 13, 4, 4], [10, 2, 6, 3]],
   build: [[17, 4, 4, 14], [9, 1, 20, 6]],
 };
@@ -1180,7 +1239,10 @@ function buildSlots() {
 }
 
 /* ================= player + saved data ================= */
-const look = Object.assign({ name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', touch: 'auto' }, store.get('arenaclash.look', {}));
+const look = Object.assign({ name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', mythic: {}, touch: 'auto' }, store.get('arenaclash.look', {}));
+if (!look.mythic || typeof look.mythic !== 'object') look.mythic = {};
+if (look.scytheSkin && look.scytheSkin !== 'classic' && !look.mythic.scythe) look.mythic.scythe = look.scytheSkin; // carry over V1.4 scythe skins
+delete look.scytheSkin;
 let touchSeen = false, chatOpen = false;
 function applyTouchMode() {
   isTouch = look.touch === 'on' ? true : look.touch === 'off' ? false : (touchDevice || touchSeen);
@@ -1189,8 +1251,8 @@ function applyTouchMode() {
 }
 const stats = Object.assign({ matches: 0, wins: 0, kills: 0, deaths: 0, headshots: 0 }, store.get('arenaclash.stats', {}));
 /* ---- Clash Crystals wallet (saved in this browser) ---- */
-const wallet = Object.assign({ crystals: 0, guns: [], skins: ['classic'] }, store.get('arenaclash.wallet', {}));
-if (!Array.isArray(wallet.guns)) wallet.guns = []; if (!Array.isArray(wallet.skins)) wallet.skins = ['classic'];
+const wallet = Object.assign({ crystals: 0, guns: [], skins: ['classic'], scythes: ['classic'] }, store.get('arenaclash.wallet', {}));
+if (!Array.isArray(wallet.guns)) wallet.guns = []; if (!Array.isArray(wallet.skins)) wallet.skins = ['classic']; if (!Array.isArray(wallet.mythics)) wallet.mythics = (Array.isArray(wallet.scythes) ? wallet.scythes : []).filter(x => x !== 'classic');
 function saveWallet() { store.set('arenaclash.wallet', wallet); renderCrystals(); }
 const STARTERS = WEAPONS.map((w, i) => i).filter(i => GUN_INFO[WEAPONS[i].id][0] === 0);
 const TRIAL_HOURS = 6;
@@ -1219,7 +1281,7 @@ function saveLook() { store.set('arenaclash.look', look); }
 function saveStats() { store.set('arenaclash.stats', stats); renderStats(); }
 const P = { isPlayer: true, name: look.name, color: look.color, hat: look.hat, effect: look.effect, team: 0, pos: new V3(), vy: 0, yaw: 0, pitch: 0, onGround: true,
   ramp: null, hp: 100, dead: false, deathT: 0, shield: 0, mats: 200, matT: 0, kills: 0, deaths: 0, moving: false };
-let mode = 'offline', pendingLO = null;
+let mode = 'offline', pendingLO = null, curDmgW = -1;
 let bots = [];
 const remotes = new Map();
 const others = () => mode === 'online' ? [...remotes.values()] : bots;
@@ -1277,7 +1339,8 @@ function rewardKill(head, victimName) {
   P.mats = Math.min(999, P.mats + 50);
   WEAPONS.forEach((w, i) => { guns[i].reserve = Math.min(w.reserve, guns[i].reserve + Math.ceil(w.mag / 2)); });
   stats.kills++; if (head) stats.headshots++; saveStats(); sfx('kill');
-  const online = mode === 'online'; addCrystals((online ? 2 : 1) + (head && online ? 1 : 0), head ? 'headshot' : 'kill');
+  addCrystals(head ? 3 : 2, head ? 'headshot' : 'kill');
+  missionEvent('kill'); if (head) missionEvent('headshot'); weaponMission(curDmgW);
 }
 
 /* ================= building ================= */
@@ -1429,6 +1492,27 @@ const GUN_SKINS = {
   rainbow: { name: 'Rainbow', price: 1500, rarity: 'legendary', isNew: true },
 };
 const ownsSkin = (id) => id === 'classic' || wallet.skins.includes(id);
+// Mythical skins: each one belongs to a single weapon and overrides your normal gun skin on it
+const MYTHICS = {
+  dragonfire: { name: 'Dragonfire', weapon: 'ar', price: 2000 },
+  voltage: { name: 'Voltage', weapon: 'smg', price: 1800 },
+  thunderclap: { name: 'Thunderclap', weapon: 'shotgun', price: 1900 },
+  starfall: { name: 'Starfall', weapon: 'sniper', price: 2300 },
+  royal: { name: 'Royal Crown', weapon: 'pistol', price: 1800 },
+  phantom: { name: 'Phantom', weapon: 'burst', price: 2000 },
+  doomsday: { name: 'Doomsday', weapon: 'rocket', price: 2300 },
+  outlaw: { name: 'Outlaw', weapon: 'revolver', price: 2000 },
+  viper: { name: 'Crimson Viper', weapon: 'ak', price: 2200 },
+  overdrive: { name: 'Overdrive', weapon: 'minigun', price: 2400 },
+  headless: { name: 'Headless Horseman', weapon: 'pumpkin', price: 2500 },
+  reaper: { name: 'Reaper', weapon: 'scythe', price: 2000 },
+  inferno: { name: 'Inferno', weapon: 'scythe', price: 2200 },
+  frostbite: { name: 'Frostbite', weapon: 'scythe', price: 2200 },
+  celestial: { name: 'Celestial', weapon: 'scythe', price: 2500 },
+  quantum: { name: 'Quantum', weapon: 'portal', price: 2200 },
+};
+const ownsMythic = (id) => wallet.mythics.includes(id);
+const skinOf = (wid, gunSkin, mythic) => (mythic && mythic[wid] && MYTHICS[mythic[wid]] && MYTHICS[mythic[wid]].weapon === wid) ? mythic[wid] : (gunSkin || 'classic');
 function canvasTex(size, paint) {
   const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); paint(g, size);
   const t = new THREE.CanvasTexture(c); t.magFilter = THREE.NearestFilter; t.minFilter = THREE.LinearMipMapLinearFilter; return t;
@@ -1492,6 +1576,27 @@ const SKIN_PAINT = {
     accent: (g, s) => { base(g, s, 0xffffff, .05); for (let i = 0; i < 12; i++) P_(g, sr() * s | 0, sr() * s | 0, 'hsl(' + (sr() * 360 | 0) + ',100%,70%)', 2, 2); },
     metal: (g, s) => rainbow(g, s, .7), metalEmi: (g, s) => rainbow(g, s, .3),
   },
+  reaper: {
+    body: (g, s) => { base(g, s, 0x141018, .2); for (let y = 2; y < s; y += 5) P_(g, 0, y, '#2a1f3a', s, 2); },
+    accent: (g, s) => { base(g, s, 0x8a2be2, .2); P_(g, 0, 0, '#e0b0ff', s, 2); }, accentEmi: (g, s) => { base(g, s, 0x8a2be2, .3); P_(g, 0, 0, '#ffffff', s, 2); },
+    metal: (g, s) => { base(g, s, 0x2a2a35, .15); P_(g, 0, s - 3, '#b06bff', s, 3); }, metalEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); P_(g, 0, s - 3, '#b06bff', s, 3); },
+  },
+  inferno: {
+    body: (g, s) => { base(g, s, 0x2a1008, .3); cracks(g, s, '#ff5a1a'); }, bodyEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); cracks(g, s, '#ff6a1a'); },
+    accent: (g, s) => { for (let y = 0; y < s; y++) { g.fillStyle = 'hsl(' + (10 + y * 1.6) + ',100%,' + (45 + y) + '%)'; g.fillRect(0, y, s, 1); } }, accentEmi: (g, s) => { for (let y = 0; y < s; y++) { g.fillStyle = 'hsl(' + (15 + y * 1.4) + ',100%,40%)'; g.fillRect(0, y, s, 1); } },
+    metal: (g, s) => { base(g, s, 0xff7a1a, .25); for (let i = 0; i < 12; i++) P_(g, sr() * s | 0, sr() * s | 0, '#ffe066'); }, metalEmi: (g, s) => base(g, s, 0xff5a00, .3),
+  },
+  frostbite: {
+    body: (g, s) => { base(g, s, 0x1a3a5a, .15); for (let i = 0; i < 10; i++) P_(g, sr() * s | 0, sr() * s | 0, '#bfe6ff'); },
+    accent: (g, s) => { base(g, s, 0x7fe7ff, .15); P_(g, 0, 0, '#ffffff', s, 2); }, accentEmi: (g, s) => { base(g, s, 0x3fb0e0, .2); P_(g, 0, 0, '#ffffff', s, 2); },
+    metal: (g, s) => { base(g, s, 0xd8f4ff, .08); for (let i = 0; i < 6; i++) { let x = sr() * s | 0, y = 0; while (y < s) { P_(g, x, y, '#7fd0ff'); x += (sr() * 3 | 0) - 1; y++; } } },
+    metalEmi: (g, s) => { P_(g, 0, 0, '#0a1a2a', s, s); for (let i = 0; i < 5; i++) { let x = sr() * s | 0, y = 0; while (y < s) { P_(g, x, y, '#5fd0ff'); x += (sr() * 3 | 0) - 1; y++; } } },
+  },
+  celestial: {
+    body: (g, s) => { base(g, s, 0xf5f0e0, .06); engrave(g, s, '#d8b44a'); }, 
+    accent: (g, s) => { base(g, s, 0xffd24a, .12); P_(g, 0, 0, '#ffffff', s, 2); }, accentEmi: (g, s) => { base(g, s, 0xc89a20, .2); P_(g, 0, 0, '#fff6c8', s, 3); },
+    metal: (g, s) => { base(g, s, 0xffffff, .05); for (let i = 0; i < 14; i++) P_(g, sr() * s | 0, sr() * s | 0, '#ffe9a0'); }, metalEmi: (g, s) => { P_(g, 0, 0, '#2a2410', s, s); for (let i = 0; i < 14; i++) P_(g, sr() * s | 0, sr() * s | 0, '#ffe9a0'); },
+  },
   galaxy: {
     body: (g, s) => { nebula(g, s); },
     bodyEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); for (let i = 0; i < 18; i++) P_(g, sr() * s | 0, sr() * s | 0, sr() < .5 ? '#ffffff' : '#c7a8ff'); },
@@ -1522,6 +1627,38 @@ function nebula(g, s) {
   }
   for (let i = 0; i < 16; i++) P_(g, sr() * s | 0, sr() * s | 0, sr() < .5 ? '#ffffff' : '#c7a8ff');
 }
+const MPAT = {
+  cracks: (g, s, c) => cracks(g, s, c), circuit: (g, s, c) => circuit(g, s, c), engrave: (g, s, c) => engrave(g, s, c),
+  scales: (g, s, c) => { for (let y = 0; y < s; y += 4) for (let x = (y / 4 % 2) * 2; x < s; x += 4) { P_(g, x, y, c, 3, 1); P_(g, x + 1, y + 1, c, 1, 2); } },
+  stars: (g, s, c) => { for (let i = 0; i < 22; i++) P_(g, sr() * s | 0, sr() * s | 0, c); P_(g, sr() * s | 0, sr() * s | 0, c, 2, 2); },
+  stripes: (g, s, c) => { for (let i = -s; i < s * 2; i += 6) for (let y = 0; y < s; y++) P_(g, i + y, y, c, 2, 1); },
+  bolts: (g, s, c) => { for (let i = 0; i < 4; i++) { let x = sr() * s | 0; for (let y = 0; y < s; y++) { P_(g, x, y, c); if (y % 3 === 2) x += sr() < .5 ? 2 : -2; } } },
+  flames: (g, s, c) => { for (let x = 0; x < s; x++) { const h = (sr() * s * .55 | 0) + 4; P_(g, x, s - h, c, 1, h); } },
+};
+function mythicPaint(o) {
+  return {
+    body: (g, s) => { base(g, s, o.base, .2); MPAT[o.pat](g, s, o.line); },
+    bodyEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); MPAT[o.pat](g, s, o.glow); },
+    accent: (g, s) => { base(g, s, o.accent, .15); P_(g, 0, 0, '#ffffff', s, 1); },
+    accentEmi: (g, s) => { base(g, s, o.accent, .25); },
+    metal: (g, s) => { base(g, s, o.metal, .12); for (let y = 2; y < s; y += 5) P_(g, 0, y, o.line, s, 1); },
+    metalEmi: (g, s) => { P_(g, 0, 0, '#000', s, s); for (let y = 2; y < s; y += 5) P_(g, 0, y, o.glow, s, 1); },
+  };
+}
+Object.assign(SKIN_PAINT, {
+  dragonfire: mythicPaint({ base: 0x3a0a08, pat: 'scales', line: '#7a1a10', glow: '#ff6a1a', accent: 0xffb02e, metal: 0x2a1a14 }),
+  voltage: mythicPaint({ base: 0x101014, pat: 'circuit', line: '#3a3a10', glow: '#ffe600', accent: 0xffe600, metal: 0x3a3a44 }),
+  thunderclap: mythicPaint({ base: 0x0e1a3a, pat: 'bolts', line: '#2a4a8a', glow: '#5fd0ff', accent: 0x5fd0ff, metal: 0x1a2a4a }),
+  starfall: mythicPaint({ base: 0x0a0820, pat: 'stars', line: '#ffe9a0', glow: '#ffffff', accent: 0xffd24a, metal: 0x2a2050 }),
+  royal: mythicPaint({ base: 0x3a1468, pat: 'engrave', line: '#e0a922', glow: '#ffd24a', accent: 0xe0a922, metal: 0xf3cf55 }),
+  phantom: mythicPaint({ base: 0xd8f4f0, pat: 'stripes', line: '#9fe8dc', glow: '#5fffd0', accent: 0x5fffd0, metal: 0xbfe6ff }),
+  doomsday: mythicPaint({ base: 0x141414, pat: 'stripes', line: '#3a0a0a', glow: '#ff2020', accent: 0xff2020, metal: 0x2a2a2a }),
+  outlaw: mythicPaint({ base: 0x5a3a1e, pat: 'engrave', line: '#3a220e', glow: '#ff8c1a', accent: 0xd8a85a, metal: 0xc8c8c8 }),
+  viper: mythicPaint({ base: 0x1a4a2a, pat: 'scales', line: '#0f2a18', glow: '#ff2a4a', accent: 0xff2a4a, metal: 0x1a1a1a }),
+  overdrive: mythicPaint({ base: 0xc8ccd8, pat: 'circuit', line: '#8a8fa0', glow: '#ff3cac', accent: 0xff3cac, metal: 0x3a3f4a }),
+  headless: mythicPaint({ base: 0x0a0a0a, pat: 'flames', line: '#1a2a1a', glow: '#7aff3a', accent: 0xff7a1a, metal: 0x2a2a2a }),
+  quantum: mythicPaint({ base: 0xf2f6ff, pat: 'circuit', line: '#c8d4ff', glow: '#2b8cff', accent: 0xff8a1a, metal: 0x2b8cff }),
+});
 const skinCache = {};
 function skinMats(id) {
   if (skinCache[id]) return skinCache[id];
@@ -1548,7 +1685,8 @@ const WGUN = {
   revolver: [[.07, .08, .32, 'metal', 0, .02, .2], [.1, .11, .12, 'body', 0, 0, .04], [.06, .16, .07, 'accent', 0, -.1, -.03]],
   ak: [[.1, .13, .4, 'body', 0, 0, .05], [.09, .1, .2, 'accent', 0, -.01, .33], [.05, .05, .2, 'metal', 0, .02, .55], [.07, .2, .09, 'body', 0, -.15, .14], [.08, .12, .24, 'accent', 0, -.03, -.27]],
   pumpkin: [[.16, .16, .8, 'body', 0, .04, .1], [.34, .3, .34, 'accent', 0, .04, .6], [.06, .1, .06, 'metal', 0, .22, .6], [.06, .16, .1, 'metal', 0, -.12, .05]],
-  scythe: [[.06, .06, 1.6, 'body', 0, 0, .2], [.05, .5, .1, 'metal', 0, .22, .98], [.05, .12, .5, 'metal', 0, .42, .78]],
+  scythe: [[.06, .06, 1.75, 'body', 0, 0, .25], [.08, .08, .22, 'accent', 0, 0, -.12], [.09, .09, .1, 'metal', 0, 0, -.62], [.07, .1, .12, 'metal', 0, .03, 1.1],
+    [.04, .16, .34, 'metal', 0, .14, 1.04], [.04, .13, .3, 'metal', 0, .3, .86], [.04, .11, .26, 'metal', 0, .41, .66], [.04, .08, .22, 'metal', 0, .47, .48], [.05, .04, .7, 'accent', 0, .5, .78]],
   portal: [[.14, .16, .38, 'body', 0, 0, .05], [.12, .12, .2, 'accent', 0, 0, .32], [.08, .08, .1, 'metal', 0, 0, .46], [.06, .14, .08, 'body', 0, -.13, -.02]],
   minigun: [[.2, .2, .4, 'body', 0, 0, 0], [.05, .05, .5, 'metal', .05, .05, .42], [.05, .05, .5, 'metal', -.05, .05, .42], [.05, .05, .5, 'metal', .05, -.05, .42], [.05, .05, .5, 'metal', -.05, -.05, .42], [.17, .17, .05, 'accent', 0, 0, .6], [.06, .14, .14, 'accent', 0, .17, -.05]],
 };
@@ -1669,8 +1807,9 @@ function teamTag(ent) {
 }
 function setAvatarGun(ent, id, skin) {
   if (skin) ent.gunSkin = skin;
-  if (ent.gunId === id && ent.builtSkin === ent.gunSkin) return;
-  ent.gunId = id; ent.builtSkin = ent.gunSkin; buildWorldGun(ent.gunHolder, id, ent.gunSkin || 'classic');
+  const sk = skinOf(id, ent.gunSkin, ent.mythic);
+  if (ent.gunId === id && ent.builtSkin === sk) return;
+  ent.gunId = id; ent.builtSkin = sk; buildWorldGun(ent.gunHolder, id, sk);
 }
 function setBar(ent) { if (!ent.bar) return; ent.bar.scale.x = Math.max(0.001, ent.hp / 100); ent.bar.material.color.setHex(ent.hp < 40 ? 0xff4d5e : 0x3ddc84); }
 function disposeAvatar(ent) {
@@ -1694,12 +1833,16 @@ function spawnBot(b) {
 function removeBots() { bots.forEach(disposeAvatar); bots = []; }
 function damageBot(b, d, head, by) {
   if (b.dead || !match.active || b.shield > 0) return;
+  (b.dmgBy = b.dmgBy || new Map()).set(by, clock);
   b.hp -= d; b.flash = .08; if (by === P) hitmarker(head); setBar(b);
   if (b.hp <= 0) {
     b.dead = true; b.respawn = 3.5; b.group.visible = false; b.deaths++; by.kills++;
     if (teamsOn()) match.teamScores[by.team]++;
     killFx(by.effect, b.pos);
     if (by === P) { P.hp = Math.min(100, P.hp + 25); rewardKill(head, b.name); } else by.hp = Math.min(100, by.hp + 25);
+    if (by !== P && b.dmgBy.has(P) && clock - b.dmgBy.get(P) < 10) onAssist(b.name);
+    for (const f of b.dmgBy.keys()) if (f !== by && f !== P && clock - b.dmgBy.get(f) < 10) f.assists = (f.assists || 0) + 1;
+    b.dmgBy.clear();
     feed(nameHTML(by.name, by === P, by.team) + ' eliminated ' + nameHTML(b.name, false, b.team) + (head ? ' (headshot)' : '')); checkWin();
   }
 }
@@ -1816,7 +1959,7 @@ function explode(r, p, kind) {
   if (!r.mine || !match.active) return;
   const RAD = pk ? WEAPONS[PUMPKIN_W].radius : nade ? 6.5 : WEAPONS[6].radius, W = pk ? PUMPKIN_W : nade ? GRENADE_W : 6;
   const dmgAt = (d) => Math.round(pk ? 30 + 120 * (1 - d / RAD) : nade ? 30 + 100 * (1 - d / RAD) : 25 + 85 * (1 - d / RAD));
-  const list = [], zl = [], sl = [], c = new V3();
+  const list = [], zl = [], sl = [], c = new V3(); curDmgW = W;
   for (const e of others()) {
     if (e.dead || !enemyOf(P, e) || zombiesOn()) continue;
     c.set(e.pos.x, e.pos.y + 1, e.pos.z); const d = c.distanceTo(p);
@@ -1897,7 +2040,7 @@ function updateNades(dt) {
 
 /* ================= online players ================= */
 function addRemote(p) {
-  const r = { isRemote: true, id: p.id, name: p.name, color: p.color, effect: p.effect, team: p.team, pos: new V3(), tpos: new V3(), yaw: 0, tyaw: 0, hp: 100,
+  const r = { isRemote: true, id: p.id, name: p.name, color: p.color, effect: p.effect, team: p.team, mythic: p.mythic || {}, mythicKey: JSON.stringify(p.mythic || {}), pos: new V3(), tpos: new V3(), yaw: 0, tyaw: 0, hp: 100,
     dead: true, w: -1, snap: true, shieldUntil: 0 };
   makeAvatar(r, p.name, AV_COLORS[p.color] || AV_COLORS[0], p.hat); setAvatarGun(r, 'ar', p.gunSkin || 'classic'); r.group.visible = false; r.pitch = 0; r.tpitch = 0;
   remotes.set(p.id, r); return r;
@@ -1912,6 +2055,8 @@ function syncRemotes() {
     if (!r) { r = addRemote(p); changed = true; if (match.active) teamTag(r); }
     else if (r.team !== p.team) { r.team = p.team; if (match.active) teamTag(r); }
     r.effect = p.effect;
+    const mk = JSON.stringify(p.mythic || {});
+    if (r.mythicKey !== mk || r.gunSkin !== (p.gunSkin || 'classic')) { r.mythic = p.mythic || {}; r.mythicKey = mk; r.gunSkin = p.gunSkin || 'classic'; const g = r.gunId; r.gunId = null; if (g) setAvatarGun(r, g); }
   }
   for (const [id, r] of remotes) if (!ids.has(id)) { disposeAvatar(r); remotes.delete(id); changed = true; }
   if (changed) rebuildTargets();
@@ -1939,7 +2084,7 @@ const invisMat = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: fa
 function rebuildSelfAvatar() {
   if (!SHADOWS) return;
   if (selfAv) disposeAvatar(selfAv);
-  selfAv = {}; makeAvatar(selfAv, null, AV_COLORS[look.color], look.hat); selfAv.gunSkin = look.gunSkin;
+  selfAv = {}; makeAvatar(selfAv, null, AV_COLORS[look.color], look.hat); selfAv.gunSkin = look.gunSkin; selfAv.mythic = look.mythic;
   selfAv.bubble.castShadow = false;
   selfAv.group.traverse(o => { if (o.isMesh && o !== selfAv.bubble) { o.material = invisMat; o.castShadow = true; } });
   selfAv.group.visible = false; selfAv.lastGun = null;
@@ -1976,7 +2121,7 @@ function connect() {
     if (was) setTimeout(connect, 3000);
   };
 }
-function sendHello() { netSend({ t: 'hello', name: P.name, color: look.color, hat: look.hat, effect: look.effect, gunSkin: look.gunSkin }); }
+function sendHello() { netSend({ t: 'hello', name: P.name, color: look.color, hat: look.hat, effect: look.effect, gunSkin: look.gunSkin, mythic: look.mythic }); }
 function menuError(t) { $('menuerr').textContent = t; $('menuerr').hidden = !t; }
 function showOnline(n) { if (NET.ok) setNetStatus((n || 1) + (n === 1 ? ' player' : ' players') + ' online', true); }
 
@@ -2015,7 +2160,7 @@ function onNet(m) {
     case 'zs': if (match.active && zombiesOn()) applyZSnap(m.s); break;
     case 'zev': if (match.active) onZEvent(m.ev); break;
     case 'zwave': if (match.active) onZWave(m.wave, m.lives); break;
-    case 'zkill': if (match.active) onZKill(m); break;
+    case 'zkill': if (match.active) { onZKill(m); if (Array.isArray(m.as)) { for (const id of m.as) { const q = roomPlayer(id); if (q) q.assists = (q.assists || 0) + 1; } if (m.as.includes(NET.id)) onAssist(ZINFO[m.type] ? ZINFO[m.type].name : 'zombie'); } } break;
     case 'zdeath': {
       const vp = roomPlayer(m.id); if (vp) vp.deaths++;
       const why = m.cause === 'bomb' ? "the Giant's bomb" : m.cause === 'self' ? 'their own pumpkin' : 'a zombie';
@@ -2042,11 +2187,15 @@ function onNet(m) {
       const kp = roomPlayer(m.k), vp = roomPlayer(m.v);
       if (kp) kp.kills++; if (vp) vp.deaths++;
       if (Array.isArray(m.ts)) match.teamScores = m.ts.slice(0, 2);
-      feed(nameHTML(kp ? kp.name : '?', m.k === NET.id, kp && kp.team) + ' eliminated ' + nameHTML(vp ? vp.name : '?', m.v === NET.id, vp && vp.team) + (m.head ? ' (headshot)' : ''));
+      const asIds = Array.isArray(m.as) ? m.as : [];
+      for (const id of asIds) { const q = roomPlayer(id); if (q) q.assists = (q.assists || 0) + 1; }
+      feedKill(nameHTML(kp ? kp.name : '?', m.k === NET.id, kp && kp.team), nameHTML(vp ? vp.name : '?', m.v === NET.id, vp && vp.team), m.w, m.head,
+        asIds.map(id => { const q = roomPlayer(id); return q ? nameHTML(q.name, id === NET.id, q.team) : ''; }).filter(Boolean));
+      if (asIds.includes(NET.id)) onAssist(vp ? vp.name : 'enemy');
       const effect = m.k === NET.id ? look.effect : (kp && kp.effect);
       if (m.v === NET.id) { killFx(effect, P.pos); P.deaths++; stats.deaths++; saveStats(); showDeath(kp ? kp.name : 'someone'); }
       else { const r = remotes.get(m.v); if (r) { killFx(effect, r.pos); r.dead = true; r.group.visible = false; } }
-      if (m.k === NET.id) { P.kills++; rewardKill(m.head, vp ? vp.name : 'enemy'); }
+      if (m.k === NET.id) { P.kills++; curDmgW = m.w; rewardKill(m.head, vp ? vp.name : 'enemy'); }
       break;
     }
     case 'shot': {
@@ -2064,8 +2213,8 @@ function onNet(m) {
     case 'end':
       if (mode === 'online' && match.active) {
         if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores;
-        endMatch(m.standings.map(p => ({ name: p.name, kills: p.kills, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id })), m.reason,
-          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id), zres: m.mode === 'zombies' ? m.reason : null, wave: m.wave });
+        endMatch(m.standings.map(p => ({ name: p.name, kills: p.kills, assists: p.assists || 0, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id, bonus: (m.place || {})[p.id] || 0 })), m.reason,
+          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id), zres: m.mode === 'zombies' ? m.reason : null, wave: m.wave, place: (m.place || {})[NET.id] || 0, players: m.players || 0 });
       }
       break;
   }
@@ -2127,7 +2276,7 @@ function addChat(name, text, color, sys) {
   log.scrollTop = log.scrollHeight;
 }
 function resetForMatch() {
-  P.kills = 0; P.deaths = 0; P.mats = 200; P.pitch = 0; Wp.piece = 'wall'; Wp.aim = false; Wp.burstLeft = 0;
+  P.kills = 0; P.deaths = 0; P.assists = 0; P.mats = 200; P.pitch = 0; Wp.piece = 'wall'; Wp.aim = false; Wp.burstLeft = 0;
   match.teamScores = [0, 0]; Wp.cur = 0; Wp.spin = 0; pendingLO = null; LO = matchLoadout(); buildSlots();
   $('feed').innerHTML = ''; lastHud = '';
   const M = MODES[match.mode];
@@ -2231,8 +2380,11 @@ function gunModel(id, M, showcase) {
     B(.05, .14, .08, met, 0, -.12, .04); B(.15, .15, .05, met, 0, .02, .3);
     mz = [0, .03, -.6]; base = [.26, -.22, -.44];
   }
-  if (id === 'scythe') {
-    B(.05, .05, 1.3, body, 0, 0, -.2); B(.04, .5, .08, met, 0, .26, -.84); B(.04, .1, .4, met, 0, .48, -.68); B(.045, .06, .2, acc, 0, -.02, .25);
+  if (id === 'scythe') { // Rivals-style scythe: long shaft, wrapped grips, big curved blade with a glowing edge
+    B(.05, .05, 1.4, body, 0, 0, -.2); B(.065, .065, .16, acc, 0, 0, .3); B(.065, .065, .14, acc, 0, 0, -.18); B(.08, .08, .08, met, 0, 0, .52);
+    B(.07, .09, .1, met, 0, .02, -.9);
+    B(.035, .16, .28, met, 0, .12, -.86, .25); B(.035, .14, .26, met, 0, .27, -.74, .55); B(.035, .12, .24, met, 0, .38, -.56, .85); B(.035, .09, .2, met, 0, .44, -.38, 1.15);
+    B(.04, .035, .62, acc, 0, .33, -.62, .6);
     mz = [0, .3, -.84]; base = [.3, -.28, -.2];
   }
   if (id === 'portal') {
@@ -2258,8 +2410,7 @@ function gunModel(id, M, showcase) {
 let vms = [];
 function rebuildViewmodels() {
   for (const v of vms) { vm.remove(v.g); v.g.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
-  const M = skinMats(look.gunSkin);
-  vms = WEAPONS.map(w => gunModel(w.id, M));
+  vms = WEAPONS.map(w => gunModel(w.id, skinMats(skinOf(w.id, look.gunSkin, look.mythic))));
 }
 rebuildViewmodels();
 const tool = new THREE.Group(); vm.add(tool); tool.rotation.x = .35;
@@ -2316,6 +2467,7 @@ function fireGun(w, g) {
   if (w.burst) { Wp.burstLeft = w.burst - 1; Wp.burstT = w.burstGap; }
 }
 function fireShot(w, g) {
+  curDmgW = cw();
   g.mag--; Wp.kick = w.kick; sfx(w.id); flashT = .045; if (w.scope || w.id === 'shotgun') addShake(.08);
   let spread = w.spread * (P.onGround ? 1 : 2.5) * (P.moving ? 1.4 : 1) * (1 - Wp.aimT * .5);
   const scoped = w.scope && Wp.aimT > .8;
@@ -2389,7 +2541,7 @@ canvas.addEventListener('contextmenu', e => e.preventDefault());
 canvas.addEventListener('mousedown', e => {
   if (paused || isTouch) return; mouseAny = true;
   if (!locked) tryLock();
-  if (e.button === 2) { if (cw() >= 0 && Wp.reload <= 0) Wp.aim = true; return; }
+  if (e.button === 2) { if (cw() === SCYTHE_W) { scytheDash(); return; } if (cw() >= 0 && Wp.reload <= 0) Wp.aim = true; return; }
   if (e.button !== 0) return; mouseL = true;
   if (cw() < 0) place(Wp.piece); else if (!WEAPONS[cw()].auto) tryFire();
 });
@@ -2465,7 +2617,7 @@ tbtn('tFire', (t) => {
   T.fireId = t.identifier; T.last.set(t.identifier, { x: t.clientX, y: t.clientY }); mouseL = true;
   if (cw() < 0) place(Wp.piece); else if (!WEAPONS[cw()].auto) tryFire();
 });
-tbtn('tAim', () => { if (cw() >= 0) { Wp.aim = !Wp.aim; $('tAim').classList.toggle('on', Wp.aim); } });
+tbtn('tAim', () => { if (cw() === SCYTHE_W) { scytheDash(); return; } if (cw() >= 0) { Wp.aim = !Wp.aim; $('tAim').classList.toggle('on', Wp.aim); } });
 tbtn('tJump', () => { keys.Space = true; }, () => { keys.Space = false; });
 tbtn('tReload', () => startReload());
 tbtn('tWall', () => place('wall')); tbtn('tRamp', () => place('ramp')); tbtn('tFloor', () => place('floor'));
@@ -2478,7 +2630,7 @@ document.querySelectorAll('#buildbar span').forEach(s => s.addEventListener('cli
 
 /* ================= ZOMBIES (Halloween mode) ================= */
 const ZTYPE = { s: 'small', b: 'big', g: 'giant' };
-const ZINFO = { small: { scale: 1, rad: .45, hp: 75, name: 'Zombie', cr: 1 }, big: { scale: 2, rad: .85, hp: 150, name: 'Big Zombie', cr: 2 }, giant: { scale: 4, rad: 1.7, hp: 1000, name: 'THE GIANT', cr: 15 } };
+const ZINFO = { small: { scale: 1, rad: .45, hp: 75, name: 'Zombie', cr: 3 }, big: { scale: 2, rad: .85, hp: 150, name: 'Big Zombie', cr: 5 }, giant: { scale: 4, rad: 1.7, hp: 1000, name: 'THE GIANT', cr: 30 } };
 const ZS = { sim: null, wave: 0, state: 'intermission', timer: 0, left: 0 };
 const zombieEnts = new Map(), bombVis = new Map();
 const zSkin = LM(0x7fb069), zPants = LM(0x3a3046);
@@ -2563,13 +2715,14 @@ function updateZombies(dt) {
 function hitZombies(W, list) {
   if (mode === 'online') { netSend({ t: 'zhit', w: W, list }); return; }
   if (!ZS.sim) return;
-  for (const h of list) { const res = ZS.sim.damage(h.z, h.dmg); if (res && res.killed) onZKill({ z: h.z, k: 'me', type: res.type, head: h.head }); }
+  for (const h of list) { const res = ZS.sim.damage(h.z, h.dmg); if (res && res.killed) onZKill({ z: h.z, k: 'me', type: res.type, head: h.head, w: W }); }
 }
 function onZKill(m) {
   const mine = m.k === 'me' || m.k === NET.id;
   if (!mine) { const kp = roomPlayer(m.k); if (kp) kp.kills++; return; }
   P.kills++; stats.kills++; saveStats(); sfx('kill');
   const I = ZINFO[m.type] || ZINFO.small;
+  missionEvent('zkill'); if (m.type === 'giant') missionEvent('giant'); if (m.head) missionEvent('headshot'); weaponMission(m.w);
   killBanner(I.name); addCrystals(I.cr, m.type === 'giant' ? 'GIANT SLAIN!' : '');
   WEAPONS.forEach((w, i) => { guns[i].reserve = Math.min(w.reserve, guns[i].reserve + Math.ceil(w.mag / 3)); });
   if (NET.room) { const me = roomPlayer(NET.id); if (me) me.kills++; }
@@ -2582,10 +2735,10 @@ function onZEvent(ev) {
   if (ev.type === 'boom') {
     const p = new V3(ev.x, .3, ev.z); boomFx(p, 1.6); burstFx(scene, p, [0x333333, 0xff5a1a, 0xffd23f], 24, 9, 4, .9, 14);
     const d = P.pos.distanceTo(p); if (d < 60) sfx('boom'); if (d < 16) addShake(.6 * (1 - d / 16));
-  } else if (ev.type === 'clear') { waveBanner('Wave ' + ev.wave + ' cleared!', 'Next wave in 8 seconds'); addCrystals(2, 'wave bonus'); }
+  } else if (ev.type === 'clear') { waveBanner('Wave ' + ev.wave + ' cleared!', 'Next wave in 8 seconds'); addCrystals(10, 'wave bonus'); if (!P.out) missionEvent('wave'); }
   else if (ev.type === 'giant') { waveBanner('THE GIANT IS COMING!', 'Watch the sky for red circles'); sfx('groan'); addShake(.4); }
   else if (ev.type === 'wave' && mode !== 'online') onZWave(ev.wave, ev.wave >= 5 ? 1 : 3);
-  else if (ev.type === 'won' && mode !== 'online') endMatch(null, 'won', { zres: 'won' });
+  else if (ev.type === 'won' && mode !== 'online') { missionEvent('wave'); endMatch(null, 'won', { zres: 'won' }); }
 }
 function onZWave(wave, lives) {
   P.lives = lives; ZS.wave = wave;
@@ -2624,7 +2777,7 @@ function selfDamage(d) {
 /* ================= SCYTHE (melee) ================= */
 const SCYTHE_W = WEAPONS.findIndex(w => w.id === 'scythe'), PORTAL_W = WEAPONS.findIndex(w => w.id === 'portal');
 function swingScythe() {
-  Wp.swingT = .35; sfx('swing');
+  Wp.swingT = .35; sfx('swing'); curDmgW = SCYTHE_W;
   const fwd = new V3(); camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize();
   const targets = [];
   const consider = (e, rad, h) => {
@@ -2705,7 +2858,7 @@ function spawnPickup() {
   for (let i = 0; i < 60 && !sp; i++) { const q = randomFreeSpot(null, 0); if (!circleArena || Math.hypot(q.x, q.z) < 28) sp = q; }
   if (!sp) return;
   const m = new THREE.Mesh(crystalGeo, crystalMat), big = Math.random() < .12; m.position.set(sp.x, 1, sp.z); m.castShadow = SHADOWS; if (big) m.scale.setScalar(1.6);
-  scene.add(m); pickups.push({ m, val: big ? 3 : 1 });
+  scene.add(m); pickups.push({ m, val: big ? 10 : 3 });
 }
 function updatePickups(dt) {
   if (!match.active) return;
@@ -2713,12 +2866,128 @@ function updatePickups(dt) {
   for (let i = pickups.length - 1; i >= 0; i--) {
     const p = pickups[i]; p.m.rotation.y += dt * 2; p.m.position.y = 1 + Math.sin(clock * 3 + i) * .15;
     if (!P.dead && Math.hypot(P.pos.x - p.m.position.x, P.pos.z - p.m.position.z) < 1.2 && Math.abs(P.pos.y + 1 - p.m.position.y) < 1.6) {
-      addCrystals(p.val, 'found'); sfx('crystal'); burstFx(scene, p.m.position, [0x7fe7ff, 0xffffff], 14, 3, 1, .6, 4);
+      addCrystals(p.val, 'found'); sfx('crystal'); missionEvent('crystal'); burstFx(scene, p.m.position, [0x7fe7ff, 0xffffff], 14, 3, 1, .6, 4);
       scene.remove(p.m); pickups.splice(i, 1);
     }
   }
 }
 function clearPickups() { for (const p of pickups) scene.remove(p.m); pickups.length = 0; pickupT = 10; }
+
+/* ================= V1.4: assists, kill feed, daily missions, scythe dash ================= */
+function onAssist(victim) {
+  P.assists = (P.assists || 0) + 1; stats.assists = (stats.assists || 0) + 1; saveStats();
+  addCrystals(1, 'assist'); missionEvent('assist');
+  const el = $('assisttoast'); el.textContent = 'Assist on ' + victim; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+}
+const iconIdFor = (w) => w === GRENADE_W ? 'nade' : (WEAPONS[w] ? WEAPONS[w].id : null);
+function feedKill(kHTML, vHTML, w, head, assists) {
+  const ic = iconIdFor(w);
+  feed(kHTML + (assists && assists.length ? ' <small>+ ' + assists.join(', ') + '</small>' : '') + ' <span class="kfw">' + (ic ? iconSVG(ic) : '✖') + '</span> ' + vHTML + (head ? ' <span class="hs">HS</span>' : ''));
+}
+function weaponMission(w) {
+  if (w == null || w < 0) return;
+  const id = iconIdFor(w);
+  if (id === 'scythe') missionEvent('scythe');
+  if (id === 'rocket' || id === 'pumpkin' || id === 'nade') missionEvent('boom');
+  if (id === 'sniper') missionEvent('sniper');
+}
+
+/* ---- daily missions ---- */
+const MISSION_POOL = [
+  { id: 'zslayer', name: 'Zombie Slayer', desc: 'Defeat 25 zombies', ev: 'zkill', goal: 25, reward: 75, zombie: true },
+  { id: 'giantkiller', name: 'Giant Killer', desc: 'Take down the Giant', ev: 'giant', goal: 1, reward: 100, zombie: true },
+  { id: 'survivor', name: 'Last One Standing', desc: 'Clear 5 zombie waves', ev: 'wave', goal: 5, reward: 60, zombie: true },
+  { id: 'horde', name: 'Horde Breaker', desc: 'Defeat 60 zombies', ev: 'zkill', goal: 60, reward: 120, zombie: true },
+  { id: 'sharp', name: 'Sharpshooter', desc: 'Get 8 headshot kills', ev: 'headshot', goal: 8, reward: 60 },
+  { id: 'team', name: 'Team Player', desc: 'Earn 6 assists', ev: 'assist', goal: 6, reward: 50 },
+  { id: 'bounty', name: 'Bounty Hunter', desc: 'Eliminate 15 players', ev: 'kill', goal: 15, reward: 60 },
+  { id: 'reaper', name: 'Grim Reaper', desc: 'Get 5 kills with the Scythe', ev: 'scythe', goal: 5, reward: 80 },
+  { id: 'boom', name: 'Demolition Expert', desc: 'Get 5 kills with explosives', ev: 'boom', goal: 5, reward: 70 },
+  { id: 'eagle', name: 'Eagle Eye', desc: 'Get 4 kills with the Sniper', ev: 'sniper', goal: 4, reward: 60 },
+  { id: 'champ', name: 'Champion', desc: 'Win 2 matches', ev: 'win', goal: 2, reward: 80 },
+  { id: 'marathon', name: 'Marathon Runner', desc: 'Play 4 matches', ev: 'match', goal: 4, reward: 40 },
+  { id: 'hunter', name: 'Crystal Hunter', desc: 'Pick up 8 crystals on the map', ev: 'crystal', goal: 8, reward: 40 },
+];
+const dayKey = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
+let MS = store.get('arenaclash.missions', {});
+function todaysMissions() {
+  const key = dayKey();
+  if (MS.day !== key) { MS = { day: key, prog: {}, claimed: [] }; store.set('arenaclash.missions', MS); }
+  let seed = 7; for (const ch of key) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+  const next = () => (seed = (seed * 1103515245 + 12345) >>> 0) / 4294967296;
+  const zom = MISSION_POOL.filter(m => m.zombie), rest = MISSION_POOL.filter(m => !m.zombie);
+  const out = [zom[Math.floor(next() * zom.length)]];   // one Halloween mission every day
+  while (out.length < 3) { const m = rest[Math.floor(next() * rest.length)]; if (!out.includes(m)) out.push(m); }
+  return out;
+}
+function missionEvent(ev, n) {
+  const list = todaysMissions(); let changed = false;
+  for (const m of list) {
+    if (m.ev !== ev || MS.claimed.includes(m.id)) continue;
+    const before = MS.prog[m.id] || 0; if (before >= m.goal) continue;
+    MS.prog[m.id] = Math.min(m.goal, before + (n || 1)); changed = true;
+    if (MS.prog[m.id] >= m.goal) { const t = $('crtoast'); t.textContent = '✔ Mission complete: ' + m.name + '! Claim it in the menu'; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); sfx('buy'); }
+  }
+  if (changed) { store.set('arenaclash.missions', MS); renderMissions(); }
+}
+function renderMissions() {
+  const box = $('missions'); if (!box) return;
+  const list = todaysMissions();
+  const end = new Date(); end.setHours(24, 0, 0, 0); const left = end - Date.now();
+  $('mreset').textContent = 'New missions in ' + Math.floor(left / 3600e3) + 'h ' + Math.floor(left / 60e3) % 60 + 'm';
+  box.innerHTML = list.map(m => {
+    const p = MS.prog[m.id] || 0, done = p >= m.goal, claimed = MS.claimed.includes(m.id);
+    return '<div class="mission' + (claimed ? ' claimed' : done ? ' done' : '') + '"><div class="mtop"><b>' + esc(m.name) + '</b><span class="mrew"><span class="crico"></span>' + m.reward + '</span></div>' +
+      '<div class="mdesc">' + esc(m.desc) + '</div><div class="mbar"><div style="width:' + (100 * p / m.goal) + '%"></div><span>' + p + ' / ' + m.goal + '</span></div>' +
+      (claimed ? '<div class="mstate">Claimed ✓</div>' : done ? '<button class="mclaim" data-m="' + m.id + '">Claim ' + m.reward + ' 💎</button>' : '') + '</div>';
+  }).join('');
+  box.querySelectorAll('.mclaim').forEach(b => b.addEventListener('click', () => {
+    const m = MISSION_POOL.find(x => x.id === b.dataset.m); if (!m || MS.claimed.includes(m.id)) return;
+    MS.claimed.push(m.id); store.set('arenaclash.missions', MS); addCrystals(m.reward); sfx('buy'); renderMissions();
+  }));
+}
+setInterval(() => { if (current === 's-menu') renderMissions(); }, 30000);
+
+/* ---- Scythe dash (right-click, or AIM on mobile) ---- */
+const DASH = { cd: 0, t: 0, v: new V3(), hit: new Set() };
+const DASH_CD = 2.4, DASH_DMG = 35;
+function scytheDash() {
+  if (DASH.cd > 0 || P.dead || paused || !match.active || chatOpen) return;
+  const f = new V3(); camera.getWorldDirection(f); f.y = 0; if (f.lengthSq() < 1e-4) return; f.normalize();
+  DASH.v.copy(f).multiplyScalar(40); DASH.t = .22; DASH.cd = DASH_CD; DASH.hit.clear();
+  P.vy = Math.max(P.vy, 2.5); sfx('dash'); addShake(.12); Wp.swingT = .35;
+  burstFx(scene, new V3(P.pos.x, P.pos.y + 1, P.pos.z), [0xb06bff, 0xffffff], 12, 3, .5, .4, 0);
+}
+function updateDash(dt) {
+  DASH.cd = Math.max(0, DASH.cd - dt);
+  if (DASH.t <= 0) return;
+  DASH.t -= dt;
+  tryMove(P, P.pos.x + DASH.v.x * dt, P.pos.z + DASH.v.z * dt, P.pos.y, H, R, false);
+  burstFx(scene, new V3(P.pos.x, P.pos.y + .9, P.pos.z), [0xb06bff, 0x7fe7ff], 1, .5, 0, .35, 0);
+  const list = [], zl = [];
+  const tryHit = (e, rad) => {
+    if (DASH.hit.has(e) || Math.hypot(e.pos.x - P.pos.x, e.pos.z - P.pos.z) > rad + 1.3) return;
+    DASH.hit.add(e); const at = new V3(e.pos.x, (e.pos.y || 0) + 1.3 * (e.scale || 1), e.pos.z);
+    burstFx(scene, at, [0xb06bff, 0xffffff], 6, 3, .6, .35, 8); dmgNum(at, DASH_DMG, false); e.flash = .08; hitmarker(false);
+    if (e.isZombie) zl.push({ z: e.id, dmg: DASH_DMG, head: false });
+    else if (e.isBot) damageBot(e, DASH_DMG, false, P);
+    else if (!(e.shieldUntil > clock)) list.push({ id: e.id, dmg: DASH_DMG, head: false });
+  };
+  curDmgW = SCYTHE_W;
+  for (const z of zombieEnts.values()) if (!z.dead) tryHit(z, z.rad);
+  if (!zombiesOn()) for (const e of others()) if (!e.dead && enemyOf(P, e)) tryHit(e, .4);
+  if (zl.length) hitZombies(SCYTHE_W, zl);
+  if (list.length && mode === 'online') netSend({ t: 'hit', w: SCYTHE_W, list });
+}
+
+/* ---- results podium ---- */
+function podiumHTML(st, showBonus) {
+  const top = st.slice(0, 3); if (!top.length) return '';
+  const order = [top[1], top[0], top[2]], cls = ['p2', 'p1', 'p3'], label = ['2nd', '1st', '3rd'];
+  return order.map((f, i) => !f ? '<div class="pod empty"></div>' :
+    '<div class="pod ' + cls[i] + (f.isPlayer ? ' me' : '') + '"><div class="pname">' + esc(f.name) + '</div><div class="pstep"><b>' + label[i] + '</b><span>' + f.kills + ' kills</span>' +
+    (showBonus && f.bonus ? '<em><span class="crico"></span>+' + f.bonus + '</em>' : '') + '</div></div>').join('');
+}
 
 /* ================= screens ================= */
 const screens = ['s-menu', 's-locker', 's-loadout', 's-shop', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
@@ -2732,6 +3001,7 @@ function show(id) {
   if (id !== null && chatOpen) closeChat();
   $('gchat').hidden = !match.active;
   $('shopbtn').hidden = $('gamelog').hidden = id !== 's-menu';
+  if (id === 's-menu') renderMissions();
   if (id !== null) { mouseL = false; resetJoy(); T.lookId = T.fireId = null; keys.Space = false; }
   if (id === 's-menu') mountPreview('pvMenu');
   if (id === 's-locker') mountPreview('pvLocker');
@@ -2840,7 +3110,7 @@ rebuildPreview();
 
 function renderStats() {
   const kd = stats.deaths ? (stats.kills / stats.deaths).toFixed(2) : String(stats.kills);
-  $('mystats').innerHTML = [['Matches', stats.matches], ['Wins', stats.wins], ['Kills', stats.kills], ['K/D', kd]]
+  $('mystats').innerHTML = [['Matches', stats.matches], ['Wins', stats.wins], ['Kills', stats.kills], ['Assists', stats.assists || 0], ['K/D', kd]]
     .map(([k, v]) => '<div><b>' + v + '</b><span>' + k + '</span></div>').join('');
 }
 function renderLB() {
@@ -3003,7 +3273,7 @@ function renderLoadout() {
   for (let i = 0; i < 4; i++) {
     const wi = loDraft[i], w = WEAPONS[wi];
     top += '<button class="loslot' + (i === loPick ? ' sel' : '') + '" data-s="' + i + '"' + (fixed ? ' disabled' : '') + '>' +
-      (w ? '<img alt="" src="' + gunImage(w.id, look.gunSkin) + '"><span>' + w.name + '</span>' : '<span class="empty">Empty</span>') + '<b>' + (i + 1) + '</b></button>';
+      (w ? '<img alt="" src="' + gunImage(w.id, skinOf(w.id, look.gunSkin, look.mythic)) + '"><span>' + w.name + '</span>' : '<span class="empty">Empty</span>') + '<b>' + (i + 1) + '</b></button>';
   }
   $('loslots').innerHTML = top;
   const order = WEAPONS.map((w, i) => i).sort((a, b) => {
@@ -3016,7 +3286,7 @@ function renderLoadout() {
     if (rarity === 'limited' && !owned && !limitedOpen()) continue;
     const armed = loArmed === i, inLo = loDraft.includes(i);
     grid += '<button class="locard ' + rarity + (usable ? '' : ' locked') + (inLo ? ' inlo' : '') + (armed ? ' armed' : '') + '" data-g="' + i + '" style="background:' + (onTrial ? 'linear-gradient(180deg,#3a0f78,#9b30ff)' : usable ? RARITY_BG.common : RARITY_BG[rarity]) + '"' + (fixed ? ' disabled' : '') + '>' +
-      '<img alt="" src="' + gunImage(w.id, look.gunSkin) + '">' +
+      '<img alt="" src="' + gunImage(w.id, skinOf(w.id, look.gunSkin, look.mythic)) + '">' +
       (onTrial ? '<em class="free">FREE<br>' + fmtLeft(trial.endsAt - Date.now()) + '</em>' : '') +
       (usable ? '<span>' + w.name + '</span>' : (armed ? '<em class="buy">' + (wallet.crystals >= price ? 'Buy for ' + price + ' 💎' : 'Need ' + (price - wallet.crystals) + ' more 💎') + '</em>' : '<i class="lock">🔒</i><em class="price">' + price + ' 💎</em>')) +
       '</button>';
@@ -3087,8 +3357,23 @@ function renderShop() {
       else if (shopArmed === 'g' + i) btn = wallet.crystals >= price ? '<button data-buy="g' + i + '">Confirm ' + price + ' 💎</button>' : '<button disabled>Need ' + (price - wallet.crystals) + ' more 💎</button>';
       else btn = '<button data-buy="g' + i + '">Buy · ' + price + ' 💎</button>';
       const tag = limited ? '<em class="rar limited">LIMITED · ' + Math.max(0, Math.ceil((LIMITED_END - Date.now()) / 864e5)) + 'd left</em>' : '<em class="rar ' + rarity + '">' + rarity.toUpperCase() + '</em>';
-      html += '<div class="shopcard ' + rarity + '"><div class="simg"><img alt="" src="' + gunImage(w.id, look.gunSkin) + '">' + (onTrial ? '<i class="trial">FREE NOW</i>' : '') + '</div>' +
+      html += '<div class="shopcard ' + rarity + '"><div class="simg"><img alt="" src="' + gunImage(w.id, skinOf(w.id, look.gunSkin, look.mythic)) + '">' + (onTrial ? '<i class="trial">FREE NOW</i>' : '') + '</div>' +
         '<div class="sbody"><div class="stitle"><b>' + w.name + '</b>' + tag + '</div><div class="stats">' + statBars(w) + '</div>' + btn + '</div></div>';
+    }
+  } else if (shopTab === 'mythic') {
+    html += '<div class="scythenote"><b>Mythical skins</b> are made for one weapon each and glow in the dark. They override your normal gun skin on that weapon only. Everyone in the match sees them.</div>';
+    const order = WEAPONS.map(w => w.id);
+    const list = Object.entries(MYTHICS).sort((a, b) => order.indexOf(a[1].weapon) - order.indexOf(b[1].weapon) || a[1].price - b[1].price);
+    for (const [id, S] of list) {
+      const wi = WEAPONS.findIndex(w => w.id === S.weapon), wname = WEAPONS[wi].name, owned = ownsMythic(id), on = look.mythic[S.weapon] === id;
+      let btn;
+      if (on) btn = '<button class="ghost" data-munequip="' + id + '">Equipped ✓ (tap to remove)</button>';
+      else if (owned) btn = '<button class="ghost" data-mequip="' + id + '">Equip</button>';
+      else if (shopArmed === 'c' + id) btn = wallet.crystals >= S.price ? '<button data-buy="c' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
+      else btn = '<button data-buy="c' + id + '">Buy · ' + S.price + ' 💎</button>';
+      html += '<div class="shopcard mythical"><div class="simg"><img alt="" src="' + gunImage(S.weapon, id) + '"><i class="trial wtag">' + esc(wname) + '</i></div>' +
+        '<div class="sbody"><div class="stitle"><b>' + esc(S.name) + '</b><em class="rar mythical">MYTHICAL</em></div>' +
+        (ownsGun(wi) ? '' : '<div class="small">You don\'t own the ' + esc(wname) + ' yet.</div>') + btn + '</div></div>';
     }
   } else {
     for (const [id, S] of Object.entries(GUN_SKINS)) {
@@ -3106,10 +3391,21 @@ function renderShop() {
   $('shopgrid').innerHTML = html;
   $('shopgrid').querySelectorAll('[data-buy]').forEach(b => b.addEventListener('click', () => shopBuy(b.dataset.buy)));
   $('shopgrid').querySelectorAll('[data-equip]').forEach(b => b.addEventListener('click', () => { equipSkin(b.dataset.equip); renderShop(); }));
+  $('shopgrid').querySelectorAll('[data-mequip]').forEach(b => b.addEventListener('click', () => { equipMythic(b.dataset.mequip, true); renderShop(); }));
+  $('shopgrid').querySelectorAll('[data-munequip]').forEach(b => b.addEventListener('click', () => { equipMythic(b.dataset.munequip, false); renderShop(); }));
 }
 function equipSkin(id) { look.gunSkin = id; saveLook(); rebuildPreview(); rebuildViewmodels(); sendHello(); renderSkinShop(); }
+function equipMythic(id, on) {
+  const w = MYTHICS[id].weapon;
+  if (on) look.mythic[w] = id; else delete look.mythic[w];
+  saveLook(); rebuildViewmodels(); rebuildSelfAvatar(); sendHello(); if (current === 's-loadout') renderLoadout();
+}
 function shopBuy(key) {
   if (shopArmed !== key) { shopArmed = key; renderShop(); return; }
+  if (key[0] === 'c') {
+    const id = key.slice(1), S = MYTHICS[id]; if (!S || wallet.crystals < S.price || ownsMythic(id)) return;
+    wallet.crystals -= S.price; wallet.mythics.push(id); saveWallet(); sfx('buy'); equipMythic(id, true); shopArmed = null; renderShop(); return;
+  }
   if (key[0] === 'g') {
     const i = +key.slice(1), w = WEAPONS[i], price = GUN_INFO[w.id][0];
     if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen()) return;
@@ -3138,14 +3434,14 @@ function checkWin() {
 }
 function standings() {
   const list = mode === 'online'
-    ? (NET.room ? NET.room.players.map(p => ({ name: p.name, kills: p.kills, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id })) : [])
+    ? (NET.room ? NET.room.players.map(p => ({ name: p.name, kills: p.kills, assists: p.assists || 0, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id })) : [])
     : [P, ...bots];
   return list.slice().sort((a, b) => b.kills - a.kills || a.deaths - b.deaths);
 }
 function rowHTML(f, i) {
   const cls = teamsOn() ? ' class="' + TEAM_CLS[f.team] + '"' : '';
   return '<tr' + (f.isPlayer ? ' class="me"' : '') + '>' + (i != null ? '<td>' + (i + 1) + '</td>' : '') + '<td><span' + cls + '>' + esc(f.name) + '</span>' + (f.isBot ? '<span class="tag">Bot</span>' : '') +
-    '</td><td class="n">' + f.kills + '</td><td class="n">' + f.deaths + '</td></tr>';
+    '</td><td class="n">' + f.kills + '</td><td class="n">' + (f.assists || 0) + '</td><td class="n">' + f.deaths + '</td></tr>';
 }
 function endMatch(list, reason, extra) {
   match.active = false; paused = true; mouseL = mouseAny = false; Wp.aim = false;
@@ -3174,11 +3470,17 @@ function endMatch(list, reason, extra) {
   }
   $('wintitle').textContent = title;
   $('winsub').textContent = (M.zombies ? '' : (timeUp ? 'Time ran out on ' : 'Match over on ') + MAPS[match.map].name + '. ') + sub + (mode === 'online' ? 'Back to the lobby in a few seconds.' : '');
+  const bonusOn = mode === 'online' && extra && extra.players >= 4;
+  $('podium').innerHTML = podiumHTML(st, bonusOn); $('podium').hidden = !!M.zombies && st.length < 2;
   $('resbody').innerHTML = st.map((f, i) => rowHTML(f, i)).join('');
   stats.matches++; if (won) stats.wins++; saveStats();
-  const online = mode === 'online', earned = M.zombies ? (won ? 25 : 2) : (online ? 3 : 1) + (won ? (online ? 15 : 5) : 0);
+  missionEvent('match'); if (won) missionEvent('win'); if (M.zombies && won && mode === 'online') missionEvent('wave');
+  const online = mode === 'online', earned = M.zombies ? (won ? 50 : 10) : (online ? 10 : 5) + (won ? (online ? 50 : 25) : 0);
   ZS.sim = null; clearZombies(); clearPortals();
-  addCrystals(earned); $('winsub').textContent += ' You earned ' + earned + ' Clash Crystals' + (won ? ' (win bonus included).' : '.');
+  const placeBonus = (extra && extra.place) || 0;
+  addCrystals(earned + placeBonus);
+  $('winsub').textContent += ' You earned ' + (earned + placeBonus) + ' Clash Crystals' + (placeBonus ? ' (including a ' + placeBonus + ' placement bonus).' : won ? ' (win bonus included).' : '.') +
+    (mode === 'online' && !M.zombies && !(extra && extra.players >= 4) ? ' Top 3 bonuses (100 / 50 / 25) unlock with 4+ players.' : '');
   $('again').hidden = mode === 'online';
   $('tomenu').textContent = mode === 'online' ? 'Leave lobby' : 'Main menu';
   for (const k in ghosts) ghosts[k].obj.visible = false;
@@ -3237,7 +3539,7 @@ function updatePlayer(dt) {
   if (P.moving) {
     const amount = Math.min(1, l); fx_ /= l; fz_ /= l;
     const sprint = keys.ShiftLeft || keys.ShiftRight || (T.joyId !== null && l > .95);
-    const sp = (sprint ? 9 : 6.5) * amount * (Wp.aim ? .55 : 1) * (Wp.spin > 0 ? .65 : 1) * dt, s = Math.sin(P.yaw), c = Math.cos(P.yaw);
+    const sp = (sprint ? 9 : 6.5) * amount * (Wp.aim ? .55 : 1) * (Wp.spin > 0 ? .65 : 1) * (cw() === SCYTHE_W ? 1.15 : 1) * dt, s = Math.sin(P.yaw), c = Math.cos(P.yaw);
     tryMove(P, P.pos.x + (fx_ * c + fz_ * s) * sp, P.pos.z + (-fx_ * s + fz_ * c) * sp, P.pos.y, H, R, false);
   }
   if (keys.Space && P.onGround) { P.vy = 8.5; P.onGround = false; }
@@ -3263,6 +3565,7 @@ function updateWeapons(dt) {
       else { Wp.burstLeft--; Wp.burstT = w.burstGap; fireShot(w, g); }
     }
   }
+  updateDash(dt);
   nadeCd = Math.max(0, nadeCd - dt); Wp.swingT = Math.max(0, (Wp.swingT || 0) - dt);
   if (cw() >= 0) {
     const w = WEAPONS[cw()];
@@ -3273,7 +3576,7 @@ function updateWeapons(dt) {
   const target = Wp.aim && cw() >= 0 && Wp.reload <= 0 && !P.dead ? 1 : 0;
   if (!target && $('tAim').classList.contains('on') && !Wp.aim) $('tAim').classList.remove('on');
   Wp.aimT += (target - Wp.aimT) * Math.min(1, dt * 14);
-  const fovT = 75 - Wp.aimT * (scopeGun() ? 53 : 17);
+  const fovT = 75 - Wp.aimT * (scopeGun() ? 53 : 17) + (DASH.t > 0 ? 14 : 0);
   if (Math.abs(camera.fov - fovT) > .05) { camera.fov = fovT; camera.updateProjectionMatrix(); }
   P.matT += dt; if (P.matT > .5) { P.matT = 0; if (P.mats < 100) P.mats++; }
 }
@@ -3321,6 +3624,10 @@ function updateHud(dt) {
   slotEls.forEach(el => { const c = el.querySelector('.cd'); if (c !== active) c.style.width = '0'; });
   active.style.width = Wp.reload > 0 ? (100 * (1 - Wp.reload / Wp.reloadMax)) + '%' : Wp.cd > 0 && Wp.cdMax >= .2 ? (100 * (1 - Wp.cd / Wp.cdMax)) + '%' : '0';
   $('reload').hidden = !(Wp.reload > 0);
+  if (w && w.melee) {
+    if (DASH.cd > 0) { $('ring').style.opacity = 1; $('ringfill').style.strokeDashoffset = 100.53 * (DASH.cd / DASH_CD); }
+    $('reserve').textContent = DASH.cd > 0 ? ' dash ' + DASH.cd.toFixed(1) + 's' : (isTouch ? ' AIM = dash' : ' right-click dash');
+  }
   const spinning = w && w.spinup && Wp.spin > 0 && Wp.spin < 1;
   if (spinning) { $('ring').style.opacity = 1; $('ringfill').style.strokeDashoffset = 100.53 * (1 - Wp.spin); }
   if (Wp.reload > 0) $('reloadfill').style.width = (100 * (1 - Wp.reload / Wp.reloadMax)) + '%';
