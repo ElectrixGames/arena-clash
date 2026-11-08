@@ -15,13 +15,14 @@ const MAPS = ['blockyard', 'dustbowl', 'frostbite', 'neon', 'temple', 'caverns',
 const MODES = {
   ffa: { limit: 15 },                         // free-for-all, first to 15 kills
   tdm: { limit: 30, teams: true },            // team deathmatch, first team to 30
-  snipers: { limit: 10, weapons: [3, 4, 7, 14] }, // sniper, handgun, revolver + grenades
+  snipers: { limit: 10, weapons: [3, 4, 7, 14, 15] }, // sniper, handgun, revolver + grenades and mines
   zombies: { limit: 0, zombies: true },       // Halloween co-op: survive 5 waves
   gungame: { limit: 0, gungame: true },       // every kill gives you the next gun
   koth: { limit: 100, teams: true },          // King of the Hill: hold the zone to score
   ctf: { limit: 3, teams: true },             // Capture the Flag: first to 3 captures
+  br: { limit: 0, br: true },                 // Battle Royale: one life, loot, shrinking storm
 };
-const RANKED_MODES = ['ffa', 'gungame'];
+const RANKED_MODES = ['ffa', 'gungame', 'br'];
 const MODE_IDS = Object.keys(MODES);
 const MAX_PLAYERS = 8;
 const MATCH_TIME = 240;      // seconds
@@ -47,6 +48,7 @@ const WEAPONS = [
   { max: 0, rate: 0.4 },     // 12 Portal Gun (no damage)
   { max: 12, rate: 0.22 },   // 13 Turkey Launcher (the turkey's pecks)
   { max: 130, rate: 0.8 },   // 14 Grenade (splash)
+  { max: 100, rate: 0.5 },   // 15 Land mine (splash)
 ];
 const BUILD_SLOT = 15;
 const PIECES = { wall: 150, floor: 120, ramp: 120 };
@@ -57,6 +59,69 @@ const MYTHICS = { // Mythical skin -> the weapon it belongs to
   gobbler: 'turkey', harvestmoon: 'sniper', dragonfire: 'ar', voltage: 'smg', thunderclap: 'shotgun', starfall: 'sniper', royal: 'pistol', phantom: 'burst', doomsday: 'rocket', outlaw: 'revolver',
   viper: 'ak', overdrive: 'minigun', headless: 'pumpkin', reaper: 'scythe', inferno: 'scythe', frostbite: 'scythe', celestial: 'scythe', quantum: 'portal',
 };
+for (const w of ['ar', 'smg', 'shotgun', 'sniper', 'pistol', 'burst', 'rocket', 'revolver', 'ak', 'minigun', 'pumpkin', 'scythe', 'portal', 'turkey']) { MYTHICS['gold_' + w] = w; MYTHICS['diamond_' + w] = w; }   // mastery camos
+const CUSTOM_THEMES = ['blockyard', 'dustbowl', 'frostbite', 'neon', 'harvest', 'temple', 'caverns'];
+const MAX_CUSTOM_BLOCKS = 500;
+/* ================= Battle Royale ================= */
+// phases: [wait seconds, shrink seconds, end radius, storm damage per second]
+const BR_PHASES = [[45, 20, 30, 2], [30, 18, 17, 4], [25, 15, 8, 8], [20, 20, 0, 15]];
+const BR_LOOT = [[0, 'common'], [1, 'common'], [2, 'common'], [5, 'rare'], [3, 'rare'], [7, 'rare'], [8, 'epic'], [6, 'epic'], [11, 'epic'], [9, 'legendary']];
+function startBR(room) {
+  const loot = []; let id = 1;
+  const weight = { common: 5, rare: 3, epic: 2, legendary: 1 }, bag = [];
+  for (const [w, r] of BR_LOOT) for (let i = 0; i < weight[r]; i++) bag.push(w);
+  for (let gx = -30; gx <= 30; gx += 10) for (let gz = -30; gz <= 30; gz += 10) {
+    if (Math.random() < .25) continue;
+    const x = gx + (Math.random() - .5) * 6, z = gz + (Math.random() - .5) * 6;
+    loot.push({ id: id++, x: r2(x), z: r2(z), w: Math.random() < .22 ? 'hp' : bag[Math.floor(Math.random() * bag.length)] });
+  }
+  room.br = { phase: 0, wait: BR_PHASES[0][0], shrink: 0, cx: 0, cz: 0, r: 58, fromR: 58, toR: BR_PHASES[0][2], fx: 0, fz: 0, tx: 0, tz: 0, dps: 1, stormAcc: 0, loot, started: Date.now() };
+  for (const p of room.players.values()) { p.out = false; p.inv = [4]; p.spawnedOnce = false; p.placeT = 0; }
+}
+function tickBR(room, dt) {
+  const b = room.br; if (!b) return;
+  const P_ = BR_PHASES[Math.min(b.phase, BR_PHASES.length - 1)];
+  if (b.wait > 0) {
+    b.wait -= dt;
+    if (b.wait <= 0) { // start shrinking toward a new, smaller circle inside the current one
+      b.shrink = P_[1]; b.fromR = b.r; b.toR = P_[2]; b.fx = b.cx; b.fz = b.cz;
+      const a = Math.random() * Math.PI * 2, d = Math.random() * Math.max(0, b.r - b.toR) * .6;
+      b.tx = Math.max(-30, Math.min(30, b.cx + Math.cos(a) * d)); b.tz = Math.max(-30, Math.min(30, b.cz + Math.sin(a) * d));
+      broadcast(room, { t: 'obj', ev: 'storm' });
+    }
+  } else if (b.shrink > 0) {
+    b.shrink -= dt; const k = 1 - Math.max(0, b.shrink) / P_[1];
+    b.r = b.fromR + (b.toR - b.fromR) * k; b.cx = b.fx + (b.tx - b.fx) * k; b.cz = b.fz + (b.tz - b.fz) * k; b.dps = P_[3];
+    if (b.shrink <= 0 && b.phase < BR_PHASES.length - 1) { b.phase++; b.wait = BR_PHASES[b.phase][0]; }
+  }
+  b.stormAcc += dt;
+  if (b.stormAcc >= 1) {
+    b.stormAcc = 0;
+    for (const p of room.players.values()) {
+      if (p.dead || !p.spawnedOnce || p.devGod || Math.hypot(p.x - b.cx, p.z - b.cz) <= b.r) continue;
+      p.hp -= b.dps;
+      if (p.hp <= 0) brOut(room, p, 0, 'storm'); else broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp), storm: 1 });
+    }
+  }
+  const alive = [...room.players.values()].filter(p => !p.dead && p.spawnedOnce);
+  b.alive = alive.length;
+  if (Date.now() - b.started > 6000 && alive.length <= 1 && room.players.size > 0) {
+    const everyone = [...room.players.values()].filter(p => p.spawnedOnce);
+    if (everyone.length >= 2 || alive.length === 0) endMatch(room, 'br');
+  }
+}
+function brOut(room, p, killerId, cause) {
+  p.hp = 0; p.dead = true; p.out = true; p.diedAt = Date.now(); p.placeT = Date.now(); p.deaths++;
+  if (!killerId) broadcast(room, { t: 'kill', k: p.id, v: p.id, self: true, cause, ts: room.teamScores });
+}
+/* ================= Friends (friend codes, online status, invites) ================= */
+const byUid = new Map();   // friend code -> player (only while connected)
+function friendStatus(code) {
+  const q = byUid.get(code);
+  if (!q) return { code, online: false };
+  return { code, online: true, name: q.name, room: q.room ? q.room.code : null, state: q.room ? q.room.state : 'menu', full: q.room ? q.room.players.size >= MAX_PLAYERS : false };
+}
+
 const PLACE_BONUS = [100, 50, 25];   // Clash Crystals for 1st, 2nd and 3rd place
 const PLACE_MIN_PLAYERS = 4;         // ...only when at least 4 players are in the match
 const ZOMBIE_LIVES = [3, 3, 3, 3, 1];   // lives per wave
@@ -85,17 +150,17 @@ function collapseStructs(room) {   // returns the keys that fell
 function makeZombieSim(opts) {
   const R_SPAWN = 46, R_ARENA = 31;
   const TYPES = {
-    small: { hp: 75, speed: 3.3, reach: 1.5, dmg: 10, cd: 1.0, scale: 1, rad: .45 },
-    big: { hp: 150, speed: 2.7, reach: 2.4, dmg: 10, cd: 1.1, scale: 2, rad: .85 },
-    giant: { hp: 5000, speed: 1.9, reach: 4.4, dmg: 40, cd: 1.4, scale: 4, rad: 1.7 },
+    small: { hp: 75, speed: 3.0, reach: 1.5, dmg: 8, cd: 1.1, scale: 1, rad: .45 },
+    big: { hp: 150, speed: 2.4, reach: 2.4, dmg: 10, cd: 1.3, scale: 2, rad: .85 },
+    giant: { hp: 2000, speed: 1.6, reach: 4.2, dmg: 25, cd: 1.6, scale: 4, rad: 1.7 },
   };
-  const WAVES = [{ small: 24, big: 8 }, { small: 36, big: 12 }, { small: 48, big: 20 }, { big: 32, giant: 1 }, { big: 48, giant: 1 }];
-  const MAX_ALIVE = 36; // more wait in line so the game stays smooth
+  const WAVES = [{ small: 16, big: 4 }, { small: 22, big: 6 }, { small: 28, big: 9 }, { big: 14, giant: 1 }, { big: 18, giant: 1 }];
+  const MAX_ALIVE = 20; // more wait in line so the game stays smooth
   const S = { wave: 0, state: 'intermission', timer: 6, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1 };
   const r2 = (v) => Math.round(v * 100) / 100;
   function startWave() {
     S.wave++; S.state = 'fighting';
-    const W = WAVES[S.wave - 1], k = 1 + .35 * Math.max(0, S.nplayers - 1);
+    const W = WAVES[S.wave - 1], k = 1 + .3 * Math.max(0, S.nplayers - 1);
     const list = [];
     for (let i = 0; i < Math.round((W.small || 0) * k); i++) list.push('small');
     for (let i = 0; i < Math.round((W.big || 0) * k); i++) list.push('big');
@@ -106,7 +171,7 @@ function makeZombieSim(opts) {
   }
   function spawn(type) {
     const a = Math.random() * Math.PI * 2;
-    const hp = TYPES[type].hp * (type === 'giant' ? Math.max(1, .6 + .4 * S.nplayers) : 1);   // the Giant gets tougher with more players
+    const hp = TYPES[type].hp * (type === 'giant' ? 1 + .5 * Math.max(0, S.nplayers - 1) : 1);   // the Giant gets tougher with more players
     S.zombies.push({ id: S.nextId++, type, x: Math.cos(a) * R_SPAWN, z: Math.sin(a) * R_SPAWN, yaw: 0, hp, max: hp, cd: 1, swing: 0 });
     if (type === 'giant') opts.event({ type: 'giant' });
   }
@@ -114,17 +179,17 @@ function makeZombieSim(opts) {
     if (S.state === 'intermission') { S.timer -= dt; if (S.timer <= 0) startWave(); return; }
     if (S.state !== 'fighting') return;
     const ps = opts.players().filter(p => p.alive);
-    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? .9 : .5; } }
+    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.3 : .8; } }
     for (const z of S.zombies) {
       const T = TYPES[z.type]; z.swing = Math.max(0, z.swing - dt); z.cd -= dt;
-      const enraged = z.type === 'giant' && z.hp < z.max * .5;   // below half health the Giant gets angry and faster
-      if (z.type === 'giant') { z.regen = (z.regen || 0) + dt; if (z.regen > 1) { z.regen = 0; z.hp = Math.min(z.max, z.hp + 15); } }
+      const enraged = z.type === 'giant' && z.hp < z.max * .25;   // below 25% health the Giant gets angry and faster
+      if (z.type === 'giant') { z.calm = (z.calm || 0) + dt; if (z.calm > 4) z.hp = Math.min(z.max, z.hp + 6 * dt); }   // heals slowly only if nobody hits it for 4s
       let best = null, bd = Infinity;
       for (const p of ps) { const d = Math.hypot(p.x - z.x, p.z - z.z); if (d < bd) { bd = d; best = p; } }
       if (!best) { z.moving = false; continue; }
       const dx = best.x - z.x, dz = best.z - z.z, d = bd || .001;
       z.yaw = Math.atan2(dx, dz);
-      if (d > T.reach * .8) { const step = Math.min(T.speed * (enraged ? 1.6 : 1) * dt, d - T.reach * .75); z.x += dx / d * step; z.z += dz / d * step; z.moving = true; } else z.moving = false;
+      if (d > T.reach * .8) { const step = Math.min(T.speed * (enraged ? 1.25 : 1) * dt, d - T.reach * .75); z.x += dx / d * step; z.z += dz / d * step; z.moving = true; } else z.moving = false;
       if (d < T.reach && (best.y || 0) < 2.6 * T.scale && z.cd <= 0) { z.cd = T.cd; z.swing = .45; opts.hurt(best.id, T.dmg); }
     }
     for (let i = 0; i < S.zombies.length; i++) for (let j = i + 1; j < S.zombies.length; j++) { // keep zombies from stacking
@@ -134,14 +199,14 @@ function makeZombieSim(opts) {
     if (S.zombies.some(z => z.type === 'giant')) { // the giant calls in bombs: red circles first, then impact
       S.bombT -= dt;
       if (S.bombT <= 0) {
-        const g = S.zombies.find(z => z.type === 'giant'), angry = g && g.hp < g.max * .5;
-        S.bombT = (S.wave >= 5 ? 1.8 : 2.6) * (angry ? .6 : 1);
-        const n = (S.wave >= 5 ? 7 : 5) + (angry ? 3 : 0);
+        const g = S.zombies.find(z => z.type === 'giant'), angry = g && g.hp < g.max * .25;
+        S.bombT = (S.wave >= 5 ? 3.0 : 3.6) * (angry ? .8 : 1);
+        const n = (S.wave >= 5 ? 4 : 3) + (angry ? 1 : 0);
         for (let i = 0; i < n; i++) {
           let x, z;
           if (ps.length && i < ps.length * 2) { const p = ps[i % ps.length]; x = p.x + (Math.random() - .5) * 6; z = p.z + (Math.random() - .5) * 6; }
           else { const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * R_ARENA; x = Math.cos(a) * r; z = Math.sin(a) * r; }
-          S.bombs.push({ id: S.bombId++, x, z, t: S.wave >= 5 ? 1.4 : 1.7, r: 3.3 });
+          S.bombs.push({ id: S.bombId++, x, z, t: S.wave >= 5 ? 1.8 : 2.1, r: 3.0 });
         }
       }
     }
@@ -160,7 +225,8 @@ function makeZombieSim(opts) {
   }
   function damage(zid, dmg) {
     const i = S.zombies.findIndex(z => z.id === zid); if (i < 0) return null;
-    const z = S.zombies[i]; z.hp -= z.type === 'giant' ? dmg * .6 : dmg;   // the Giant's armor blocks 40% of all damage
+    const z = S.zombies[i]; z.hp -= z.type === 'giant' ? dmg * .8 : dmg;   // the Giant's armor blocks 20% of all damage
+    if (z.type === 'giant') z.calm = 0;
     if (z.hp <= 0) { S.zombies.splice(i, 1); return { killed: true, type: z.type, x: z.x, z: z.z }; }
     return { killed: false, type: z.type };
   }
@@ -215,7 +281,7 @@ function roomInfo(room) {
   return {
     t: 'room', code: room.code, isPrivate: room.isPrivate, host: room.hostId, state: room.state, countdown: room.countdown,
     choices: room.choices, votes: t.maps, modeChoices: room.modeChoices || MODE_IDS, modeVotes: t.modes, ranked: !!room.ranked, map: room.map, mode: room.mode,
-    limit: limitOf(room), teamScores: room.teamScores,
+    limit: limitOf(room), teamScores: room.teamScores, custom: room.customMap ? room.customMap.name : null,
     timeLeft: room.state === 'playing' ? Math.max(0, (room.endsAt - Date.now()) / 1000) : 0,
     players: [...room.players.values()].map(p => ({ id: p.id, name: p.name, color: p.color, hat: p.hat, effect: p.effect, gunSkin: p.gunSkin, mythic: p.mythic, level: p.level || 1, rank: p.rank || 'bronze', gg: p.gg || 0, team: p.team, kills: p.kills, deaths: p.deaths, assists: p.assists || 0 })),
   };
@@ -224,7 +290,9 @@ const sendRoom = (room) => broadcast(room, roomInfo(room));
 const sysChat = (room, text) => broadcast(room, { t: 'chat', sys: true, text });
 function startMsg(room) {
   return { t: 'start', map: room.map, mode: room.mode, limit: limitOf(room), teamScores: room.teamScores,
-    timeLeft: Math.max(0, (room.endsAt - Date.now()) / 1000), structs: [...room.structs.values()] };
+    timeLeft: Math.max(0, (room.endsAt - Date.now()) / 1000), structs: [...room.structs.values()],
+    custom: room.map === 'custom' ? room.customMap : undefined,
+    loot: room.br ? room.br.loot : undefined };
 }
 function resetPlayer(p) {
   p.kills = 0; p.deaths = 0; p.assists = 0; p.hp = 100; p.dead = true; p.diedAt = 0; p.spawnAt = 0; p.dmgBy = new Map();
@@ -243,6 +311,7 @@ function joinRoom(p, room) {
   room.players.set(p.id, p); p.room = room;
   if (!room.hostId) room.hostId = p.id;
   sendRoom(room); sysChat(room, p.name + ' joined');
+  if (room.state === 'playing' && room.br) { p.out = true; p.spawnedOnce = true; p.inv = [4]; }
   if (room.state === 'playing') { if (room.sim) { p.lives = 1; p.out = false; room.sim.S.nplayers = room.players.size; } send(p, startMsg(room)); }
   maybeCountdown(room);
 }
@@ -260,7 +329,7 @@ function maybeCountdown(room) {
 }
 function startVote(room) {
   room.state = 'voting'; room.countdown = VOTE_TIME; room.votes.clear();
-  room.choices = MAPS.slice().sort(() => Math.random() - 0.5).slice(0, 3);
+  room.choices = room.customMap ? ['custom'] : MAPS.slice().sort(() => Math.random() - 0.5).slice(0, 3);
   room.modeChoices = room.ranked ? RANKED_MODES.slice()
     : ['zombies', ...MODE_IDS.filter(m => m !== 'zombies').sort(() => Math.random() - 0.5).slice(0, 3)];
   sendRoom(room);
@@ -274,6 +343,8 @@ function startMatch(room) {
   room.map = topPick(t.maps); room.mode = topPick(t.modes);
   room.sim = null;
   if (room.mode === 'zombies') { room.map = 'pumpkin'; startZombies(room); }
+  room.br = null;
+  if (room.mode === 'br') { startBR(room); room.endsAt = Date.now() + 10 * 60 * 1000; }
   room.state = 'playing'; room.countdown = 0; room.endsAt = Date.now() + MATCH_TIME * 1000;
   room.structs.clear(); room.teamScores = [0, 0];
   const list = [...room.players.values()].sort(() => Math.random() - 0.5);
@@ -293,7 +364,10 @@ function startZombies(room) {
     event: (ev) => {
       if (ev.type === 'wave') {
         const lives = ZOMBIE_LIVES[ev.wave - 1] || 1;
-        for (const p of room.players.values()) { p.lives = lives; p.out = false; if (p.dead) p.diedAt = 0; }
+        for (const p of room.players.values()) {
+          p.lives = lives; p.out = false; if (p.dead) p.diedAt = 0;
+          else { p.hp = 100; broadcast(room, { t: 'hp', id: p.id, hp: 100 }); }   // full health at the start of each wave
+        }
         broadcast(room, { t: 'zwave', wave: ev.wave, lives });
       } else if (ev.type === 'won') { endMatch(room, 'won'); return; }
       broadcast(room, { t: 'zev', ev });
@@ -313,7 +387,8 @@ function endMatch(room, reason) {
   if (room.sim) room.sim.stop();
   room.state = 'results'; room.countdown = RESULTS_TIME;
   const all = [...room.players.values()];
-  const standings = all.slice().sort((a, b) => (room.mode === 'gungame' ? (b.gg || 0) - (a.gg || 0) : 0) || b.kills - a.kills || a.deaths - b.deaths)
+  const brRank = (p) => !p.dead ? Infinity : (p.placeT || 0);
+  const standings = all.slice().sort((a, b) => (room.mode === 'br' ? brRank(b) - brRank(a) : 0) || (room.mode === 'gungame' ? (b.gg || 0) - (a.gg || 0) : 0) || b.kills - a.kills || a.deaths - b.deaths)
     .map(p => ({ id: p.id, name: p.name, kills: p.kills, deaths: p.deaths, assists: p.assists || 0, team: p.team }));
   let winTeam = null; const winners = new Set();
   if (room.mode === 'zombies') {
@@ -321,7 +396,8 @@ function endMatch(room, reason) {
   } else if (isTeams(room)) {
     const [a, b] = room.teamScores; winTeam = a === b ? -1 : (a > b ? 0 : 1);
     if (winTeam >= 0) all.filter(p => p.team === winTeam).forEach(p => winners.add(p.id));
-  } else if (standings[0] && standings[0].kills > 0) winners.add(standings[0].id);
+  } else if (room.mode === 'br') { if (standings[0] && !room.players.get(standings[0].id)?.dead) winners.add(standings[0].id); }
+  else if (standings[0] && standings[0].kills > 0) winners.add(standings[0].id);
   room.koth = null; room.ctf = null;
   const place = {};
   if (all.length >= PLACE_MIN_PLAYERS) standings.slice(0, 3).forEach((q, i) => { if (q.kills > 0) place[q.id] = PLACE_BONUS[i]; });
@@ -343,6 +419,7 @@ function applyDamage(room, attacker, target, dmg, head, w) {
   target.hp -= dmg; target.dmgBy.set(attacker.id, Date.now());
   if (target.hp <= 0) {
     target.hp = 0; target.dead = true; target.diedAt = Date.now(); target.deaths++;
+    if (room.br) { target.out = true; target.placeT = Date.now(); }
     attacker.kills++; attacker.hp = Math.min(100, attacker.hp + 25);
     if (isTeams(room) && room.mode === 'tdm') room.teamScores[attacker.team]++;
     if (room.mode === 'gungame') {
@@ -362,6 +439,7 @@ function applyDamage(room, attacker, target, dmg, head, w) {
   } else broadcast(room, { t: 'hp', id: target.id, hp: Math.round(target.hp), by: attacker.id, w });
 }
 const weaponAllowed = (room, w, p) => {
+  if (room.mode === 'br') return w === 14 || w === 15 || (p && Array.isArray(p.inv) && p.inv.includes(w));
   if (room.mode === 'gungame') return p && w === GG_LIST[Math.min(GG_LIST.length - 1, p.gg || 0)];
   const list = MODES[room.mode].weapons; return !list || list.includes(w);
 };
@@ -423,9 +501,10 @@ function tickObjectives(room, dt) {
     }
   }
   room.objT = (room.objT || 0) + dt;
-  if (room.objT >= .2 && (room.koth || room.ctf)) {
+  if (room.objT >= .2 && (room.koth || room.ctf || room.br)) {
     room.objT = 0;
     const s = { t: 'obj', ts: room.teamScores };
+    if (room.br) { const b = room.br; s.br = [r2(b.cx), r2(b.cz), r2(b.r), r2(b.wait > 0 ? b.tx || b.cx : b.tx), r2(b.wait > 0 ? b.tz || b.cz : b.tz), r2(b.wait > 0 ? b.toR : b.toR), Math.ceil(b.wait > 0 ? b.wait : b.shrink), b.wait > 0 ? 0 : 1, b.alive || 0, b.phase]; }
     if (room.koth) s.koth = [r2(room.koth.x), r2(room.koth.z), KOTH_R, Math.ceil(room.koth.t), room.koth.owner];
     if (room.ctf) s.ctf = room.ctf.flags.map(f => [r2(f.x), r2(f.z), f.carrier, f.home ? 1 : 0]);
     broadcast(room, s);
@@ -460,7 +539,7 @@ setInterval(() => {
       room.sim.update(0.05);
       if (room.sim && (room.zsnapT = (room.zsnapT + 1) % 2) === 0) broadcast(room, { t: 'zs', s: room.sim.snapshot() });
     } else {
-      tickObjectives(room, 0.05);
+      tickObjectives(room, 0.05); tickBR(room, 0.05);
       if (room.state === 'playing' && Date.now() >= room.endsAt) endMatch(room, 'time');
     }
   }
@@ -474,6 +553,7 @@ function handle(p, m) {
   switch (m.t) {
     case 'hello':
       p.name = cleanName(m.name);
+      if (/^[A-Z0-9]{8}$/.test(String(m.uid || ''))) { if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); p.uid = String(m.uid); byUid.set(p.uid, p); }
       p.dev = false;
       if (p.name.toLowerCase() === DEV_NAME) {
         if (DEV_KEY && m.devKey === DEV_KEY) p.dev = true;
@@ -531,6 +611,8 @@ function handle(p, m) {
     }
     case 'spawn': {
       if (!playing || !p.dead || (p.diedAt && now - p.diedAt < RESPAWN_DELAY)) return;
+      if (room.br && (p.out || p.spawnedOnce)) return;   // Battle Royale: one life
+      if (room.br) p.spawnedOnce = true;
       if (room.mode === 'zombies' && p.out) return;
       const x = num(m.x, -40, 40), y = num(m.y, 0, 80), z = num(m.z, -40, 40);
       if (x === null || y === null || z === null) return;
@@ -583,6 +665,38 @@ function handle(p, m) {
       if (!playing || p.dead || !Array.isArray(m.p) || !Array.isArray(m.n)) return;
       broadcast(room, { t: 'pt', id: p.id, i: int(m.i, 0, 1), p: m.p.slice(0, 3).map(v => num(v, -300, 300) || 0), n: m.n.slice(0, 3).map(v => num(v, -1, 1) || 0) }, p); break;
     }
+    case 'loot': { // Battle Royale pickup: { id, slot }
+      if (!playing || !room.br || p.dead) return;
+      const i = room.br.loot.findIndex(l => l.id === m.id); if (i < 0) return;
+      const l = room.br.loot[i]; if (Math.hypot(l.x - p.x, l.z - p.z) > 3.5) return;
+      room.br.loot.splice(i, 1);
+      if (l.w === 'hp') { p.hp = Math.min(100, p.hp + 50); broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp) }); }
+      else { if (p.inv.length < 4) p.inv.push(l.w); else p.inv[int(m.slot, 0, 3)] = l.w; }
+      send(p, { t: 'lootget', w: l.w }); broadcast(room, { t: 'lootgone', id: l.id, by: p.id }); break;
+    }
+    case 'cmap': { // the host of a private room picks a custom map made in the Map Editor
+      if (!room || !room.isPrivate || room.hostId !== p.id || room.state !== 'waiting') return;
+      if (!m.map) { room.customMap = null; sysChat(room, 'The host switched back to normal maps'); sendRoom(room); break; }
+      const blocks = Array.isArray(m.map.blocks) ? m.map.blocks.slice(0, MAX_CUSTOM_BLOCKS).filter(Array.isArray).map(b => [num(b[0], -40, 40) || 0, num(b[1], 0, 40) || 0, num(b[2], -40, 40) || 0, num(b[3], .5, 8) || 1, num(b[4], .25, 16) || 1, num(b[5], .5, 8) || 1, int(b[6], 0, 0xffffff)]) : [];
+      room.customMap = { name: cleanText(m.map.name).slice(0, 24) || 'Custom map', theme: CUSTOM_THEMES.includes(m.map.theme) ? m.map.theme : 'blockyard', blocks };
+      sysChat(room, 'The host picked a custom map: ' + room.customMap.name + ' (' + blocks.length + ' blocks)'); sendRoom(room); break;
+    }
+    case 'fstatus': if (Array.isArray(m.codes)) send(p, { t: 'fstatus', list: m.codes.slice(0, 50).map(c => friendStatus(String(c))) }); break;
+    case 'freq': { const q = byUid.get(String(m.code)); if (!q || q === p) return send(p, { t: 'ferr', text: "That player isn't online right now. Friend requests only work while both of you are online." }); send(q, { t: 'freq', from: p.uid, name: p.name }); send(p, { t: 'fsent', name: q.name }); break; }
+    case 'facc': { const q = byUid.get(String(m.code)); if (q) send(q, { t: 'facc', from: p.uid, name: p.name }); break; }
+    case 'finvite': { const q = byUid.get(String(m.code)); if (q && room) send(q, { t: 'finvite', from: p.uid, name: p.name, room: room.code }); break; }
+    case 'fjoin': {
+      const q = byUid.get(String(m.code));
+      if (!q || !q.room) return send(p, { t: 'ferr', text: 'Your friend is not in a lobby right now.' });
+      if (q.room.ranked) return send(p, { t: 'ferr', text: "Your friend is in a Ranked match. You can't join that one." });
+      joinRoom(p, q.room); break;
+    }
+    case 'mine': { // a land mine was placed (others see it)
+      if (!playing || p.dead || !Array.isArray(m.p) || now - (p.lastMine || 0) < 600) return;
+      p.lastMine = now;
+      broadcast(room, { t: 'mine', id: p.id, mid: int(m.mid, 0, 1e9), p: m.p.slice(0, 3).map(v => num(v, -60, 80) || 0) }, p); break;
+    }
+    case 'mineboom': if (playing) broadcast(room, { t: 'mineboom', mid: int(m.mid, 0, 1e9) }, p); break;
     case 'gr': {
       if (!playing || p.dead || !Array.isArray(m.a) || !Array.isArray(m.v) || now - (p.lastNade || 0) < 700) return;
       p.lastNade = now;
@@ -649,7 +763,7 @@ wss.on('connection', (ws) => {
     let m; try { m = JSON.parse(raw); } catch (e) { return; }
     if (m && typeof m.t === 'string') { try { handle(p, m); } catch (e) { console.error(e); } }
   });
-  ws.on('close', () => { leaveRoom(p); players.delete(p.id); });
+  ws.on('close', () => { leaveRoom(p); players.delete(p.id); if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); });
 });
 
 const PORT = process.env.PORT || 3000;
