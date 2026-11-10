@@ -500,6 +500,16 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 #edcross{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px rgba(0,0,0,.5)}
 .edhelp{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);background:rgba(10,16,34,.8);border-radius:10px;padding:6px 12px;font-size:13px;color:var(--muted);white-space:nowrap}
 
+
+/* ============ V1.6: feast bar, drop bus ============ */
+#feastbar{position:absolute;left:50%;top:calc(84px + env(safe-area-inset-top,0px));transform:translateX(-50%);width:min(420px,70vw);text-align:center}
+#feastbar span{font-family:"Lilita One",sans-serif;font-size:15px;letter-spacing:1px;color:#ffd24a;text-shadow:0 2px 0 #3a1a00}
+#feastbar>div{height:14px;border-radius:7px;background:rgba(0,0,0,.55);border:2px solid #3a1a00;overflow:hidden;margin-top:3px}
+#feastfill{height:100%;width:100%;background:linear-gradient(180deg,#ffe066,#e07a2a)}
+#busprompt{position:absolute;left:50%;top:62%;transform:translateX(-50%);text-align:center;background:rgba(10,16,34,.85);border:2px solid var(--gold2);border-radius:14px;padding:10px 18px;display:flex;flex-direction:column;gap:2px;animation:pulse 1.2s infinite}
+#busprompt b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:22px;color:var(--gold1)}
+#busprompt span{font-size:13px;color:var(--muted)}
+
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -523,7 +533,9 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
     <button data-d="fly">Fly (V)</button><button data-d="god">God mode</button><button data-d="ammo">Infinite ammo</button><button data-d="speed">Speed x2</button>
     <button id="devcr">+1000 💎</button><button id="devxp">+5 BP tiers</button><button id="devwave">Clear wave (practice)</button>
   </div>
-  <div id="bossbar" hidden><span>THE GIANT</span><div><div id="bossfill"></div></div></div>
+  <div id="feastbar" hidden><span id="feasttxt">THE FEAST</span><div><div id="feastfill"></div></div></div>
+  <div id="busprompt" hidden></div>
+  <div id="bossbar" hidden><span>GOBBLEZILLA</span><div><div id="bossfill"></div></div></div>
   <div id="hit"></div>
   <div id="shieldtag" hidden>Spawn shield</div>
   <div id="reload" hidden><div id="reloadbar"><div id="reloadfill"></div></div>Reloading</div>
@@ -583,7 +595,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <section class="card wide" id="s-menu">
     <div class="menugrid">
       <div>
-        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.5</span></div>
+        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.6</span></div>
         <p>Up to 8 players. Free-for-all, Team Deathmatch or Snipers Only, voted on by the lobby.</p>
         <label for="pname">Your name</label>
         <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
@@ -674,9 +686,18 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   </section>
 
   <section class="card wide" id="s-gamelog" hidden>
-    <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.5</span></div>
+    <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.6</span></div>
     <div class="glbody">
-      <h4>V1.5: The Harvest Update 🦃</h4>
+      <h4>V1.6: Feast &amp; Freefall 🦃🪂</h4>
+      <ul>
+        <li>🗺️ <b>Harvest Valley</b>: a giant new Battle Royale map, about 14 times bigger, with towns, farms, forests and lookout towers.</li>
+        <li>🚌 <b>Drop Bus</b>: every Battle Royale starts on a bus floating under a hot-air balloon. Press <b>Space</b> to jump, skydive, and your glider opens near the ground.</li>
+        <li>❤️ Everyone has <b>500 HP</b> in Battle Royale. Health packs heal 100 and the storm hits harder to match.</li>
+        <li>🦃 <b>Feast Defense</b> replaces Zombies: team up to protect the Thanksgiving feast from wild turkeys, Tom turkeys and the boss <b>GOBBLEZILLA</b>, who throws pies from the sky.</li>
+      </ul>
+      <div class="soon">V1.7 coming soon: accounts and Ranked!</div>
+
+      <h4 class="old">V1.5: The Harvest Update 🦃</h4>
       <ul>
         <li>🪂 <b>Battle Royale</b>: one life, loot weapons and health packs, and outrun the shrinking storm. Last one standing wins!</li>
         <li>🏅 <b>Weapon Mastery</b>: rank up every gun from Bronze to Diamond. Gold and Diamond unlock special camos.</li>
@@ -697,7 +718,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
         <li>🔭 Mobile: hold FIRE to scope with the sniper, aim, and release to shoot.</li>
         <li>✦ Mythical skins now pulse and sparkle.</li>
       </ul>
-      <div class="soon">V1.6 coming soon: accounts, friends and Ranked!</div>
+      
 
       <h4 class="old">V1.4</h4>
       <h4>V1.4: Rewards Revamp</h4>
@@ -766,6 +787,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <section class="card wide" id="s-shop" hidden>
     <div class="votehead"><h2 class="display">Shop</h2><div class="crbar"><span class="crico"></span><b id="shopcr">0</b><span>Clash Crystals</span></div></div>
     <div class="tabs" role="tablist"><button class="shoptab" role="tab" data-t="guns">Weapons</button><button class="shoptab" role="tab" data-t="skins">Skins</button><button class="shoptab mythic" role="tab" data-t="mythic">✦ Mythical</button></div>
+    <p class="small" id="shopdev" hidden style="color:#ff5fd8;font-weight:600">DEV MODE: everything in the Shop is free for you.</p>
     <p class="small">Click Buy, then Confirm. Earn Clash Crystals from kills, wins, zombie waves and crystals you find on the map.</p>
     <div class="shopgrid" id="shopgrid"></div>
     <div class="row"><button class="ghost" id="shopclose">Back</button></div>
@@ -958,7 +980,7 @@ function buildScenery(M) {
   clearGroup(scenery);
   const count = isTouch ? 34 : 54;
   for (let i = 0; i < count; i++) {
-    const a = i / count * Math.PI * 2 + Math.random() * .08, r = 60 + Math.random() * 55;
+    const a = i / count * Math.PI * 2 + Math.random() * .08, r = ARENA + 20 + Math.random() * 55;
     const w = 8 + Math.random() * 18, h = M.hills.h[0] + Math.random() * M.hills.h[1], d = 8 + Math.random() * 18;
     const m = new THREE.Mesh(boxGeo(w, h, d), blockMat(pickAny(M.hills.pal), M.dark));
     m.position.set(Math.cos(a) * r, h / 2 - .2, Math.sin(a) * r); m.rotation.y = Math.random() * Math.PI; scenery.add(m);
@@ -969,7 +991,7 @@ const deco = new THREE.Group(); scene.add(deco);
 function decoBox(w, h, d, color, x, y, z, glow) { const m = new THREE.Mesh(boxGeo(w, h, d), blockMat(color, glow)); m.position.set(x, y + h / 2, z); deco.add(m); return m; }
 
 /* ================= world ================= */
-const ARENA = 40, GRID = 4, R = 0.35, H = 1.75, EYE = 1.6, STEP = 0.55;
+let ARENA = 40; const GRID = 4, R = 0.35, H = 1.75, EYE = 1.6, STEP = 0.55;
 const solids = [], rayTargets = [];
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(ARENA * 2, ARENA * 2), new THREE.MeshLambertMaterial());
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = SHADOWS; scene.add(ground); ground.updateMatrixWorld();
@@ -1011,6 +1033,8 @@ MAPS.pumpkin = { name: 'Pumpkin Hollow', blurb: 'A haunted round graveyard. Zomb
 MAPS.harvest = { name: 'Harvest Farm', blurb: 'A golden fall farm with red barns, hay bales and a corn field.', sky: 0xf2c48a, fog: [45, 135], g: ['#a8923a', '#9a8434'], hg: 0x7a5a2a, edge: 0x7a4a22,
   pal: [0xb8322a, 0xc8a050, 0xd8b868, 0x8a5a2a], gen: 'farm', seed: 77, decor: 'fall', leaves: true,
   skyTop: 0x5a9ad8, skyHor: 0xffd9a0, outer: 0x9a7a3a, cloud: 0xfff0dc, clouds: 12, hills: { pal: [0xc0401a, 0xe07a2a, 0xb5501a, 0x8a6a2a], cap: 0xffb02e, h: [8, 20] } };
+MAPS.valley = Object.assign({}, MAPS.harvest, { name: 'Harvest Valley', blurb: 'A giant fall valley with towns, farms, forests and lookout towers. Battle Royale only.',
+  size: 150, gen: 'valley', decor: 'none', seed: 99, fog: [90, 290], leaves: true, clouds: 22, pal: [0xc8a878, 0xb88a5a, 0xd8c8a8, 0x9a7a5a, 0xa8b0b8] });
 const GEN = {
   scatter(M) {
     for (let i = 0; i < 42; i++) {
@@ -1057,6 +1081,15 @@ const GEN = {
       const a = rnd() * Math.PI * 2, r = 9 + rnd() * 20, x = Math.cos(a) * r, z = Math.sin(a) * r;
       if (rnd() < .75) addBlock(x, 0, z, 1.2, 1.5 + rnd() * .6, .45, pick(M.pal)); else addBlock(x, 0, z, 3, 2.4, 2.2, 0x4a4a52);
     }
+  },
+  valley(M) {   // ~350 blocks spread over 300 x 300
+    const S = ARENA - 12;
+    const house = (x, z, w, d, c) => { const h = 3.2 + rnd() * 1.2; addBlock(x, 0, z, w, h, d, c); addBlock(x, h, z, w + .6, .5, d + .6, 0x6a3a2a); };
+    for (let t = 0; t < 6; t++) { const tx = (rnd() * 2 - 1) * S * .8, tz = (rnd() * 2 - 1) * S * .8; for (let i = 0; i < 9; i++) house(tx + (rnd() * 2 - 1) * 16, tz + (rnd() * 2 - 1) * 16, 5 + rnd() * 3, 4 + rnd() * 3, pick(M.pal)); }
+    for (let f = 0; f < 5; f++) { const fx = (rnd() * 2 - 1) * S, fz = (rnd() * 2 - 1) * S; addBlock(fx, 0, fz, 9, 4.5, 7, 0xb8322a); addBlock(fx, 4.5, fz, 9.6, .5, 7.6, 0x3a2a24); for (let i = 0; i < 6; i++) addBlock(fx + (rnd() * 2 - 1) * 12, 0, fz + (rnd() * 2 - 1) * 12, 1.6, 1.1, 1.1, 0xd8b868); }
+    for (let i = 0; i < 70; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, c = pick([0xc0401a, 0xe07a2a, 0xffb02e, 0x5aa04a, 0x4a8a38]); addBlock(x, 0, z, .8, 3, .8, 0x5a3a1e); addBlock(x, 3, z, 3.2, 1.8, 3.2, c); }
+    for (let i = 0; i < 60; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, k = 1.2 + rnd() * 2; addBlock(x, 0, z, k, k * .7, k * 1.2, pick([0x8a8f75, 0x7a8066, 0x6a6a72])); }
+    for (let i = 0; i < 5; i++) { const x = (rnd() * 2 - 1) * S * .9, z = (rnd() * 2 - 1) * S * .9; addBlock(x, 0, z, 3, 10, 3, 0x7a5a3a); addBlock(x, 10, z, 5, .5, 5, 0x5a3a1e); }
   },
   farm(M) {
     const barn = (x, z, rot) => { // red barn with white trim and a dark roof
@@ -1288,56 +1321,68 @@ let msgT = 0, hitT = 0, vigT = 0;
 function msg(t) { $('msg').textContent = t; $('msg').classList.add('show'); msgT = 1.6; }
 function hitmarker(head) { const h = $('hit'); h.classList.add('show'); h.classList.toggle('head', !!head); hitT = .12; sfx(head ? 'head' : 'hit'); }
 /* ===== Zombie wave simulation (shared by the server and the game page) ===== */
-function makeZombieSim(opts) {
+function makeZombieSim(opts) {   // V1.5 Feast Defense: wild turkeys attack the players and the Thanksgiving feast
   const R_SPAWN = 46, R_ARENA = 31;
   const TYPES = {
-    small: { hp: 75, speed: 3.0, reach: 1.5, dmg: 8, cd: 1.1, scale: 1, rad: .45 },
-    big: { hp: 150, speed: 2.4, reach: 2.4, dmg: 10, cd: 1.3, scale: 2, rad: .85 },
-    giant: { hp: 2000, speed: 1.6, reach: 4.2, dmg: 25, cd: 1.6, scale: 4, rad: 1.7 },
+    small: { hp: 60, speed: 3.2, reach: 1.5, dmg: 5, cd: 1, scale: 1, rad: .5 },       // Wild Turkey
+    big: { hp: 160, speed: 2.7, reach: 2.3, dmg: 9, cd: 1.3, scale: 1.8, rad: .9 },     // Tom Turkey
+    giant: { hp: 2000, speed: 1.6, reach: 4.2, dmg: 25, cd: 1.6, scale: 4.2, rad: 1.8 },  // GOBBLEZILLA
   };
-  const WAVES = [{ small: 16, big: 4 }, { small: 22, big: 6 }, { small: 28, big: 9 }, { big: 14, giant: 1 }, { big: 18, giant: 1 }];
-  const MAX_ALIVE = 20; // more wait in line so the game stays smooth
-  const S = { wave: 0, state: 'intermission', timer: 6, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1 };
+  const WAVES = [{ small: 18, big: 4 }, { small: 24, big: 7 }, { small: 30, big: 10 }, { big: 14, giant: 1 }, { big: 18, giant: 1 }];
+  const MAX_ALIVE = 22;
+  const S = { wave: 0, state: 'intermission', timer: 8, zombies: [], bombs: [], queue: [], spawnT: 0, nextId: 1, bombId: 1, bombT: 4, nplayers: 1,
+    feast: opts.feast ? { x: 0, z: 0, r: 2.6, hp: 2000, max: 2000, hitT: 0 } : null };
   const r2 = (v) => Math.round(v * 100) / 100;
   function startWave() {
     S.wave++; S.state = 'fighting';
+    if (S.wave === 1 && S.feast) { S.feast.max = S.feast.hp = 2000 + 400 * Math.max(0, S.nplayers - 1); }
     const W = WAVES[S.wave - 1], k = 1 + .3 * Math.max(0, S.nplayers - 1);
     const list = [];
     for (let i = 0; i < Math.round((W.small || 0) * k); i++) list.push('small');
     for (let i = 0; i < Math.round((W.big || 0) * k); i++) list.push('big');
     list.sort(() => Math.random() - .5);
-    if (W.giant) list.splice(Math.min(3, list.length), 0, 'giant'); // the giant shows up early in the wave
+    if (W.giant) list.splice(Math.min(3, list.length), 0, 'giant');
     S.queue = list; S.spawnT = 0; S.bombT = 5;
     opts.event({ type: 'wave', wave: S.wave });
   }
   function spawn(type) {
     const a = Math.random() * Math.PI * 2;
-    const hp = TYPES[type].hp * (type === 'giant' ? 1 + .5 * Math.max(0, S.nplayers - 1) : 1);   // the Giant gets tougher with more players
-    S.zombies.push({ id: S.nextId++, type, x: Math.cos(a) * R_SPAWN, z: Math.sin(a) * R_SPAWN, yaw: 0, hp, max: hp, cd: 1, swing: 0 });
+    const hp = TYPES[type].hp * (type === 'giant' ? 1 + .5 * Math.max(0, S.nplayers - 1) : 1);
+    const goal = S.feast && type !== 'giant' && Math.random() < .35 ? 'feast' : 'player';   // about a third of the flock goes straight for the food
+    S.zombies.push({ id: S.nextId++, type, goal, x: Math.cos(a) * R_SPAWN, z: Math.sin(a) * R_SPAWN, yaw: 0, hp, max: hp, cd: 1, swing: 0 });
     if (type === 'giant') opts.event({ type: 'giant' });
   }
   function update(dt) {
     if (S.state === 'intermission') { S.timer -= dt; if (S.timer <= 0) startWave(); return; }
     if (S.state !== 'fighting') return;
     const ps = opts.players().filter(p => p.alive);
-    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.3 : .8; } }
+    if (S.queue.length && S.zombies.length < MAX_ALIVE) { S.spawnT -= dt; if (S.spawnT <= 0) { spawn(S.queue.shift()); S.spawnT = S.wave >= 4 ? 1.2 : .75; } }
+    if (S.feast) S.feast.hitT = Math.max(0, S.feast.hitT - dt);
     for (const z of S.zombies) {
       const T = TYPES[z.type]; z.swing = Math.max(0, z.swing - dt); z.cd -= dt;
-      const enraged = z.type === 'giant' && z.hp < z.max * .25;   // below 25% health the Giant gets angry and faster
-      if (z.type === 'giant') { z.calm = (z.calm || 0) + dt; if (z.calm > 4) z.hp = Math.min(z.max, z.hp + 6 * dt); }   // heals slowly only if nobody hits it for 4s
+      const enraged = z.type === 'giant' && z.hp < z.max * .25;
+      if (z.type === 'giant') { z.calm = (z.calm || 0) + dt; if (z.calm > 4) z.hp = Math.min(z.max, z.hp + 6 * dt); }
       let best = null, bd = Infinity;
       for (const p of ps) { const d = Math.hypot(p.x - z.x, p.z - z.z); if (d < bd) { bd = d; best = p; } }
+      const goFeast = S.feast && (z.goal === 'feast' || !best);
+      if (goFeast) { best = { x: S.feast.x, z: S.feast.z, feast: true }; bd = Math.max(.001, Math.hypot(S.feast.x - z.x, S.feast.z - z.z) - S.feast.r); }
       if (!best) { z.moving = false; continue; }
-      const dx = best.x - z.x, dz = best.z - z.z, d = bd || .001;
+      const dx = best.x - z.x, dz = best.z - z.z, d = bd || .001, len = Math.hypot(dx, dz) || .001;
       z.yaw = Math.atan2(dx, dz);
-      if (d > T.reach * .8) { const step = Math.min(T.speed * (enraged ? 1.25 : 1) * dt, d - T.reach * .75); z.x += dx / d * step; z.z += dz / d * step; z.moving = true; } else z.moving = false;
-      if (d < T.reach && (best.y || 0) < 2.6 * T.scale && z.cd <= 0) { z.cd = T.cd; z.swing = .45; opts.hurt(best.id, T.dmg); }
+      if (d > T.reach * .8) { const step = Math.min(T.speed * (enraged ? 1.25 : 1) * dt, d - T.reach * .75); z.x += dx / len * step; z.z += dz / len * step; z.moving = true; } else z.moving = false;
+      if (d < T.reach && z.cd <= 0) {
+        if (best.feast) {
+          z.cd = T.cd * 1.3; z.swing = .45; S.feast.hp -= T.dmg * .8;
+          if (S.feast.hitT <= 0) { S.feast.hitT = 2.5; opts.event({ type: 'feasthit' }); }
+          if (S.feast.hp <= 0) { S.feast.hp = 0; S.state = 'lost'; opts.event({ type: 'feastlost' }); return; }
+        } else if ((best.y || 0) < 2.6 * T.scale) { z.cd = T.cd; z.swing = .45; opts.hurt(best.id, T.dmg); }
+      }
     }
-    for (let i = 0; i < S.zombies.length; i++) for (let j = i + 1; j < S.zombies.length; j++) { // keep zombies from stacking
+    for (let i = 0; i < S.zombies.length; i++) for (let j = i + 1; j < S.zombies.length; j++) {
       const a = S.zombies[i], b = S.zombies[j], ra = TYPES[a.type].rad + TYPES[b.type].rad, dx = b.x - a.x, dz = b.z - a.z, d = Math.hypot(dx, dz);
       if (d > 0 && d < ra) { const push = (ra - d) / 2, ux = dx / d, uz = dz / d; a.x -= ux * push; a.z -= uz * push; b.x += ux * push; b.z += uz * push; }
     }
-    if (S.zombies.some(z => z.type === 'giant')) { // the giant calls in bombs: red circles first, then impact
+    if (S.zombies.some(z => z.type === 'giant')) { // Gobblezilla throws pies: red circles first, then splat
       S.bombT -= dt;
       if (S.bombT <= 0) {
         const g = S.zombies.find(z => z.type === 'giant'), angry = g && g.hp < g.max * .25;
@@ -1361,18 +1406,19 @@ function makeZombieSim(opts) {
     if (!S.queue.length && !S.zombies.length) {
       S.bombs = [];
       if (S.wave >= WAVES.length) { S.state = 'won'; opts.event({ type: 'won' }); }
-      else { S.state = 'intermission'; S.timer = 8; opts.event({ type: 'clear', wave: S.wave }); }
+      else { S.state = 'intermission'; S.timer = 8; if (S.feast) S.feast.hp = Math.min(S.feast.max, S.feast.hp + S.feast.max * .25); opts.event({ type: 'clear', wave: S.wave }); }
     }
   }
   function damage(zid, dmg) {
     const i = S.zombies.findIndex(z => z.id === zid); if (i < 0) return null;
-    const z = S.zombies[i]; z.hp -= z.type === 'giant' ? dmg * .8 : dmg;   // the Giant's armor blocks 20% of all damage
+    const z = S.zombies[i]; z.hp -= z.type === 'giant' ? dmg * .8 : dmg;
     if (z.type === 'giant') z.calm = 0;
     if (z.hp <= 0) { S.zombies.splice(i, 1); return { killed: true, type: z.type, x: z.x, z: z.z }; }
     return { killed: false, type: z.type };
   }
   function snapshot() {
     return { w: S.wave, s: S.state, t: Math.ceil(S.timer), left: S.queue.length + S.zombies.length,
+      f: S.feast ? [Math.max(0, Math.round(S.feast.hp)), S.feast.max] : null,
       z: S.zombies.map(z => [z.id, z.type[0], r2(z.x), r2(z.z), r2(z.yaw), Math.max(0, Math.round(z.hp)), z.swing > 0 ? 1 : 0, z.moving ? 1 : 0, Math.round(z.max || 0)]),
       b: S.bombs.map(b => [b.id, r2(b.x), r2(b.z), r2(b.t), b.r]) };
   }
@@ -1411,7 +1457,7 @@ const MODES = {
   ffa: { name: 'Free-for-all', blurb: 'Everyone for themselves. First to 15 kills.', limit: 15 },
   tdm: { name: 'Team Deathmatch', blurb: 'Red vs Blue. First team to 30 kills.', limit: 30, teams: true },
   snipers: { name: 'Snipers Only', blurb: 'Sniper, handgun and revolver only. First to 10 kills.', limit: 10, weapons: [3, 4, 7] },
-  zombies: { name: '🎃 Zombies', blurb: 'Halloween co-op! Survive 5 waves and the Giant on Pumpkin Hollow.', limit: 0, zombies: true },
+  feast: { name: '🦃 Feast Defense', blurb: 'Co-op! Protect the Thanksgiving feast from 5 waves of wild turkeys and GOBBLEZILLA.', limit: 0, zombies: true },
   gungame: { name: 'Gun Game', blurb: 'Every kill gives you the next gun. First kill with the Scythe wins!', limit: 0, gungame: true },
   koth: { name: 'King of the Hill', blurb: 'Red vs Blue. Stand in the moving zone to score. First to 100.', limit: 100, teams: true, koth: true, online: true },
   br: { name: '🪂 Battle Royale', blurb: 'One life. Loot weapons, outrun the storm, be the last one standing.', limit: 0, br: true },
@@ -1488,6 +1534,9 @@ const stats = Object.assign({ matches: 0, wins: 0, kills: 0, deaths: 0, headshot
 const wallet = Object.assign({ crystals: 0, guns: [], skins: ['classic'], scythes: ['classic'] }, store.get('arenaclash.wallet', {}));
 if (!Array.isArray(wallet.guns)) wallet.guns = []; if (!Array.isArray(wallet.skins)) wallet.skins = ['classic']; if (!Array.isArray(wallet.hats)) wallet.hats = []; if (!Array.isArray(wallet.effects)) wallet.effects = [];
 if (!Array.isArray(wallet.mythics)) wallet.mythics = (Array.isArray(wallet.scythes) ? wallet.scythes : []).filter(x => x !== 'classic');
+const devShop = () => !!(NET && NET.devok && P.name.toLowerCase() === 'electrix');   // developer: everything is free
+const canAfford = (price) => devShop() || wallet.crystals >= price;
+const cost = (price) => devShop() ? 0 : price;
 function saveWallet() { store.set('arenaclash.wallet', wallet); renderCrystals(); }
 const STARTERS = WEAPONS.map((w, i) => i).filter(i => GUN_INFO[WEAPONS[i].id][0] === 0);
 const TRIAL_HOURS = 6;
@@ -1508,7 +1557,6 @@ const look_lo = () => (Array.isArray(look.loadout) ? look.loadout : [0, 1, 2, 4]
 const limitedOpen = (id) => Date.now() < (LIMITS[id] || LIMITED_END);
 function matchLoadout() {
   const forced = MODES[match.mode].weapons; if (forced) return forced.slice();
-  if (zombiesOn()) return [PUMPKIN_W, ...look_lo().filter(i => canUseGun(i) && i !== PUMPKIN_W)].slice(0, 4);
   if (gungameOn()) return [GG_LIST[Math.min(GG_LIST.length - 1, P.gg || 0)]];
   if (MODES[match.mode].br) return [4];   // Battle Royale: start with a handgun, loot the rest
   const lo = look_lo().filter(canUseGun);
@@ -1526,8 +1574,8 @@ const others = () => mode === 'online' ? [...remotes.values()] : bots;
 function randomFreeSpot(avoid, minDist, team) {
   const zone = teamsOn() && team != null;
   for (let i = 0; i < 300; i++) {
-    const x = (Math.random() * 2 - 1) * 35;
-    const z = zone ? (team === 0 ? 1 : -1) * (8 + Math.random() * 27) : (Math.random() * 2 - 1) * 35;
+    const x = (Math.random() * 2 - 1) * (ARENA - 5);
+    const z = zone ? (team === 0 ? 1 : -1) * (8 + Math.random() * 27) : (Math.random() * 2 - 1) * (ARENA - 5);
     if (hitsSolid(x, z, 0, 2, .7, true)) continue;
     if (avoid && i < 200 && avoid.some(f => !f.dead && Math.hypot(f.pos.x - x, f.pos.z - z) < minDist && (!zone || f.team !== team))) continue;
     return new V3(x, 0, z);
@@ -1535,14 +1583,14 @@ function randomFreeSpot(avoid, minDist, team) {
   return new V3((Math.random() * 2 - 1) * 30, 0, (Math.random() * 2 - 1) * 30);
 }
 function seededSpot() {
-  for (let i = 0; i < 300; i++) { const x = (rnd() * 2 - 1) * 35, z = (rnd() * 2 - 1) * 35; if (circleArena && Math.hypot(x, z) > 30) continue; if (!hitsSolid(x, z, 0, 2, .7, true)) return new V3(x, 0, z); }
+  for (let i = 0; i < 300; i++) { const x = (rnd() * 2 - 1) * (ARENA - 5), z = (rnd() * 2 - 1) * (ARENA - 5); if (circleArena && Math.hypot(x, z) > 30) continue; if (!hitsSolid(x, z, 0, 2, .7, true)) return new V3(x, 0, z); }
   return new V3(0, 0, 0);
 }
 function refillAll() { WEAPONS.forEach((w, i) => { guns[i].mag = w.mag; guns[i].reserve = w.reserve; }); }
 
 function respawnPlayer() {
   if (zombiesOn()) { let sp = null; for (let i = 0; i < 80 && !sp; i++) { const a = Math.random() * 6.28, r = Math.random() * 8, x = Math.cos(a) * r, z = Math.sin(a) * r; if (!hitsSolid(x, z, 0, 2, .6, true)) sp = new V3(x, 0, z); } P.pos.copy(sp || new V3()); }
-  else P.pos.copy(randomFreeSpot(others(), 16, P.team)); P.vy = 0; P.hp = 100; P.dead = false; P.ramp = null; P.shield = SPAWN_SHIELD;
+  else P.pos.copy(randomFreeSpot(others(), 16, P.team)); P.vy = 0; P.hp = P.maxHp || 100; P.sky = false; P.bus = false; P.dead = false; P.ramp = null; P.shield = SPAWN_SHIELD;
   P.yaw = Math.atan2(P.pos.x, P.pos.z);
   if (pendingLO) { LO = pendingLO; pendingLO = null; buildSlots(); Wp.cur = 0; lastHud = ''; }
   refillAll(); Wp.reload = 0; Wp.cd = 0; Wp.burstLeft = 0; Wp.spin = 0; P.nades = MAX_NADES; P.mines = MAX_MINES; if (Wp.cur >= nslots()) Wp.cur = 0;
@@ -1558,7 +1606,7 @@ function damagePlayer(d, by) { // practice mode only; online damage comes from t
   if (P.turkeyT > 0) d *= .75;   // your turkey bodyguard soaks up 25%
   P.hp -= d; vigT = .35; sfx('hurt'); addShake(.12);
   if (P.hp <= 0) {
-    P.deaths++; by.kills++; by.hp = Math.min(100, by.hp + 25); stats.deaths++; saveStats();
+    P.deaths++; by.kills++; by.hp = Math.min(by.maxHp || 100, by.hp + 25); stats.deaths++; saveStats();
     if (gungameOn()) ggLocal(by, P, by.gun === 'scythe' ? SCYTHE_W : -1);
     if (teamsOn()) match.teamScores[by.team]++;
     killFx(by.effect, P.pos); showDeath(by.name); if (MODES[match.mode].br) { P.out = true; P.placeT = clock; } startKillcam(by, by.name, WEAPONS.findIndex(w => w.id === by.gun));
@@ -1675,7 +1723,7 @@ function updateCrates(dt) {
     c.g.rotation.y += dt * 1.5; c.g.position.y = .5 + Math.sin(clock * 3) * .08;
     if (!P.dead && P.pos.y < 1.5 && Math.hypot(P.pos.x - c.g.position.x, P.pos.z - c.g.position.z) < 1.3 && (needsAmmo() || P.hp < 100)) {
       WEAPONS.forEach((w, i) => { guns[i].reserve = w.reserve; }); c.active = false; c.g.visible = false; c.t = 20;
-      if (mode === 'online') netSend({ t: 'heal' }); else P.hp = Math.min(100, P.hp + 5);
+      if (mode === 'online') netSend({ t: 'heal' }); else P.hp = Math.min(P.maxHp || 100, P.hp + 5);
       msg('Ammo refilled, +5 HP'); sfx('pickup');
     }
   }
@@ -1711,7 +1759,8 @@ function buildMap(id) {
   sun.intensity = M.dark ? .35 : .85; sun.color.setHex(M.dark ? 0xb9a8ff : 0xfff1d6); ambient.intensity = M.dark ? .2 : .12;
   outerGround.material.color.setHex(M.outer);
   if (ground.material.map) ground.material.map.dispose();
-  ground.material.map = groundTex(M.g[0], M.g[1], M.line); ground.material.needsUpdate = true;
+  ARENA = M.size || 40; ground.scale.set(ARENA / 40, ARENA / 40, 1);
+  ground.material.map = groundTex(M.g[0], M.g[1], M.line); ground.material.map.repeat.set(ARENA * 2, ARENA * 2); ground.material.needsUpdate = true;
   groundHex = new THREE.Color(M.g[0]).getHex();
   const EH = M.circle ? .01 : 2.4;
   addBlock(0, 0, -ARENA - .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark); addBlock(0, 0, ARENA + .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark);
@@ -2088,7 +2137,7 @@ function setAvatarGun(ent, id, skin) {
   if (ent.gunId === id && ent.builtSkin === sk) return;
   ent.gunId = id; ent.builtSkin = sk; buildWorldGun(ent.gunHolder, id, sk);
 }
-function setBar(ent) { if (!ent.bar) return; ent.bar.scale.x = Math.max(0.001, ent.hp / 100); ent.bar.material.color.setHex(ent.hp < 40 ? 0xff4d5e : 0x3ddc84); }
+function setBar(ent) { if (!ent.bar) return; const k = ent.hp / (ent.maxHp || 100); ent.bar.scale.x = Math.max(0.001, k); ent.bar.material.color.setHex(k < .4 ? 0xff4d5e : 0x3ddc84); }
 function disposeAvatar(ent) {
   ent.host.remove(ent.group); ent.shirt.dispose();
   ent.hatObj.traverse(o => { if (o.geometry) o.geometry.dispose(); });
@@ -2104,7 +2153,7 @@ function makeBot(name, color, gun, hat, effect, team) {
   makeAvatar(b, name, color, hat); setAvatarGun(b, gun, pickAny(Object.keys(GUN_SKINS))); return b;
 }
 function spawnBot(b) {
-  b.pos.copy(randomFreeSpot([P, ...bots], 14, b.team)); b.hp = 100; b.dead = false; b.group.visible = true; b.cd = 1 + Math.random();
+  b.pos.copy(randomFreeSpot([P, ...bots], 14, b.team)); b.maxHp = MODES[match.mode].br ? 500 : 100; b.hp = b.maxHp; b.dead = false; b.group.visible = true; b.cd = 1 + Math.random();
   b.shield = SPAWN_SHIELD; setBar(b); b.target = null;
 }
 function removeBots() { bots.forEach(disposeAvatar); bots = []; }
@@ -2117,7 +2166,7 @@ function damageBot(b, d, head, by) {
     if (MODES[match.mode].br) { b.out = true; b.placeT = clock; }
     if (teamsOn()) match.teamScores[by.team]++;
     killFx(by.effect, b.pos);
-    if (by === P) { P.hp = Math.min(100, P.hp + 25); rewardKill(head, b.name); } else by.hp = Math.min(100, by.hp + 25);
+    if (by === P) { P.hp = Math.min(P.maxHp || 100, P.hp + 25); rewardKill(head, b.name); } else by.hp = Math.min(by.maxHp || 100, by.hp + 25);
     if (gungameOn()) ggLocal(by, b, by === P ? curDmgW : (by.gun === 'scythe' ? SCYTHE_W : -1));
     if (by !== P && b.dmgBy.has(P) && clock - b.dmgBy.get(P) < 10) onAssist(b.name);
     for (const f of b.dmgBy.keys()) if (f !== by && f !== P && clock - b.dmgBy.get(f) < 10) f.assists = (f.assists || 0) + 1;
@@ -2142,7 +2191,7 @@ function firstHit(hits, ignore, friendlyTeam) {
 function pickTarget(b) {
   let best = null, bd = Infinity;
   for (const f of [P, ...bots]) {
-    if (f === b || f.dead || !enemyOf(b, f)) continue;
+    if (f === b || f.dead || !enemyOf(b, f) || (f === P && (P.bus || P.sky))) continue;
     let d = Math.hypot(f.pos.x - b.pos.x, f.pos.z - b.pos.z); if (f === P) d *= .85;
     if (d < bd) { bd = d; best = f; }
   }
@@ -2412,7 +2461,7 @@ function connect() {
 }
 function sendHello() {
   const key = P.name.toLowerCase() === 'electrix' ? store.get('arenaclash.devkey', '') : '';
-  NET.dev = !!key;
+  NET.dev = !!key; if (!key) NET.devok = false;
   netSend({ t: 'hello', uid: myUid, name: P.name, color: look.color, hat: look.hat, effect: look.effect, gunSkin: look.gunSkin, mythic: look.mythic, devKey: key, god: DEV.god });
 }
 function menuError(t) { $('menuerr').textContent = t; $('menuerr').hidden = !t; }
@@ -2446,7 +2495,7 @@ function onNet(m) {
         r.dead = !!dead; if (r.hp !== hp) { r.hp = hp; setBar(r); }
       }
       break;
-    case 'spawn': { const r = remotes.get(m.id); if (r) { r.pos.set(m.x, m.y, m.z); r.tpos.copy(r.pos); r.dead = false; r.hp = 100; r.shieldUntil = clock + SPAWN_SHIELD; setBar(r); } break; }
+    case 'spawn': { const r = remotes.get(m.id); if (r) { r.pos.set(m.x, m.y, m.z); r.tpos.copy(r.pos); r.dead = false; r.hp = r.maxHp || 100; r.shieldUntil = clock + SPAWN_SHIELD; setBar(r); } break; }
     case 'hp':
       if (m.id === NET.id) {
         if (m.hp < P.hp && !P.dead) { vigT = .35; sfx('hurt'); addShake(.12); const r = m.by && remotes.get(m.by); if (r) threat(r.pos.x, r.pos.z, true); }
@@ -2457,6 +2506,8 @@ function onNet(m) {
     case 'gg': if (match.active) onGG(m); break;
     case 'lootget': if (match.active) onLootGet(m.w); break;
     case 'lootgone': removeLoot(m.id); break;
+    case 'devok': NET.devok = true; if (current === 's-shop') renderShop(); break;
+    case 'gift': addCrystals(m.amount, 'gift'); friendToast('<b>' + esc(m.from) + '</b> sent you ' + m.amount + ' Clash Crystals! 💎', [['Thanks!', null]]); break;
     case 'fstatus': case 'freq': case 'facc': case 'fsent': case 'ferr': case 'finvite': onFriendMsg(m); break;
     case 'obj': if (match.active) onObj(m); break;
     case 'turkey': if (match.active) { const r = remotes.get(m.id); if (r) spawnGuardian(r, new V3(m.p[0], m.p[1], m.p[2]), false); } break;
@@ -2466,11 +2517,11 @@ function onNet(m) {
     case 'zkill': if (match.active) { onZKill(m); if (Array.isArray(m.as)) { for (const id of m.as) { const q = roomPlayer(id); if (q) q.assists = (q.assists || 0) + 1; } if (m.as.includes(NET.id)) onAssist(ZINFO[m.type] ? ZINFO[m.type].name : 'zombie'); } } break;
     case 'zdeath': {
       const vp = roomPlayer(m.id); if (vp) vp.deaths++;
-      const why = m.cause === 'bomb' ? "the Giant's bomb" : m.cause === 'self' ? 'their own pumpkin' : 'a zombie';
+      const why = m.cause === 'bomb' ? "Gobblezilla's pie" : m.cause === 'self' ? 'their own pumpkin' : 'a wild turkey';
       feed(nameHTML(vp ? vp.name : '?', m.id === NET.id) + ' was taken out by ' + why + (m.out ? ' (out until next wave)' : ''));
       if (m.id === NET.id) {
         P.lives = m.lives; P.out = !!m.out; P.deaths++; stats.deaths++; saveStats();
-        showDeath(m.cause === 'bomb' ? "the Giant's bomb" : m.cause === 'self' ? 'your own pumpkin' : 'a zombie');
+        showDeath(m.cause === 'bomb' ? "Gobblezilla's pie" : m.cause === 'self' ? 'your own pumpkin' : 'a wild turkey');
         if (P.out) $('killer').textContent += '. Out until the next wave.';
       } else { const r = remotes.get(m.id); if (r) { r.dead = true; r.group.visible = false; } }
       break;
@@ -2522,7 +2573,7 @@ function onNet(m) {
       if (mode === 'online' && match.active) {
         if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores;
         endMatch(m.standings.map(p => ({ name: p.name, kills: p.kills, assists: p.assists || 0, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id, bonus: (m.place || {})[p.id] || 0 })), m.reason,
-          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id), zres: m.mode === 'zombies' ? m.reason : null, wave: m.wave, place: (m.place || {})[NET.id] || 0, players: m.players || 0 });
+          { winTeam: m.winTeam, iWon: (m.winners || []).includes(NET.id), zres: MODES[m.mode] && MODES[m.mode].zombies ? m.reason : null, wave: m.wave, place: (m.place || {})[NET.id] || 0, players: m.players || 0 });
       }
       break;
   }
@@ -2588,7 +2639,7 @@ function addChat(name, text, color, sys) {
   log.scrollTop = log.scrollHeight;
 }
 function resetForMatch() {
-  P.gg = 0; P.turkeyT = 0; P.out = false;
+  P.gg = 0; P.turkeyT = 0; P.out = false; P.bus = false; P.sky = false; P.maxHp = MODES[match.mode].br ? 500 : 100;
   P.kills = 0; P.deaths = 0; P.assists = 0; P.mats = 200; P.pitch = 0; Wp.piece = 'wall'; Wp.aim = false; Wp.burstLeft = 0;
   match.teamScores = [0, 0]; Wp.cur = 0; Wp.spin = 0; pendingLO = null; LO = matchLoadout(); buildSlots();
   $('feed').innerHTML = ''; lastHud = '';
@@ -2599,12 +2650,12 @@ function startOnlineMatch(m) {
   mode = 'online'; removeBots();
   if (m.custom) setCustomMap(m.custom);
   buildMap(m.map);
-  if (m.mode === 'br') startBRClient(m.loot);
+  if (m.mode === 'br') { startBRClient(m.loot); if (m.bus) startBus(m.bus, m.busT || 0); }
   for (const s of m.structs) buildPiece(s, s.hp);
   match.map = m.map; match.mode = MODES[m.mode] ? m.mode : 'ffa'; match.time = m.timeLeft; match.limit = m.limit; match.active = true;
   resetForMatch();
   if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores.slice(0, 2);
-  for (const r of remotes.values()) { r.dead = true; r.snap = true; r.hp = 100; setBar(r); }
+  for (const r of remotes.values()) { r.dead = true; r.snap = true; r.maxHp = MODES[match.mode].br ? 500 : 100; r.hp = r.maxHp; setBar(r); }
   if (NET.room) for (const p of NET.room.players) { p.kills = 0; p.deaths = 0; }
   syncRemotes();
   for (const r of remotes.values()) teamTag(r);
@@ -2612,7 +2663,7 @@ function startOnlineMatch(m) {
   NET.spawned = false; respawnPlayer(); $('gchatlog').innerHTML = '';
   const M = MODES[match.mode];
   $('rmap').textContent = M.name + ' on ' + MAPS[m.map].name;
-  $('rsub').textContent = M.blurb + (M.zombies ? ' Everyone gets the Halloween RPG. Careful, its blast hurts you too.' : '') + (M.teams ? " You're on the " + TEAM_NAMES[P.team] + ' team.' : '') + ' Other players can see you once you drop in.';
+  $('rsub').textContent = M.blurb + (M.zombies ? ' Guard the feast in the middle of the farm!' : '') + (M.teams ? " You're on the " + TEAM_NAMES[P.team] + ' team.' : '') + ' Other players can see you once you drop in.';
   paused = true; openLoadout('match');
 }
 function exitOnline() {
@@ -2966,7 +3017,7 @@ document.querySelectorAll('#buildbar span').forEach(s => s.addEventListener('cli
 
 /* ================= ZOMBIES (Halloween mode) ================= */
 const ZTYPE = { s: 'small', b: 'big', g: 'giant' };
-const ZINFO = { small: { scale: 1, rad: .45, hp: 75, name: 'Zombie', cr: 3 }, big: { scale: 2, rad: .85, hp: 150, name: 'Big Zombie', cr: 5 }, giant: { scale: 4, rad: 1.7, hp: 2000, name: 'THE GIANT', cr: 30 } };
+const ZINFO = { small: { scale: 1, rad: .5, hp: 60, name: 'Wild Turkey', cr: 3 }, big: { scale: 1.8, rad: .9, hp: 160, name: 'Tom Turkey', cr: 5 }, giant: { scale: 4.2, rad: 1.8, hp: 2000, name: 'GOBBLEZILLA', cr: 30 } };
 const ZS = { sim: null, wave: 0, state: 'intermission', timer: 0, left: 0 };
 const zombieEnts = new Map(), bombVis = new Map();
 const zSkin = LM(0x7fb069), zPants = LM(0x3a3046);
@@ -2979,31 +3030,50 @@ const zFaceMat = new THREE.MeshLambertMaterial({ map: zFaceTex }), zHead = [zSki
 const Z_SHIRTS = [0x5a4a6a, 0x6a4a3a, 0x3a5a6a, 0x5a3a3a, 0x4a5a3a];
 const ringGeo = new THREE.RingGeometry(.92, 1, 40), discGeo = new THREE.CircleGeometry(1, 40), bombGeo = new THREE.SphereGeometry(.45, 10, 8);
 const bombMat = LM(0x222222);
-function makeZombie(id, type, x, z) {
+/* ---- Feast Defense: turkey enemies, the feast table ---- */
+function makeZombie(id, type, x, z) {   // the enemies are wild turkeys now
   const I = ZINFO[type];
-  const e = { isZombie: true, id, type, name: I.name, pos: new V3(x, 0, z), tpos: new V3(x, 0, z), yaw: 0, tyaw: 0, hp: I.hp, max: I.hp, scale: I.scale, rad: I.rad, dead: false, swingT: 0 };
-  makeAvatar(e, null, pickAny(Z_SHIRTS), type === 'giant' ? 'horns' : 'none', scene, { skin: zSkin, head: zHead, pants: zPants });
-  setAvatarGun(e, 'scythe', 'classic');
-  e.bar = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x3ddc84 })); e.bar.scale.set(1, .1, 1); e.bar.position.y = 2.3; e.group.add(e.bar);
-  e.group.scale.setScalar(I.scale); e.group.position.copy(e.pos);
+  const e = { isZombie: true, id, type, name: I.name, pos: new V3(x, 0, z), tpos: new V3(x, 0, z), yaw: 0, tyaw: 0, hp: I.hp, max: I.hp, scale: I.scale, rad: I.rad, dead: false, swingT: 0, meshes: [] };
+  e.group = new THREE.Group(); e.inner = turkeyMesh(type === 'giant', 1); e.group.add(e.inner);
+  e.inner.traverse(o => { if (o.isMesh) { o.userData.ent = e; o.userData.part = o.position.y > .9 && o.position.z > .3 ? 'head' : 'body'; e.meshes.push(o); } });
+  e.bar = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x3ddc84 })); e.bar.scale.set(1, .1, 1); e.bar.position.y = 1.65; e.group.add(e.bar);
+  e.group.scale.setScalar(I.scale); e.group.position.copy(e.pos); scene.add(e.group);
   zombieEnts.set(id, e); return e;
 }
 function removeZombie(e, fx) {
-  if (fx) burstFx(scene, new V3(e.pos.x, e.scale, e.pos.z), [0x7fb069, 0x3a5a2a, 0xffffff], 12 + 8 * e.scale, 4 + e.scale, 2, .8, 12);
-  e.bar.material.dispose(); disposeAvatar(e); zombieEnts.delete(e.id);
+  if (fx) burstFx(scene, new V3(e.pos.x, e.scale * .8, e.pos.z), [0x7a4a22, 0xc0401a, 0xffb02e, 0xffffff], 12 + 8 * e.scale, 4 + e.scale, 2, .8, 8);
+  scene.remove(e.group); e.bar.material.dispose(); zombieEnts.delete(e.id);
+}
+const FEAST = { g: null, bar: null };
+function ensureFeast() {
+  if (FEAST.g) return;
+  const g = new THREE.Group(), b = (w, h, d, c, x, y, z) => { const o = new THREE.Mesh(bgeo(w, h, d), LM(c)); o.position.set(x, y, z); o.castShadow = SHADOWS; g.add(o); return o; };
+  b(6, .2, 2.4, 0x7a4a22, 0, .9, 0); b(6.1, .05, 2.5, 0xf2ece0, 0, 1.02, 0);
+  for (const [lx, lz] of [[-2.8, -1], [2.8, -1], [-2.8, 1], [2.8, 1]]) b(.2, .9, .2, 0x5a3a1e, lx, .45, lz);
+  b(1.1, .6, .8, 0xa8622a, 0, 1.35, 0); b(.2, .35, .2, 0xf2ece0, -.6, 1.4, .3); b(.2, .35, .2, 0xf2ece0, .6, 1.4, .3);   // the roast turkey
+  for (const [px, pc] of [[-2, 0xe07a2a], [2, 0xe07a2a], [-1.1, 0xc0401a], [1.2, 0xffd24a]]) b(.7, .15, .7, pc, px, 1.12, (px > 0 ? .4 : -.4));   // pies
+  b(.3, .5, .3, 0xffd24a, -2.4, 1.3, .6); b(.3, .5, .3, 0xffd24a, 2.4, 1.3, -.6);   // corn
+  FEAST.bar = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x3ddc84, depthTest: false })); FEAST.bar.scale.set(4, .25, 1); FEAST.bar.position.y = 3.2; FEAST.bar.renderOrder = 12; g.add(FEAST.bar);
+  scene.add(g); FEAST.g = g;
+}
+function clearFeast() { if (FEAST.g) { scene.remove(FEAST.g); FEAST.g = null; } $('feastbar').hidden = true; }
+function updateFeastHud(f) {
+  if (!f) return; ensureFeast();
+  const k = Math.max(0, f[0] / f[1]); FEAST.bar.scale.x = Math.max(.01, 4 * k); FEAST.bar.material.color.setHex(k < .35 ? 0xff4d5e : k < .65 ? 0xffd23f : 0x3ddc84);
+  $('feastbar').hidden = false; $('feastfill').style.width = (100 * k) + '%'; $('feasttxt').textContent = 'THE FEAST · ' + f[0] + ' / ' + f[1];
 }
 function clearZombies() {
   for (const e of [...zombieEnts.values()]) removeZombie(e, false);
   for (const b of bombVis.values()) scene.remove(b.g); bombVis.clear();
-  $('bossbar').hidden = true;
+  $('bossbar').hidden = true; clearFeast();
 }
 function applyZSnap(s) {
-  ZS.wave = s.w; ZS.state = s.s; ZS.timer = s.t; ZS.left = s.left;
+  ZS.wave = s.w; ZS.state = s.s; ZS.timer = s.t; ZS.left = s.left; if (s.f) updateFeastHud(s.f);
   const seen = new Set(); let changed = false;
   for (const [id, t, x, z, yaw, hp, swing, mv, mx] of s.z) {
     seen.add(id);
     let e = zombieEnts.get(id);
-    if (!e) { e = makeZombie(id, ZTYPE[t] || 'small', x, z); changed = true; if (Math.random() < .3) sfx('groan'); }
+    if (!e) { e = makeZombie(id, ZTYPE[t] || 'small', x, z); changed = true; if (Math.random() < .3) sfx('gobble'); }
     e.tpos.set(x, 0, z); e.tyaw = yaw; if (mx) e.max = mx;
     if (hp < e.hp) e.flash = .08;
     if (hp !== e.hp) { e.hp = hp; e.bar.scale.x = Math.max(.001, hp / e.max); e.bar.material.color.setHex(hp / e.max < .4 ? 0xff4d5e : 0x3ddc84); }
@@ -3036,8 +3106,9 @@ function updateZombies(dt) {
     let dy = e.tyaw - e.yaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy)); e.yaw += dy * k;
     e.group.position.copy(e.pos); e.group.rotation.y = e.yaw;
     const vx = (e.pos.x - ox) / Math.max(dt, .001) / e.scale, vz = (e.pos.z - oz) / Math.max(dt, .001) / e.scale;
-    animateAvatar(e, vx * 1.6, vz * 1.6, dt, false, -.1);
-    if (e.swingT > 0) { e.swingT -= dt; const a = Math.sin((1 - e.swingT / .45) * Math.PI); e.parts.rig.rotation.x = -1.4 * a; e.parts.rig.rotation.z = .6 * a; }
+    const mv = Math.min(1, Math.hypot(vx, vz) / 2);   // waddle, bob and peck
+    e.inner.rotation.z = Math.sin(clock * 12 + e.id) * .1 * mv; e.inner.position.y = Math.abs(Math.sin(clock * 14 + e.id)) * .1 * mv;
+    if (e.swingT > 0) { e.swingT -= dt; e.inner.rotation.x = .7 * Math.sin((1 - e.swingT / .45) * Math.PI); } else e.inner.rotation.x = 0;
     if (e.type === 'giant') giant = e;
   }
   for (const b of bombVis.values()) {
@@ -3072,21 +3143,23 @@ function onZEvent(ev) {
     const p = new V3(ev.x, .3, ev.z); boomFx(p, 1.6); burstFx(scene, p, [0x333333, 0xff5a1a, 0xffd23f], 24, 9, 4, .9, 14);
     const d = P.pos.distanceTo(p); if (d < 60) sfx('boom'); if (d < 16) addShake(.6 * (1 - d / 16));
   } else if (ev.type === 'clear') { waveBanner('Wave ' + ev.wave + ' cleared!', 'Next wave in 8 seconds'); addCrystals(10, 'wave bonus'); if (!P.out) missionEvent('wave'); }
-  else if (ev.type === 'giant') { waveBanner('THE GIANT IS COMING!', 'Watch the sky for red circles'); sfx('groan'); addShake(.4); }
+  else if (ev.type === 'giant') { waveBanner('GOBBLEZILLA IS COMING!', 'Watch out for pies falling from the sky (red circles)'); sfx('gobble'); addShake(.4); }
+  else if (ev.type === 'feasthit') { msg('The turkeys are eating the feast! Protect it!'); sfx('gobble'); }
+  else if (ev.type === 'feastlost') { waveBanner('The feast is gone!', 'The turkeys ate everything'); if (mode !== 'online') endMatch(null, 'feast', { zres: 'feast' }); }
   else if (ev.type === 'wave' && mode !== 'online') onZWave(ev.wave, ev.wave >= 5 ? 1 : 3);
   else if (ev.type === 'won' && mode !== 'online') { missionEvent('wave'); endMatch(null, 'won', { zres: 'won' }); }
 }
 function onZWave(wave, lives) {
   P.lives = lives; ZS.wave = wave;
   if (P.dead) { P.out = false; P.deathT = .4; } else P.hp = 100;   // full health every wave
-  waveBanner('Wave ' + wave + ' of 5', wave >= 5 ? 'Final wave! One life only.' : (wave >= 4 ? 'Big zombies and THE GIANT. ' : '') + lives + ' lives this wave');
+  waveBanner('Wave ' + wave + ' of 5', wave >= 5 ? 'Final wave! One life only.' : (wave >= 4 ? 'Tom Turkeys and GOBBLEZILLA. ' : '') + lives + ' lives this wave');
   lastHud = '';
 }
 function zDeathLocal(cause) {
   if (P.dead) return;
   P.lives = Math.max(0, (P.lives || 1) - 1); P.deaths++; stats.deaths++; saveStats();
   P.out = P.lives <= 0;
-  showDeath(cause === 'bomb' ? "the Giant's bomb" : cause === 'self' ? 'your own pumpkin' : cause === 'fall' ? 'a long fall' : 'a zombie');
+  showDeath(cause === 'bomb' ? "Gobblezilla's pie" : cause === 'self' ? 'your own pumpkin' : cause === 'fall' ? 'a long fall' : 'a wild turkey');
   if (P.out) $('killer').textContent += '. Out until the next wave.';
   if (mode !== 'online' && P.out) endMatch(null, 'wiped', { zres: 'wiped' });
 }
@@ -3098,6 +3171,7 @@ function zHurtLocal(dmg) {
 }
 function startPracticeZombies() {
   ZS.sim = makeZombieSim({
+    feast: true,
     players: () => [{ id: 'me', x: P.pos.x, z: P.pos.z, y: P.pos.y, alive: !P.dead }],
     hurt: (id, dmg) => zHurtLocal(dmg),
     bombHit: () => { if (!P.dead && P.shield <= 0 && !DEV.god) zDeathLocal('bomb'); },
@@ -3237,10 +3311,10 @@ function weaponMission(w) {
 
 /* ---- daily missions ---- */
 const MISSION_POOL = [
-  { id: 'zslayer', name: 'Zombie Slayer', desc: 'Defeat 25 zombies', ev: 'zkill', goal: 25, reward: 75, zombie: true },
-  { id: 'giantkiller', name: 'Giant Killer', desc: 'Take down the Giant', ev: 'giant', goal: 1, reward: 100, zombie: true },
-  { id: 'survivor', name: 'Last One Standing', desc: 'Clear 5 zombie waves', ev: 'wave', goal: 5, reward: 60, zombie: true },
-  { id: 'horde', name: 'Horde Breaker', desc: 'Defeat 60 zombies', ev: 'zkill', goal: 60, reward: 120, zombie: true },
+  { id: 'zslayer', name: 'Turkey Wrangler', desc: 'Defeat 25 wild turkeys', ev: 'zkill', goal: 25, reward: 75, zombie: true },
+  { id: 'giantkiller', name: 'Gobblezilla Slayer', desc: 'Take down GOBBLEZILLA', ev: 'giant', goal: 1, reward: 100, zombie: true },
+  { id: 'survivor', name: 'Feast Guardian', desc: 'Clear 5 Feast Defense waves', ev: 'wave', goal: 5, reward: 60, zombie: true },
+  { id: 'horde', name: 'Flock Breaker', desc: 'Defeat 60 turkeys', ev: 'zkill', goal: 60, reward: 120, zombie: true },
   { id: 'sharp', name: 'Sharpshooter', desc: 'Get 8 headshot kills', ev: 'headshot', goal: 8, reward: 60 },
   { id: 'team', name: 'Team Player', desc: 'Earn 6 assists', ev: 'assist', goal: 6, reward: 50 },
   { id: 'bounty', name: 'Bounty Hunter', desc: 'Eliminate 15 players', ev: 'kill', goal: 15, reward: 60 },
@@ -3597,7 +3671,7 @@ function renderBP() {
   $('bpfill').style.width = (tier >= BP_TIERS ? 100 : 100 * into / BP_XP) + '%';
   $('bpxp').textContent = tier >= BP_TIERS ? 'Battle Pass complete!' : into + ' / ' + BP_XP + ' XP to tier ' + (tier + 1);
   $('bpbuy').hidden = BPS.premium; $('bpbuy').textContent = 'Unlock Premium · ' + BP_PREMIUM_COST + ' 💎';
-  $('bpbuy').disabled = wallet.crystals < BP_PREMIUM_COST;
+  $('bpbuy').disabled = !canAfford(BP_PREMIUM_COST);
   $('bpcr').textContent = wallet.crystals.toLocaleString();
   let html = '';
   for (let t = 1; t <= BP_TIERS; t++) {
@@ -3620,8 +3694,8 @@ function renderBP() {
   const nx = $('bptrack').querySelector('.next'); if (nx) nx.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 $('bpbuy').addEventListener('click', () => {
-  if (BPS.premium || wallet.crystals < BP_PREMIUM_COST) return;
-  wallet.crystals -= BP_PREMIUM_COST; saveWallet(); BPS.premium = true; saveBP(); sfx('buy'); renderBP();
+  if (BPS.premium || !canAfford(BP_PREMIUM_COST)) return;
+  wallet.crystals -= cost(BP_PREMIUM_COST); saveWallet(); BPS.premium = true; saveBP(); sfx('buy'); renderBP();
 });
 $('openBP').addEventListener('click', () => { renderBP(); show('s-bp'); });
 $('bpclose').addEventListener('click', () => show('s-menu'));
@@ -3772,7 +3846,7 @@ function updateMythicGlow(dt) {
 }
 
 /* ================= Game Log (opens like the Shop, with a red dot after updates) ================= */
-const LOG_VERSION = '1.5';
+const LOG_VERSION = '1.6';
 function logDot() { $('logdot').hidden = store.get('arenaclash.logseen', '') === LOG_VERSION; }
 $('gamelogbtn').addEventListener('click', () => { store.set('arenaclash.logseen', LOG_VERSION); logDot(); show('s-gamelog'); });
 $('logclose').addEventListener('click', () => show('s-menu'));
@@ -3896,6 +3970,7 @@ function renderFriends() {
     return '<div class="frow"><span><i class="fdot ' + cls + '"></i><b>' + esc(s && s.name || f.name) + '</b> <span class="small">' + txt + '</span></span><span>' +
       (canJoin ? '<button class="small-btn" data-join="' + f.code + '">Join</button>' : '') +
       (NET.room && s && s.online && NET.room.code !== s.room ? '<button class="small-btn ghost" data-inv="' + f.code + '">Invite</button>' : '') +
+      (NET.devok && s && s.online ? '<button class="small-btn" data-gift="' + f.code + '">Send 💎</button>' : '') +
       '<button class="small-btn ghost" data-rem="' + f.code + '" aria-label="Remove friend">✕</button></span></div>';
   }).join('');
   $('frlist').innerHTML = pend + (rows || '<p class="small">No friends yet. Share your code or add a friend\'s code above.</p>');
@@ -3904,6 +3979,10 @@ function renderFriends() {
   box.querySelectorAll('[data-dec]').forEach(b => b.addEventListener('click', () => { FR.pending = FR.pending.filter(x => x.from !== b.dataset.dec); renderFriends(); }));
   box.querySelectorAll('[data-join]').forEach(b => b.addEventListener('click', () => goOnline({ t: 'fjoin', code: b.dataset.join })));
   box.querySelectorAll('[data-inv]').forEach(b => b.addEventListener('click', () => { netSend({ t: 'finvite', code: b.dataset.inv }); b.textContent = 'Invited ✓'; b.disabled = true; }));
+  box.querySelectorAll('[data-gift]').forEach(b => b.addEventListener('click', () => {
+    const n = parseInt(prompt('How many Clash Crystals do you want to send? (developer only)', '500'), 10);
+    if (n > 0) { netSend({ t: 'gift', code: b.dataset.gift, amount: Math.min(100000, n) }); $('frmsg').textContent = 'Sending ' + n + ' crystals...'; }
+  }));
   box.querySelectorAll('[data-rem]').forEach(b => b.addEventListener('click', () => { FR.list = FR.list.filter(f => f.code !== b.dataset.rem); saveFriends(); renderFriends(); }));
 }
 function friendToast(html, buttons) {
@@ -4076,7 +4155,8 @@ $('lmapclear').addEventListener('click', () => netSend({ t: 'cmap', map: null })
 $('lfriends').addEventListener('click', () => { pollFriends(); renderFriends(); show('s-friends'); });
 
 /* ================= Battle Royale ================= */
-const BR_PHASES_C = [[45, 20, 30, 2], [30, 18, 17, 4], [25, 15, 8, 8], [20, 20, 0, 15]];   // same as the server
+const BR_BUS_C = 35;
+const BR_PHASES_C = [[BR_BUS_C + 45, 35, 130, 4], [40, 30, 80, 8], [35, 25, 45, 15], [30, 20, 20, 25], [25, 20, 0, 40]];   // same as the server
 const BR_RARITY = { 0: 'common', 1: 'common', 2: 'common', 4: 'common', 5: 'rare', 3: 'rare', 7: 'rare', 8: 'epic', 6: 'epic', 11: 'epic', 9: 'legendary' };
 const RARITY_COL = { common: 0xb8c0cc, rare: 0x4f8fe8, epic: 0xb06bff, legendary: 0xffb21f };
 const brOn = () => !!MODES[match.mode].br;
@@ -4097,10 +4177,67 @@ function addLoot(l) {
 }
 function removeLoot(id) { const l = BRC.loot.get(id); if (!l) return; scene.remove(l.g); BRC.loot.delete(id); }
 function clearBR() {
+  stopBus(); if (typeof gliderVM !== 'undefined') gliderVM.visible = false;
   for (const id of [...BRC.loot.keys()]) removeLoot(id);
   if (BRC.wall) { scene.remove(BRC.wall); scene.remove(BRC.ring); BRC.wall = BRC.ring = null; }
   BRC.storm = null; BRC.local = null; $('stormfx').hidden = true; $('spectate').hidden = true;
 }
+/* ---- the Drop Bus (Battle Royale) ---- */
+const BUS = { on: false, a: new V3(), b: new V3(), dur: 35, t: 0, mesh: null };
+function busMesh() {
+  const g = new THREE.Group(), b = (w, h, d, c, x, y, z) => { const o = new THREE.Mesh(bgeo(w, h, d), LM(c)); o.position.set(x, y, z); g.add(o); return o; };
+  b(3.2, 2.6, 8, 0x2d6cdf, 0, 0, 0); b(3.25, .8, 7.4, 0xbfe6ff, 0, .5, 0); b(3.3, .3, 8.2, 0xffffff, 0, 1.4, 0); b(3.3, .4, 8.2, 0xffd24a, 0, -.6, 0);
+  for (const [x, z] of [[-1.5, 2.6], [1.5, 2.6], [-1.5, -2.6], [1.5, -2.6]]) b(.4, 1, 1, 0x222222, x, -1.4, z);
+  const balloon = new THREE.Mesh(new THREE.SphereGeometry(4.4, 18, 14), new THREE.MeshLambertMaterial({ color: 0xff7a1a })); balloon.scale.y = 1.2; balloon.position.y = 9; g.add(balloon);
+  const band = new THREE.Mesh(new THREE.TorusGeometry(4.2, .35, 8, 24), LM(0xffd24a)); band.rotation.x = Math.PI / 2; band.position.y = 9; g.add(band);
+  for (const [x, z] of [[-1.4, 3.6], [1.4, 3.6], [-1.4, -3.6], [1.4, -3.6]]) { const r = b(.06, 5, .06, 0x5a3a1e, x, 4, z); }
+  scene.add(g); return g;
+}
+const busPos = (t) => new V3().lerpVectors(BUS.a, BUS.b, Math.min(1, Math.max(0, t / BUS.dur)));
+function startBus(arr, elapsed) {
+  BUS.a.set(arr[0], 70, arr[1]); BUS.b.set(arr[2], 70, arr[3]); BUS.dur = arr[4] || 35; BUS.t = elapsed || 0; BUS.on = true;
+  if (!BUS.mesh) BUS.mesh = busMesh(); BUS.mesh.visible = true;
+  P.bus = true; P.sky = false; P.glider = false; P.dead = false; P.yaw = Math.atan2(BUS.a.x - BUS.b.x, BUS.a.z - BUS.b.z);
+}
+function stopBus() { BUS.on = false; P.bus = false; if (BUS.mesh) BUS.mesh.visible = false; $('busprompt').hidden = true; }
+function jumpFromBus() {
+  if (!P.bus) return;
+  P.bus = false; P.sky = true; P.vy = 0; P.pos.copy(busPos(BUS.t)).add(new V3(0, -3, 0)); P.shield = SPAWN_SHIELD;
+  $('busprompt').hidden = true; msg('Skydiving! Steer with WASD, your glider opens near the ground.'); sfx('whistle');
+  if (mode === 'online' && !NET.spawned) { NET.spawned = true; netSend({ t: 'spawn', x: rd(P.pos.x), y: rd(P.pos.y), z: rd(P.pos.z) }); }
+}
+function updateBus(dt) {
+  if (!BUS.on) return;
+  BUS.t += dt; const p = busPos(BUS.t);
+  BUS.mesh.position.copy(p); BUS.mesh.rotation.y = Math.atan2(BUS.b.x - BUS.a.x, BUS.b.z - BUS.a.z);
+  if (P.bus) {
+    P.pos.copy(p); P.vy = 0;
+    $('busprompt').hidden = false;
+    $('busprompt').innerHTML = '<b>' + (isTouch ? 'Tap JUMP' : 'Press SPACE') + ' to jump off the Drop Bus</b><span>Auto-drop in ' + Math.max(0, Math.ceil(BUS.dur - BUS.t)) + 's</span>';
+    if ((keys.Space && !paused) || BUS.t >= BUS.dur) jumpFromBus();
+  }
+  if (BUS.t > BUS.dur + 3) stopBus();
+}
+function busCamera() {
+  const p = busPos(BUS.t), d = 22;
+  camera.position.set(p.x + Math.sin(P.yaw) * d, p.y + 7 - P.pitch * 10, p.z + Math.cos(P.yaw) * d);
+  camera.lookAt(p.x, p.y + 3, p.z);
+}
+const gliderVM = new THREE.Group();
+{ const w = new THREE.Mesh(new THREE.BoxGeometry(2.6, .06, .9), LM(0xff7a1a)); w.position.set(0, .95, -.5); gliderVM.add(w);
+  const s2 = new THREE.Mesh(new THREE.BoxGeometry(2.62, .07, .2), LM(0xffd24a)); s2.position.set(0, .96, -.2); gliderVM.add(s2); gliderVM.visible = false; camera.add(gliderVM); }
+function skyMove(dt) {
+  let fx = T.jx, fz = T.jy; if (keys.KeyW) fz -= 1; if (keys.KeyS) fz += 1; if (keys.KeyA) fx -= 1; if (keys.KeyD) fx += 1;
+  const l = Math.hypot(fx, fz), g = groundAt(P.pos.x, P.pos.z, P.pos.y), glide = P.pos.y - g < 22, sp = (glide ? 11 : 18) * dt;
+  if (l > .05) { fx /= l; fz /= l; const s = Math.sin(P.yaw), c = Math.cos(P.yaw); P.pos.x += (fx * c + fz * s) * sp; P.pos.z += (-fx * s + fz * c) * sp; }
+  const lim = ARENA - 1; P.pos.x = Math.max(-lim, Math.min(lim, P.pos.x)); P.pos.z = Math.max(-lim, Math.min(lim, P.pos.z));
+  P.vy = glide ? Math.max(P.vy - 20 * dt, -5) : Math.max(P.vy - 14 * dt, -26);
+  if (glide && !P.glider) { P.glider = true; msg('Glider deployed!'); }
+  P.pos.y += P.vy * dt; P.moving = l > .05;
+  gliderVM.visible = P.glider;
+  if (P.pos.y <= g) { P.pos.y = g; P.vy = 0; P.sky = false; P.glider = false; P.onGround = true; gliderVM.visible = false; }
+}
+
 function startBRClient(loot) {
   clearBR(); P.out = false;
   for (const l of loot || []) addLoot(l);
@@ -4108,11 +4245,11 @@ function startBRClient(loot) {
   BRC.wall.position.y = 30; scene.add(BRC.wall);
   BRC.ring = new THREE.Mesh(new THREE.RingGeometry(.985, 1, 96), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .6, side: THREE.DoubleSide, depthWrite: false }));
   BRC.ring.rotation.x = -Math.PI / 2; BRC.ring.position.y = .08; scene.add(BRC.ring);
-  BRC.storm = { cx: 0, cz: 0, r: 58, tx: 0, tz: 0, tr: 30, t: 45, shrinking: 0, alive: 0, phase: 0 };
+  BRC.storm = { cx: 0, cz: 0, r: ARENA * 1.45, tx: 0, tz: 0, tr: BR_PHASES_C[0][2], t: BR_PHASES_C[0][0], shrinking: 0, alive: 0, phase: 0 };
 }
 function onBRState(a) { BRC.storm = { cx: a[0], cz: a[1], r: a[2], tx: a[3], tz: a[4], tr: a[5], t: a[6], shrinking: a[7], alive: a[8], phase: a[9] }; }
 function onLootGet(w) {
-  if (w === 'hp') { msg('+50 HP'); sfx('pickup'); return; }
+  if (w === 'hp') { msg('+100 HP'); sfx('pickup'); return; }
   const slot = LO.length < 4 ? LO.length : (Wp.cur < LO.length ? Wp.cur : 0);
   if (LO.length < 4) LO.push(w); else LO[slot] = w;
   guns[w].mag = WEAPONS[w].mag; guns[w].reserve = WEAPONS[w].reserve;
@@ -4123,11 +4260,11 @@ function tryLootPickup(dt) {
   BRC.pickT -= dt; if (BRC.pickT > 0 || P.dead) return;
   for (const l of BRC.loot.values()) {
     if (Math.hypot(l.x - P.pos.x, l.z - P.pos.z) > 1.6 || Math.abs(l.g.position.y - .9 - P.pos.y) > 1.6) continue;
-    if (l.w === 'hp' && P.hp >= 100) continue;
+    if (l.w === 'hp' && P.hp >= (P.maxHp || 100)) continue;
     BRC.pickT = .4;
     const slot = LO.length < 4 ? -1 : (Wp.cur < LO.length ? Wp.cur : 0);
     if (mode === 'online') netSend({ t: 'loot', id: l.id, slot: Math.max(0, slot) });
-    else { removeLoot(l.id); if (l.w === 'hp') P.hp = Math.min(100, P.hp + 50); onLootGet(l.w); }
+    else { removeLoot(l.id); if (l.w === 'hp') P.hp = Math.min(P.maxHp || 100, P.hp + 100); onLootGet(l.w); }
     return;
   }
 }
@@ -4136,9 +4273,11 @@ function startBRPractice() {
   const loot = []; let id = 1; const bag = [];
   const weight = { common: 5, rare: 3, epic: 2, legendary: 1 };
   for (const [w, r] of Object.entries(BR_RARITY)) if (+w !== 4) for (let i = 0; i < weight[r]; i++) bag.push(+w);
-  for (let gx = -30; gx <= 30; gx += 10) for (let gz = -30; gz <= 30; gz += 10) { if (Math.random() < .25) continue; loot.push({ id: id++, x: gx + (Math.random() - .5) * 6, z: gz + (Math.random() - .5) * 6, w: Math.random() < .22 ? 'hp' : pickAny(bag) }); }
+  for (let i = 0; i < 140; i++) loot.push({ id: id++, x: (Math.random() * 2 - 1) * (ARENA - 8), z: (Math.random() * 2 - 1) * (ARENA - 8), w: Math.random() < .22 ? 'hp' : pickAny(bag) });
   startBRClient(loot);
-  BRC.local = { phase: 0, wait: BR_PHASES_C[0][0], shrink: 0, cx: 0, cz: 0, r: 58, fromR: 58, toR: BR_PHASES_C[0][2], fx: 0, fz: 0, tx: 0, tz: 0, dps: 1, acc: 0, started: clock };
+  const a = Math.random() * Math.PI * 2, e = ARENA + 20; startBus([Math.cos(a) * e, Math.sin(a) * e, -Math.cos(a + .35) * e, -Math.sin(a + .35) * e, BR_BUS_C], 0);
+  for (const b of bots) { b.dead = true; b.group.visible = false; b.respawn = 5 + Math.random() * (BR_BUS_C - 2); }
+  BRC.local = { phase: 0, wait: BR_PHASES_C[0][0], shrink: 0, cx: 0, cz: 0, r: ARENA * 1.45, fromR: ARENA * 1.45, toR: BR_PHASES_C[0][2], fx: 0, fz: 0, tx: 0, tz: 0, dps: 1, acc: 0, started: clock };
   for (const b of bots) { b.out = false; b.placeT = 0; }
 }
 function tickBRLocal(dt) {
@@ -4146,7 +4285,7 @@ function tickBRLocal(dt) {
   const ph = BR_PHASES_C[Math.min(b.phase, BR_PHASES_C.length - 1)];
   if (b.wait > 0) {
     b.wait -= dt;
-    if (b.wait <= 0) { b.shrink = ph[1]; b.fromR = b.r; b.toR = ph[2]; b.fx = b.cx; b.fz = b.cz; const a = Math.random() * 6.28, d = Math.random() * Math.max(0, b.r - b.toR) * .6; b.tx = Math.max(-30, Math.min(30, b.cx + Math.cos(a) * d)); b.tz = Math.max(-30, Math.min(30, b.cz + Math.sin(a) * d)); msg('The storm is closing in!'); }
+    if (b.wait <= 0) { b.shrink = ph[1]; b.fromR = b.r; b.toR = ph[2]; b.fx = b.cx; b.fz = b.cz; const a = Math.random() * 6.28, d = Math.random() * Math.max(0, b.r - b.toR) * .6; const lm = ARENA - 25; b.tx = Math.max(-lm, Math.min(lm, b.cx + Math.cos(a) * d)); b.tz = Math.max(-lm, Math.min(lm, b.cz + Math.sin(a) * d)); msg('The storm is closing in!'); }
   } else if (b.shrink > 0) {
     b.shrink -= dt; const k = 1 - Math.max(0, b.shrink) / ph[1];
     b.r = b.fromR + (b.toR - b.fromR) * k; b.cx = b.fx + (b.tx - b.fx) * k; b.cz = b.fz + (b.tz - b.fz) * k; b.dps = ph[3];
@@ -4160,7 +4299,7 @@ function tickBRLocal(dt) {
   }
   const alive = [P, ...bots].filter(f => !f.dead);
   BRC.storm = { cx: b.cx, cz: b.cz, r: b.r, tx: b.wait > 0 ? b.tx : b.tx, tz: b.tz, tr: b.toR, t: Math.ceil(b.wait > 0 ? b.wait : b.shrink), shrinking: b.wait > 0 ? 0 : 1, alive: alive.length, phase: b.phase };
-  if (!b.ending && match.active && clock - b.started > 3 && (alive.length <= 1 || P.out)) b.ending = true, setTimeout(() => { if (match.active && brOn() && mode !== 'online') endMatch(); }, P.out ? 2500 : 600);
+  if (!b.ending && match.active && clock - b.started > BR_BUS_C + 8 && (alive.length <= 1 || P.out)) b.ending = true, setTimeout(() => { if (match.active && brOn() && mode !== 'online') endMatch(); }, P.out ? 2500 : 600);
 }
 function brLocalOut(f, why) {
   f.hp = 0; f.dead = true; f.out = true; f.placeT = clock;
@@ -4169,6 +4308,7 @@ function brLocalOut(f, why) {
 }
 function updateBR(dt) {
   if (!match.active || !brOn()) { $('stormfx').hidden = true; return; }
+  updateBus(dt);
   if (mode !== 'online') tickBRLocal(dt);
   for (const l of BRC.loot.values()) { l.g.rotation.y += dt * 1.4; l.g.children[l.g.children.length - 1].rotation.z += dt; }
   tryLootPickup(dt);
@@ -4272,12 +4412,12 @@ function renderSkinShop() {
   for (const [id, S] of Object.entries(GUN_SKINS)) {
     const owned = ownsSkin(id), b = document.createElement('button');
     b.className = 'chip skinchip ' + S.rarity + (owned ? '' : ' locked'); b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', look.gunSkin === id ? 'true' : 'false');
-    b.innerHTML = owned ? esc(S.name) : skinArmed === id ? (wallet.crystals >= S.price ? 'Buy ' + esc(S.name) + ' for ' + S.price + ' 💎' : 'Need ' + (S.price - wallet.crystals) + ' more 💎') : '🔒 ' + esc(S.name) + ' <small>' + S.price + ' 💎</small>';
+    b.innerHTML = owned ? esc(S.name) : skinArmed === id ? (canAfford(S.price) ? 'Buy ' + esc(S.name) + ' for ' + S.price + ' 💎' : 'Need ' + (S.price - wallet.crystals) + ' more 💎') : '🔒 ' + esc(S.name) + ' <small>' + S.price + ' 💎</small>';
     b.addEventListener('click', () => {
       if (!ownsSkin(id)) {
         if (skinArmed !== id) { skinArmed = id; renderSkinShop(); return; }
-        if (wallet.crystals < S.price) { sfx('empty'); return; }
-        wallet.crystals -= S.price; wallet.skins.push(id); saveWallet(); sfx('buy');
+        if (!canAfford(S.price)) { sfx('empty'); return; }
+        wallet.crystals -= cost(S.price); wallet.skins.push(id); saveWallet(); sfx('buy');
       }
       skinArmed = null; look.gunSkin = id; saveLook(); pv.gun = pickAny(['ar', 'sniper', 'ak', 'rocket', 'revolver', 'minigun']); rebuildPreview(); rebuildViewmodels(); sendHello(); renderSkinShop();
     });
@@ -4394,7 +4534,7 @@ const countOf = (o) => { const c = {}; for (const k in o) c[k] = o[k].length; re
 function castPractice(store_, who, id) { for (const k in store_) store_[k] = store_[k].filter(v => v !== who); store_[id].push(who); updateVote(countOf(pv_maps), countOf(pv_modes), 6, pv_myMap, pv_myMode); }
 function startPracticeVote() {
   clearTimers();
-  pv_choices = Object.keys(MAPS).sort(() => Math.random() - .5).slice(0, 3);
+  pv_choices = Object.keys(MAPS).filter(k => !['pumpkin', 'valley', 'custom'].includes(k)).sort(() => Math.random() - .5).slice(0, 3);   // special maps are picked by their modes
   pv_maps = {}; pv_modes = {}; pv_myMap = pv_myMode = null;
   const pmodes = Object.keys(MODES).filter(k => !MODES[k].online);
   pv_choices.forEach(id => pv_maps[id] = []); pmodes.forEach(id => pv_modes[id] = []);
@@ -4424,7 +4564,8 @@ function finishPracticeVote() {
   timers.push(setTimeout(() => preparePractice(mapWin, modeWin), 1600));
 }
 function preparePractice(mapId, modeId) {
-  if (MODES[modeId].zombies) mapId = 'pumpkin';
+  if (MODES[modeId].zombies) mapId = 'harvest';
+  if (MODES[modeId].br) mapId = 'valley';
   mode = 'offline'; removeBots(); match.mode = modeId; buildMap(mapId);
   const M = MODES[modeId];
   if (M.zombies) {
@@ -4480,7 +4621,7 @@ function openLoadout(ctx) {
   loDraft = ctx === 'match' ? (MODES[match.mode].weapons ? MODES[match.mode].weapons.slice() : look_lo().filter(canUseGun)) : look_lo().slice();
   $('lohead').textContent = ctx === 'menu' ? 'Loadout' : (ctx === 'pause' ? 'Change loadout' : MODES[match.mode].name + ' on ' + MAPS[match.map].name);
   $('losub').textContent = MODES[match.mode].weapons && ctx !== 'menu' ? 'Snipers Only: everyone gets the same guns this match.'
-    : zombiesOn() && ctx !== 'menu' ? 'Zombies: the Halloween RPG is added as your first slot, plus your first 3 picks here.'
+    : zombiesOn() && ctx !== 'menu' ? 'Feast Defense: bring your best guns to protect the feast!'
     : ctx === 'pause' ? 'Pick up to 4 guns. Your new loadout starts when you respawn.' : 'Pick up to 4 guns. Click a slot, then a gun. Locked guns cost Clash Crystals.';
   $('lodrop').textContent = ctx === 'match' ? 'Drop in' : 'Save loadout';
   renderLoadout(); show('s-loadout');
@@ -4506,7 +4647,7 @@ function renderLoadout() {
     grid += '<button class="locard ' + rarity + (usable ? '' : ' locked') + (inLo ? ' inlo' : '') + (armed ? ' armed' : '') + '" data-g="' + i + '" style="background:' + (onTrial ? 'linear-gradient(180deg,#3a0f78,#9b30ff)' : usable ? RARITY_BG.common : RARITY_BG[rarity]) + '"' + (fixed ? ' disabled' : '') + '>' +
       '<img alt="" src="' + gunImage(w.id, skinOf(w.id, look.gunSkin, look.mythic)) + '">' +
       (onTrial ? '<em class="free">FREE<br>' + fmtLeft(trial.endsAt - Date.now()) + '</em>' : '') +
-      (usable ? '<span>' + w.name + '</span>' : (armed ? '<em class="buy">' + (wallet.crystals >= price ? 'Buy for ' + price + ' 💎' : 'Need ' + (price - wallet.crystals) + ' more 💎') + '</em>' : '<i class="lock">🔒</i><em class="price">' + price + ' 💎</em>')) +
+      (usable ? '<span>' + w.name + '</span>' : (armed ? '<em class="buy">' + (canAfford(price) ? 'Buy for ' + price + ' 💎' : 'Need ' + (price - wallet.crystals) + ' more 💎') + '</em>' : '<i class="lock">🔒</i><em class="price">' + price + ' 💎</em>')) +
       '</button>';
   }
   $('logrid').innerHTML = grid;
@@ -4527,8 +4668,8 @@ function pickCard(g) {
   if (!canUseGun(i)) {
     if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen(w.id)) return;
     if (loArmed !== i) { loArmed = i; renderLoadout(); return; }
-    if (wallet.crystals < price) { sfx('empty'); return; }
-    wallet.crystals -= price; wallet.guns.push(i); saveWallet(); sfx('buy'); loArmed = null;
+    if (!canAfford(price)) { sfx('empty'); return; }
+    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); sfx('buy'); loArmed = null;
   }
   loArmed = null;
   const at = loDraft.indexOf(i);
@@ -4561,6 +4702,7 @@ function statBars(w) {
 }
 function openShop(tab) { if (tab) shopTab = tab; shopArmed = null; renderShop(); show('s-shop'); }
 function renderShop() {
+  $('shopdev').hidden = !devShop();
   document.querySelectorAll('.shoptab').forEach(b => b.setAttribute('aria-selected', b.dataset.t === shopTab ? 'true' : 'false'));
   $('shopcr').textContent = wallet.crystals.toLocaleString();
   const trial = trialInfo(); let html = '';
@@ -4572,7 +4714,7 @@ function renderShop() {
       if (ended && !owned) continue;
       let btn;
       if (owned) btn = '<button class="ghost" disabled>Owned ✓</button>';
-      else if (shopArmed === 'g' + i) btn = wallet.crystals >= price ? '<button data-buy="g' + i + '">Confirm ' + price + ' 💎</button>' : '<button disabled>Need ' + (price - wallet.crystals) + ' more 💎</button>';
+      else if (shopArmed === 'g' + i) btn = canAfford(price) ? '<button data-buy="g' + i + '">Confirm ' + price + ' 💎</button>' : '<button disabled>Need ' + (price - wallet.crystals) + ' more 💎</button>';
       else btn = '<button data-buy="g' + i + '">Buy · ' + price + ' 💎</button>';
       const tag = limited ? '<em class="rar limited">LIMITED · ' + Math.max(0, Math.ceil(((LIMITS[w.id] || LIMITED_END) - Date.now()) / 864e5)) + 'd left</em>' : '<em class="rar ' + rarity + '">' + rarity.toUpperCase() + '</em>';
       html += '<div class="shopcard ' + rarity + '"><div class="simg"><img alt="" src="' + gunImage(w.id, skinOf(w.id, look.gunSkin, look.mythic)) + '">' + (onTrial ? '<i class="trial">FREE NOW</i>' : '') + '</div>' +
@@ -4588,7 +4730,7 @@ function renderShop() {
       if (on) btn = '<button class="ghost" data-munequip="' + id + '">Equipped ✓ (tap to remove)</button>';
       else if (owned) btn = '<button class="ghost" data-mequip="' + id + '">Equip</button>';
       else if (S.bp) btn = '<button class="ghost" disabled>🎟️ Battle Pass reward (tier 30)</button>';
-      else if (shopArmed === 'c' + id) btn = wallet.crystals >= S.price ? '<button data-buy="c' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
+      else if (shopArmed === 'c' + id) btn = canAfford(S.price) ? '<button data-buy="c' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
       else btn = '<button data-buy="c' + id + '">Buy · ' + S.price + ' 💎</button>';
       html += '<div class="shopcard mythical"><div class="simg"><img alt="" src="' + gunImage(S.weapon, id) + '"><i class="trial wtag">' + esc(wname) + '</i></div>' +
         '<div class="sbody"><div class="stitle"><b>' + esc(S.name) + '</b><em class="rar mythical">MYTHICAL</em></div>' +
@@ -4601,7 +4743,7 @@ function renderShop() {
       if (on) btn = '<button class="ghost" disabled>Equipped ✓</button>';
       else if (owned) btn = '<button class="ghost" data-equip="' + id + '">Equip</button>';
       else if (S.bp) btn = '<button class="ghost" disabled>🎟️ Battle Pass reward</button>';
-      else if (shopArmed === 's' + id) btn = wallet.crystals >= S.price ? '<button data-buy="s' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
+      else if (shopArmed === 's' + id) btn = canAfford(S.price) ? '<button data-buy="s' + id + '">Confirm ' + S.price + ' 💎</button>' : '<button disabled>Need ' + (S.price - wallet.crystals) + ' more 💎</button>';
       else btn = '<button data-buy="s' + id + '">Buy · ' + S.price + ' 💎</button>';
       html += '<div class="shopcard skin ' + S.rarity + '"><div class="simg"><img alt="" src="' + gunImage('ak', id) + '">' + (S.isNew ? '<i class="trial">NEW</i>' : '') + '</div>' +
         '<div class="sminis"><img alt="" src="' + gunImage('sniper', id) + '"><img alt="" src="' + gunImage('pistol', id) + '"><img alt="" src="' + gunImage('rocket', id) + '"></div>' +
@@ -4623,17 +4765,17 @@ function equipMythic(id, on) {
 function shopBuy(key) {
   if (shopArmed !== key) { shopArmed = key; renderShop(); return; }
   if (key[0] === 'c') {
-    const id = key.slice(1), S = MYTHICS[id]; if (!S || S.bp || wallet.crystals < S.price || ownsMythic(id)) return;
-    wallet.crystals -= S.price; wallet.mythics.push(id); saveWallet(); sfx('buy'); equipMythic(id, true); shopArmed = null; renderShop(); return;
+    const id = key.slice(1), S = MYTHICS[id]; if (!S || S.bp || !canAfford(S.price) || ownsMythic(id)) return;
+    wallet.crystals -= cost(S.price); wallet.mythics.push(id); saveWallet(); sfx('buy'); equipMythic(id, true); shopArmed = null; renderShop(); return;
   }
   if (key[0] === 'g') {
     const i = +key.slice(1), w = WEAPONS[i], price = GUN_INFO[w.id][0];
     if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen(w.id)) return;
-    if (wallet.crystals < price || ownsGun(i)) return;
-    wallet.crystals -= price; wallet.guns.push(i); saveWallet(); sfx('buy');
+    if (!canAfford(price) || ownsGun(i)) return;
+    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); sfx('buy');
   } else {
-    const id = key.slice(1), S = GUN_SKINS[id]; if (S.bp || wallet.crystals < S.price || ownsSkin(id)) return;
-    wallet.crystals -= S.price; wallet.skins.push(id); saveWallet(); sfx('buy'); equipSkin(id);
+    const id = key.slice(1), S = GUN_SKINS[id]; if (S.bp || !canAfford(S.price) || ownsSkin(id)) return;
+    wallet.crystals -= cost(S.price); wallet.skins.push(id); saveWallet(); sfx('buy'); equipSkin(id);
   }
   shopArmed = null; renderShop();
 }
@@ -4675,8 +4817,8 @@ function endMatch(list, reason, extra) {
   if (M.zombies) {
     const res = (extra && extra.zres) || reason;
     won = res === 'won';
-    title = won ? 'You survived!' : 'The zombies win';
-    sub = won ? 'All 5 waves cleared, the Giant is down! ' : 'Everyone was taken out on wave ' + ((extra && extra.wave) || ZS.wave || 1) + '. ';
+    title = won ? 'You saved the feast!' : res === 'feast' ? 'The turkeys ate the feast!' : 'The flock wins';
+    sub = won ? 'All 5 waves cleared and GOBBLEZILLA is down! ' : (res === 'feast' ? 'The feast was eaten on wave ' : 'Everyone was taken out on wave ') + ((extra && extra.wave) || ZS.wave || 1) + '. ';
   } else if (M.teams) {
     const [a, b] = match.teamScores;
     const winTeam = extra && extra.winTeam != null ? extra.winTeam : (a === b ? -1 : a > b ? 0 : 1);
@@ -4748,7 +4890,7 @@ $('qcancel').addEventListener('click', () => { clearTimers(); show('s-menu'); })
 function dropIn() {
   show(null); paused = false; tryLock(); hintLook(); refreshDev(); KC.ent = null;
   if (DEV.on && mode === 'online' && DEV.god) netSend({ t: 'dev', god: true });
-  if (mode === 'online' && !NET.spawned) { NET.spawned = true; P.shield = SPAWN_SHIELD; netSend({ t: 'spawn', x: rd(P.pos.x), y: rd(P.pos.y), z: rd(P.pos.z) }); }
+  if (mode === 'online' && !NET.spawned && !P.bus) { NET.spawned = true; P.shield = SPAWN_SHIELD; netSend({ t: 'spawn', x: rd(P.pos.x), y: rd(P.pos.y), z: rd(P.pos.z) }); }
 }
 $('drop').addEventListener('click', dropIn);
 $('lodrop').addEventListener('click', confirmLoadout);
@@ -4761,6 +4903,8 @@ $('tomenu').addEventListener('click', () => { if (mode === 'online') leaveOnline
 
 /* ================= update ================= */
 function updatePlayer(dt) {
+  if (P.bus) return;
+  if (P.sky) { skyMove(dt); return; }
   if (keys.ArrowLeft) P.yaw += 2.4 * dt; if (keys.ArrowRight) P.yaw -= 2.4 * dt;
   if (keys.ArrowUp) P.pitch = Math.min(1.5, P.pitch + 1.8 * dt); if (keys.ArrowDown) P.pitch = Math.max(-1.5, P.pitch - 1.8 * dt);
   let fx_ = T.jx, fz_ = T.jy;
@@ -4831,7 +4975,7 @@ let lastHud = '', miniT = 0;
 function fmtTime(t) { t = Math.max(0, Math.ceil(t)); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
 function updateHud(dt) {
   if (!match.active) return;
-  $('hpfill').style.width = P.hp + '%'; $('hpfill').style.background = P.hp < 35 ? 'var(--danger)' : 'var(--hp)';
+  const hpk = P.hp / (P.maxHp || 100); $('hpfill').style.width = (100 * hpk) + '%'; $('hpfill').style.background = hpk < .35 ? 'var(--danger)' : 'var(--hp)';
   const gun = cw() >= 0 ? guns[cw()] : null, w = gun && WEAPONS[cw()];
   const sig = [Math.ceil(P.hp), Wp.cur, P.nades, P.mines, LO.join(','), P.lives, ZS.wave, gun ? gun.mag : '', gun ? gun.reserve : '', P.mats, Wp.piece, guns.map(g => g.mag + '/' + g.reserve).join(','), match.teamScores.join('-'), match.mode].join('|');
   if (sig !== lastHud) {
@@ -4879,7 +5023,7 @@ function updateHud(dt) {
   $('shieldtag').hidden = !(P.shield > 0 && !P.dead);
   if (zombiesOn()) {
     $('timer').textContent = 'Wave ' + Math.max(1, ZS.wave) + ' / 5'; $('timer').style.color = '#ff9a3d';
-    $('goal').textContent = ZS.state === 'intermission' ? (ZS.wave ? 'Next wave in ' + ZS.timer : 'Get ready! First wave in ' + ZS.timer) : 'Zombies left: ' + ZS.left;
+    $('goal').textContent = ZS.state === 'intermission' ? (ZS.wave ? 'Next wave in ' + ZS.timer : 'Get ready! First wave in ' + ZS.timer) : 'Turkeys left: ' + ZS.left;
   } else { $('timer').textContent = fmtTime(match.time); $('timer').style.color = match.time < 30 ? 'var(--danger)' : ''; }
   miniT -= dt;
   if (miniT <= 0) {
@@ -4889,7 +5033,7 @@ function updateHud(dt) {
   }
   if (hitT > 0) { hitT -= dt; if (hitT <= 0) $('hit').classList.remove('show'); }
   if (msgT > 0) { msgT -= dt; if (msgT <= 0) $('msg').classList.remove('show'); }
-  vigT = Math.max(0, vigT - dt); $('vignette').style.opacity = Math.max(vigT * 1.6, P.hp < 30 && !P.dead ? .25 : 0);
+  vigT = Math.max(0, vigT - dt); $('vignette').style.opacity = Math.max(vigT * 1.6, P.hp / (P.maxHp || 100) < .3 && !P.dead ? .25 : 0);
 }
 
 /* ================= main loop ================= */
@@ -4928,7 +5072,7 @@ function loop(now) {
     camera.position.set(P.pos.x, P.pos.y + (P.dead ? .4 : EYE), P.pos.z);
     camera.rotation.set(P.pitch, P.yaw, P.dead ? .4 : 0);
     if (shake > 0) { camera.position.x += (Math.random() - .5) * shake * .3; camera.position.y += (Math.random() - .5) * shake * .3; camera.rotation.z += (Math.random() - .5) * shake * .05; shake = Math.max(0, shake - dt * 2.5); }
-    if (!updateKillcam() && !brSpectate()) updateEmote(dt);
+    if (P.bus && BUS.on) busCamera(); else if (!updateKillcam() && !brSpectate()) updateEmote(dt);
   } else if (ED.on) updateEditor(dt);
   else {
     menuYaw += dt * .06;
