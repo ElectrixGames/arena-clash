@@ -510,6 +510,15 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 #busprompt b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:22px;color:var(--gold1)}
 #busprompt span{font-size:13px;color:var(--muted)}
 
+.acctbox{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#accttabs button{flex:1}#accttabs button.on{background:var(--gold2);color:#1c1206}
+/* ============ V1.7: 3D lobby ============ */
+@media (min-width:760px){
+  body.lobbyview #overlay{background:linear-gradient(90deg,rgba(6,10,24,.78) 0%,rgba(6,10,24,.45) 48%,rgba(6,10,24,0) 72%);backdrop-filter:none;justify-content:flex-start}
+  body.lobbyview #s-menu,body.lobbyview #s-lobby{margin-left:3vw;margin-right:auto;max-width:min(880px,56vw)}
+}
+#lobbyhint{position:fixed;right:4vw;bottom:calc(22px + env(safe-area-inset-bottom,0px));color:rgba(255,255,255,.7);font-size:13px;pointer-events:none;display:none}
+body.lobbyview #lobbyhint{display:block}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -591,11 +600,12 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   <div id="edcross"></div>
   <div class="edhelp">Click the game to aim · WASD fly, Space up, Q down, Shift faster · Left click place · Right click remove · Wheel size · 1 to 9 colors · Esc to use the buttons</div>
 </div>
+<div id="lobbyhint">Drag to spin your character</div>
 <div id="overlay">
   <section class="card wide" id="s-menu">
     <div class="menugrid">
       <div>
-        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.6</span></div>
+        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.7</span></div>
         <p>Up to 8 players. Free-for-all, Team Deathmatch or Snipers Only, voted on by the lobby.</p>
         <label for="pname">Your name</label>
         <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
@@ -625,6 +635,7 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
         </details>
       </div>
       <div class="side">
+          <div class="statbox acctbox"><span id="acctlabel">Playing as <b>Guest</b></span><button class="small-btn" id="acctbtn">Log in / Sign up</button></div>
         <div class="crbar"><span class="crico"></span><b class="crystals">0</b><span>Clash Crystals</span></div>
         <div class="preview" id="pvMenu"></div>
         <div class="row" style="margin-top:0"><button class="ghost" id="openLoadout">Loadout</button><button class="ghost" id="openLocker">Customize</button></div>
@@ -686,16 +697,28 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
   </section>
 
   <section class="card wide" id="s-gamelog" hidden>
-    <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.6</span></div>
+    <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.7</span></div>
     <div class="glbody">
-      <h4>V1.6: Feast &amp; Freefall 🦃🪂</h4>
+      <h4>V1.7: The Realism Update 🔫</h4>
       <ul>
+        <li>🔫 <b>Realistic guns</b>: round barrels, scopes, tubes and muzzles.</li>
+        <li>🏟️ <b>3D Lobby</b>: your character stands on a floating stage holding your gun. Drag to spin them. In an online room, everyone stands on the stage together!</li>
+        <li>🗺️ Harvest Valley is now <b>600 x 600</b> (4 times bigger again) with more towns, farms and loot, and the <b>storm moves faster</b>.</li>
+        <li>🚌 Fixed: players now spawn on the Drop Bus online (including mobile).</li>
+        <li>🦃 No more build buttons in Feast Defense on mobile.</li>
+        <li>🤖 Bots no longer vote in Practice. Your pick wins.</li>
+      </ul>
+
+      <h4 class="old">V1.6: Feast &amp; Freefall 🦃🪂</h4>
+      <ul>
+        <li>🔐 <b>Accounts</b>: sign up to save your crystals, guns, skins, stats, Battle Pass, friends and maps forever, and play on any device. Your current progress comes with you.</li>
+        <li>🏆 The server leaderboard is now saved forever for players with accounts.</li>
         <li>🗺️ <b>Harvest Valley</b>: a giant new Battle Royale map, about 14 times bigger, with towns, farms, forests and lookout towers.</li>
         <li>🚌 <b>Drop Bus</b>: every Battle Royale starts on a bus floating under a hot-air balloon. Press <b>Space</b> to jump, skydive, and your glider opens near the ground.</li>
         <li>❤️ Everyone has <b>500 HP</b> in Battle Royale. Health packs heal 100 and the storm hits harder to match.</li>
         <li>🦃 <b>Feast Defense</b> replaces Zombies: team up to protect the Thanksgiving feast from wild turkeys, Tom turkeys and the boss <b>GOBBLEZILLA</b>, who throws pies from the sky.</li>
       </ul>
-      <div class="soon">V1.7 coming soon: accounts and Ranked!</div>
+      <div class="soon">Coming soon: Ranked!</div>
 
       <h4 class="old">V1.5: The Harvest Update 🦃</h4>
       <ul>
@@ -756,6 +779,32 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
     <div class="row" style="margin-top:6px"><button id="bpbuy">Unlock Premium</button></div>
     <div class="bptrack" id="bptrack"></div>
     <div class="row"><button class="ghost" id="bpclose">Back</button></div>
+  </section>
+
+  <section class="card" id="s-account" hidden>
+    <div class="votehead"><h2 class="display">Account</h2></div>
+    <p class="small" id="acctoff" hidden style="color:var(--danger)">Accounts are offline right now. You can still play as a guest.</p>
+    <div id="acctin">
+      <div class="row" id="accttabs" style="margin-top:0"><button class="ghost on" data-k="login">Log in</button><button class="ghost" data-k="signup">Sign up</button></div>
+      <label class="lbl" for="acctuser">Username</label>
+      <input id="acctuser" maxlength="14" autocomplete="username" spellcheck="false" placeholder="3 to 14 letters, numbers or _">
+      <label class="lbl" for="acctpass">Password</label>
+      <input id="acctpass" type="password" maxlength="100" autocomplete="current-password" placeholder="At least 6 characters">
+      <div id="acctsign" hidden>
+        <label class="lbl" for="acctpass2">Password again</label>
+        <input id="acctpass2" type="password" maxlength="100" autocomplete="new-password">
+        <label class="small" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="acctimport" checked style="width:auto;margin:0"> Bring my crystals, guns, skins and progress from this device</label>
+      </div>
+      <div class="row"><button id="acctgo">Log in</button></div>
+      <p class="small">Your account saves everything (crystals, guns, skins, stats, Battle Pass, friends and maps) so you can play on any device. Passwords are stored scrambled, so nobody can read them.</p>
+    </div>
+    <div id="acctout" hidden>
+      <p>Logged in as <b id="acctwho"></b>. Your progress saves automatically.</p>
+      <div class="row"><button class="ghost" id="acctlogout">Log out</button></div>
+      <p class="small">Logging out clears this device and goes back to a fresh Guest. Your account stays safe on the server.</p>
+    </div>
+    <p class="small" id="acctmsg" style="color:var(--gold1)"></p>
+    <div class="row"><button class="ghost" id="acctback">Back</button></div>
   </section>
 
   <section class="card wide" id="s-mastery" hidden>
@@ -836,9 +885,11 @@ const V3 = THREE.Vector3;
 const touchDevice = !!((window.matchMedia && matchMedia('(pointer: coarse)').matches) || (('ontouchstart' in window) && navigator.maxTouchPoints > 0));
 let isTouch = touchDevice;
 if (isTouch) document.body.classList.add('touch');
+const SYNC_KEYS = ['arenaclash.look', 'arenaclash.stats', 'arenaclash.bp', 'arenaclash.missions', 'arenaclash.friends', 'arenaclash.maps'];   // saved to your account
+const ACCT = { user: null, dev: false, syncT: null, quiet: false };
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} if (ACCT.user && SYNC_KEYS.includes(k)) acctSyncSoon(); },
 };
 
 /* ================= renderer / scene ================= */
@@ -1034,7 +1085,7 @@ MAPS.harvest = { name: 'Harvest Farm', blurb: 'A golden fall farm with red barns
   pal: [0xb8322a, 0xc8a050, 0xd8b868, 0x8a5a2a], gen: 'farm', seed: 77, decor: 'fall', leaves: true,
   skyTop: 0x5a9ad8, skyHor: 0xffd9a0, outer: 0x9a7a3a, cloud: 0xfff0dc, clouds: 12, hills: { pal: [0xc0401a, 0xe07a2a, 0xb5501a, 0x8a6a2a], cap: 0xffb02e, h: [8, 20] } };
 MAPS.valley = Object.assign({}, MAPS.harvest, { name: 'Harvest Valley', blurb: 'A giant fall valley with towns, farms, forests and lookout towers. Battle Royale only.',
-  size: 150, gen: 'valley', decor: 'none', seed: 99, fog: [90, 290], leaves: true, clouds: 22, pal: [0xc8a878, 0xb88a5a, 0xd8c8a8, 0x9a7a5a, 0xa8b0b8] });
+  size: 300, gen: 'valley', decor: 'none', seed: 99, fog: [140, 430], leaves: true, clouds: 22, pal: [0xc8a878, 0xb88a5a, 0xd8c8a8, 0x9a7a5a, 0xa8b0b8] });
 const GEN = {
   scatter(M) {
     for (let i = 0; i < 42; i++) {
@@ -1085,11 +1136,11 @@ const GEN = {
   valley(M) {   // ~350 blocks spread over 300 x 300
     const S = ARENA - 12;
     const house = (x, z, w, d, c) => { const h = 3.2 + rnd() * 1.2; addBlock(x, 0, z, w, h, d, c); addBlock(x, h, z, w + .6, .5, d + .6, 0x6a3a2a); };
-    for (let t = 0; t < 6; t++) { const tx = (rnd() * 2 - 1) * S * .8, tz = (rnd() * 2 - 1) * S * .8; for (let i = 0; i < 9; i++) house(tx + (rnd() * 2 - 1) * 16, tz + (rnd() * 2 - 1) * 16, 5 + rnd() * 3, 4 + rnd() * 3, pick(M.pal)); }
-    for (let f = 0; f < 5; f++) { const fx = (rnd() * 2 - 1) * S, fz = (rnd() * 2 - 1) * S; addBlock(fx, 0, fz, 9, 4.5, 7, 0xb8322a); addBlock(fx, 4.5, fz, 9.6, .5, 7.6, 0x3a2a24); for (let i = 0; i < 6; i++) addBlock(fx + (rnd() * 2 - 1) * 12, 0, fz + (rnd() * 2 - 1) * 12, 1.6, 1.1, 1.1, 0xd8b868); }
-    for (let i = 0; i < 70; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, c = pick([0xc0401a, 0xe07a2a, 0xffb02e, 0x5aa04a, 0x4a8a38]); addBlock(x, 0, z, .8, 3, .8, 0x5a3a1e); addBlock(x, 3, z, 3.2, 1.8, 3.2, c); }
-    for (let i = 0; i < 60; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, k = 1.2 + rnd() * 2; addBlock(x, 0, z, k, k * .7, k * 1.2, pick([0x8a8f75, 0x7a8066, 0x6a6a72])); }
-    for (let i = 0; i < 5; i++) { const x = (rnd() * 2 - 1) * S * .9, z = (rnd() * 2 - 1) * S * .9; addBlock(x, 0, z, 3, 10, 3, 0x7a5a3a); addBlock(x, 10, z, 5, .5, 5, 0x5a3a1e); }
+    for (let t = 0; t < 11; t++) { const tx = (rnd() * 2 - 1) * S * .8, tz = (rnd() * 2 - 1) * S * .8; for (let i = 0; i < 9; i++) house(tx + (rnd() * 2 - 1) * 16, tz + (rnd() * 2 - 1) * 16, 5 + rnd() * 3, 4 + rnd() * 3, pick(M.pal)); }
+    for (let f = 0; f < 9; f++) { const fx = (rnd() * 2 - 1) * S, fz = (rnd() * 2 - 1) * S; addBlock(fx, 0, fz, 9, 4.5, 7, 0xb8322a); addBlock(fx, 4.5, fz, 9.6, .5, 7.6, 0x3a2a24); for (let i = 0; i < 6; i++) addBlock(fx + (rnd() * 2 - 1) * 12, 0, fz + (rnd() * 2 - 1) * 12, 1.6, 1.1, 1.1, 0xd8b868); }
+    for (let i = 0; i < 150; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, c = pick([0xc0401a, 0xe07a2a, 0xffb02e, 0x5aa04a, 0x4a8a38]); addBlock(x, 0, z, .8, 3, .8, 0x5a3a1e); addBlock(x, 3, z, 3.2, 1.8, 3.2, c); }
+    for (let i = 0; i < 110; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, k = 1.2 + rnd() * 2; addBlock(x, 0, z, k, k * .7, k * 1.2, pick([0x8a8f75, 0x7a8066, 0x6a6a72])); }
+    for (let i = 0; i < 9; i++) { const x = (rnd() * 2 - 1) * S * .9, z = (rnd() * 2 - 1) * S * .9; addBlock(x, 0, z, 3, 10, 3, 0x7a5a3a); addBlock(x, 10, z, 5, .5, 5, 0x5a3a1e); }
   },
   farm(M) {
     const barn = (x, z, rot) => { // red barn with white trim and a dark roof
@@ -1550,6 +1601,7 @@ const ownsGun = (i) => STARTERS.includes(i) || wallet.guns.includes(i);
 const canUseGun = (i) => ownsGun(i) || trialInfo().guns.includes(i);
 function addCrystals(n, why) {
   if (!n) return; wallet.crystals += n; saveWallet();
+  if (ACCT.user) netSend({ t: 'earn', n });   // the server keeps the real total for accounts
   if (match.active) { const t = $('crtoast'); t.textContent = '+' + n + ' 💎 ' + (why || ''); t.classList.remove('show'); void t.offsetWidth; t.classList.add('show'); }
 }
 function renderCrystals() { document.querySelectorAll('.crystals').forEach(el => el.textContent = wallet.crystals.toLocaleString()); }
@@ -1759,7 +1811,7 @@ function buildMap(id) {
   sun.intensity = M.dark ? .35 : .85; sun.color.setHex(M.dark ? 0xb9a8ff : 0xfff1d6); ambient.intensity = M.dark ? .2 : .12;
   outerGround.material.color.setHex(M.outer);
   if (ground.material.map) ground.material.map.dispose();
-  ARENA = M.size || 40; ground.scale.set(ARENA / 40, ARENA / 40, 1);
+  ARENA = M.size || 40; ground.scale.set(ARENA / 40, ARENA / 40, 1); camera.far = ARENA > 100 ? 700 : 320; camera.updateProjectionMatrix();
   ground.material.map = groundTex(M.g[0], M.g[1], M.line); ground.material.map.repeat.set(ARENA * 2, ARENA * 2); ground.material.needsUpdate = true;
   groundHex = new THREE.Color(M.g[0]).getHex();
   const EH = M.circle ? .01 : 2.4;
@@ -2011,7 +2063,7 @@ function buildWorldGun(holder, id, skin) {
   while (holder.children.length) holder.remove(holder.children[0]);
   const parts = WGUN[id]; if (!parts) return;
   const M = skinMats(skin);
-  for (const [w, h, d, m, x, y, z] of parts) { const o = new THREE.Mesh(bgeo(w, h, d), M[m]); o.position.set(x, y, z); o.castShadow = SHADOWS; holder.add(o); }
+  for (const [w, h, d, m, x, y, z] of parts) { const o = new THREE.Mesh(rgeo(w, h, d), M[m]); o.position.set(x, y, z); o.castShadow = SHADOWS; holder.add(o); }
 }
 /* ================= avatars, hats ================= */
 const AV_COLORS = [0xe63946, 0x1d70d6, 0x16a34a, 0xff8c1a, 0x7b2cbf, 0xdb2777, 0x0891b2, 0xf2b134];
@@ -2119,7 +2171,7 @@ function animateAvatar(ent, vx, vz, dt, air, pitch) {
   const pt = Math.max(-1.2, Math.min(1.2, pitch || 0));
   p.head.rotation.x = -pt * .6; ent.hatObj.rotation.x = -pt * .6;
   p.rig.position.y = 1.26 + bob + breathe; p.rig.rotation.x = -pt * .85; p.rig.rotation.z = Math.sin(t) * .03 * a;
-  p.AL.sh.rotation.x = -1.05 + Math.sin(t) * .06 * a - .2 * ent.air;
+  p.AR.sh.rotation.set(-1.2, -.18, 0); p.AR.el.rotation.x = -.35; p.AL.sh.rotation.set(-1.05 + Math.sin(t) * .06 * a - .2 * ent.air, .62, 0); p.AL.el.rotation.x = -.45; p.rig.rotation.y = 0;
   if (ent.flash > 0) { ent.flash -= dt; ent.shirt.emissive.setHex(0xffffff); ent.shirt.emissiveIntensity = Math.max(0, ent.flash) * 6; }
   else if (ent.shirt.emissiveIntensity) ent.shirt.emissiveIntensity = 0;
 }
@@ -2469,7 +2521,8 @@ function showOnline(n) { if (NET.ok) setNetStatus((n || 1) + (n === 1 ? ' player
 
 function onNet(m) {
   switch (m.t) {
-    case 'welcome': NET.id = m.id; showOnline(m.online); break;
+    case 'welcome': NET.id = m.id; NET.accounts = !!m.accounts; showOnline(m.online); acctOnConnect(); break;
+    case 'auth': case 'autherr': case 'wallet': case 'loggedout': onAcctMsg(m); break;
     case 'online': if (!NET.room) showOnline(m.n); break;
     case 'lb': NET.lb = m.top || []; renderLB(); break;
     case 'err':
@@ -2507,7 +2560,7 @@ function onNet(m) {
     case 'lootget': if (match.active) onLootGet(m.w); break;
     case 'lootgone': removeLoot(m.id); break;
     case 'devok': NET.devok = true; if (current === 's-shop') renderShop(); break;
-    case 'gift': addCrystals(m.amount, 'gift'); friendToast('<b>' + esc(m.from) + '</b> sent you ' + m.amount + ' Clash Crystals! 💎', [['Thanks!', null]]); break;
+    case 'gift': if (!m.acct) addCrystals(m.amount, 'gift'); friendToast('<b>' + esc(m.from) + '</b> sent you ' + m.amount + ' Clash Crystals! 💎', [['Thanks!', null]]); break;
     case 'fstatus': case 'freq': case 'facc': case 'fsent': case 'ferr': case 'finvite': onFriendMsg(m); break;
     case 'obj': if (match.active) onObj(m); break;
     case 'turkey': if (match.active) { const r = remotes.get(m.id); if (r) spawnGuardian(r, new V3(m.p[0], m.p[1], m.p[2]), false); } break;
@@ -2650,7 +2703,7 @@ function startOnlineMatch(m) {
   mode = 'online'; removeBots();
   if (m.custom) setCustomMap(m.custom);
   buildMap(m.map);
-  if (m.mode === 'br') { startBRClient(m.loot); if (m.bus) startBus(m.bus, m.busT || 0); }
+  if (m.mode === 'br') startBRClient(m.loot);
   for (const s of m.structs) buildPiece(s, s.hp);
   match.map = m.map; match.mode = MODES[m.mode] ? m.mode : 'ffa'; match.time = m.timeLeft; match.limit = m.limit; match.active = true;
   resetForMatch();
@@ -2664,6 +2717,7 @@ function startOnlineMatch(m) {
   const M = MODES[match.mode];
   $('rmap').textContent = M.name + ' on ' + MAPS[m.map].name;
   $('rsub').textContent = M.blurb + (M.zombies ? ' Guard the feast in the middle of the farm!' : '') + (M.teams ? " You're on the " + TEAM_NAMES[P.team] + ' team.' : '') + ' Other players can see you once you drop in.';
+  if (m.mode === 'br' && m.bus) startBus(m.bus, m.busT || 0);   // after respawnPlayer, so you stay on the bus
   paused = true; openLoadout('match');
 }
 function exitOnline() {
@@ -2684,11 +2738,18 @@ const flashMat = new THREE.SpriteMaterial({ map: flashTex, blending: THREE.Addit
 let flashT = 0;
 function addArms(g, grip, fore) {
   const r = new THREE.Group(); r.position.set(grip[0], grip[1], grip[2]);
-  const rs = bx(.1, .1, .46, sleeveMat, .02, -.09, .26, r); rs.rotation.x = .38; bx(.11, .11, .12, skin, 0, 0, 0, r); g.add(r);
-  if (fore) { const l = new THREE.Group(); l.position.set(fore[0], fore[1], fore[2]); const ls = bx(.1, .1, .56, sleeveMat, -.13, -.1, .26, l); ls.rotation.set(.3, -.55, 0); bx(.11, .11, .13, skin, 0, 0, 0, l); g.add(l); }
+  const rs = boxPart(.1, .1, .46, sleeveMat, .02, -.09, .26, r); rs.rotation.x = .38; boxPart(.11, .11, .12, skin, 0, 0, 0, r); g.add(r);
+  if (fore) { const l = new THREE.Group(); l.position.set(fore[0], fore[1], fore[2]); const ls = boxPart(.1, .1, .56, sleeveMat, -.13, -.1, .26, l); ls.rotation.set(.3, -.55, 0); boxPart(.11, .11, .13, skin, 0, 0, 0, l); g.add(l); }
 }
 const dark = LM(0x2b2f36), metal = LM(0x5c6470), orange = LM(0xf2b134), teal = LM(0x2bb5a6), wood = LM(0x8a5a2b), olive = LM(0x56663a), redM = LM(0xd64545), purple = LM(0x6d4bd8);
-function bx(w, h, d, m, x, y, z, parent) { const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y, z); parent.add(o); return o; }
+function realGeo(w, h, d) {   // long, square parts (barrels, scopes, tubes, sleeves) become round
+  if (d >= 2.2 * Math.max(w, h) && Math.abs(w - h) <= .012) { const g = new THREE.CylinderGeometry((w + h) / 4, (w + h) / 4, d, 16); g.rotateX(Math.PI / 2); return g; }
+  return new THREE.BoxGeometry(w, h, d);
+}
+const rgeoCache = new Map();
+function rgeo(w, h, d) { const k = w + ',' + h + ',' + d; let g = rgeoCache.get(k); if (!g) { g = realGeo(w, h, d); rgeoCache.set(k, g); } return g; }
+function boxPart(w, h, d, m, x, y, z, parent) { const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y, z); parent.add(o); return o; }   // always a box
+function bx(w, h, d, m, x, y, z, parent) { const o = new THREE.Mesh(realGeo(w, h, d), m); o.position.set(x, y, z); parent.add(o); return o; }
 function gunModel(id, M, showcase) {
   const g = new THREE.Group(); let mz, base;
   const B = (w, h, d, m, x, y, z, rx) => { const o = bx(w, h, d, m, x, y, z, g); if (rx) o.rotation.x = rx; return o; };
@@ -3646,8 +3707,9 @@ function rewardLabel(r) {
 }
 function grantReward(r) {
   if (r.c) addCrystals(r.c, 'Battle Pass');
-  if (r.hat && !wallet.hats.includes(r.hat)) wallet.hats.push(r.hat);
-  if (r.fx && !wallet.effects.includes(r.fx)) wallet.effects.push(r.fx);
+  if (r.hat && !wallet.hats.includes(r.hat)) { wallet.hats.push(r.hat); acctUnlock('hat', r.hat); }
+  if (r.fx && !wallet.effects.includes(r.fx)) { wallet.effects.push(r.fx); acctUnlock('effect', r.fx); }
+  if (r.skin) acctUnlock('skin', r.skin); if (r.mythic) acctUnlock('mythic', r.mythic);
   if (r.skin && !wallet.skins.includes(r.skin)) wallet.skins.push(r.skin);
   if (r.mythic && !wallet.mythics.includes(r.mythic)) wallet.mythics.push(r.mythic);
   saveWallet(); sfx('buy');
@@ -3695,7 +3757,7 @@ function renderBP() {
 }
 $('bpbuy').addEventListener('click', () => {
   if (BPS.premium || !canAfford(BP_PREMIUM_COST)) return;
-  wallet.crystals -= cost(BP_PREMIUM_COST); saveWallet(); BPS.premium = true; saveBP(); sfx('buy'); renderBP();
+  wallet.crystals -= cost(BP_PREMIUM_COST); saveWallet(); acctBuy('bp', 'premium'); BPS.premium = true; saveBP(); sfx('buy'); renderBP();
 });
 $('openBP').addEventListener('click', () => { renderBP(); show('s-bp'); });
 $('bpclose').addEventListener('click', () => show('s-menu'));
@@ -3782,6 +3844,7 @@ const DEV = { on: false, fly: false, god: false, ammo: false, speed: false };
 const isDevName = () => P.name.toLowerCase() === 'electrix';
 function devAllowed() { return isDevName() && (mode !== 'online' || NET.dev); }
 function refreshDev() {
+  for (const id of ['tWall', 'tRamp', 'tFloor']) $(id).hidden = match.active && zombiesOn();   // no building in Feast Defense
   DEV.on = devAllowed(); $('devbtn').hidden = !(DEV.on && match.active);
   if (!DEV.on) { DEV.fly = DEV.god = DEV.ammo = DEV.speed = false; $('devpanel').hidden = true; }
   document.querySelectorAll('#devpanel [data-d]').forEach(b => b.classList.toggle('on', !!DEV[b.dataset.d]));
@@ -3846,7 +3909,7 @@ function updateMythicGlow(dt) {
 }
 
 /* ================= Game Log (opens like the Shop, with a red dot after updates) ================= */
-const LOG_VERSION = '1.6';
+const LOG_VERSION = '1.7';
 function logDot() { $('logdot').hidden = store.get('arenaclash.logseen', '') === LOG_VERSION; }
 $('gamelogbtn').addEventListener('click', () => { store.set('arenaclash.logseen', LOG_VERSION); logDot(); show('s-gamelog'); });
 $('logclose').addEventListener('click', () => show('s-menu'));
@@ -3920,7 +3983,7 @@ function masteryKill(w) {
   const before = stats.gunKills[id] || 0; stats.gunKills[id] = before + 1; saveStats();
   for (const m of MASTERY) if (before < m.k && before + 1 >= m.k) {
     addCrystals(m.c, wp.name + ' ' + m.t + ' Mastery');
-    if (m.camo) { const sid = m.camo + '_' + id; if (!wallet.mythics.includes(sid)) { wallet.mythics.push(sid); saveWallet(); } }
+    if (m.camo) { const sid = m.camo + '_' + id; if (!wallet.mythics.includes(sid)) { wallet.mythics.push(sid); saveWallet(); acctUnlock('mythic', sid); } }
     waveBanner(wp.name + ': ' + m.t + ' Mastery!', m.camo ? 'You unlocked the ' + m.t + ' camo. Equip it in Mastery.' : '+' + m.c + ' Clash Crystals');
   }
 }
@@ -4014,6 +4077,159 @@ $('fradd').addEventListener('click', () => {
 $('frcopy').addEventListener('click', () => { try { navigator.clipboard.writeText(fmtCode(myUid)); $('frcopy').textContent = 'Copied ✓'; } catch (e) { $('frcopy').textContent = 'Select it above'; } });
 $('openFriends').addEventListener('click', () => { pollFriends(); renderFriends(); $('frmsg').textContent = ''; show('s-friends'); });
 $('frclose').addEventListener('click', () => show(NET.room ? 's-lobby' : 's-menu'));
+
+/* ================= Accounts ================= */
+function acctProfile() { const p = {}; for (const k of SYNC_KEYS) { const v = store.get(k, null); if (v != null) p[k.slice(11)] = v; } return p; }
+function acctSyncSoon() { clearTimeout(ACCT.syncT); ACCT.syncT = setTimeout(acctSyncNow, 2500); }
+function acctSyncNow() {
+  if (!ACCT.user || !NET.ok) return;
+  const updated = Date.now(); localStorage.setItem('arenaclash.synced', String(updated));
+  netSend({ t: 'save', profile: acctProfile(), updated });
+}
+function acctBuy(kind, id) { if (ACCT.user) netSend({ t: 'buy', kind, id }); }
+function acctUnlock(kind, id) { if (ACCT.user) netSend({ t: 'unlock', kind, id }); }
+function acctApplyWallet(w) {
+  wallet.crystals = w.crystals || 0;
+  for (const k of ['guns', 'skins', 'mythics', 'hats', 'effects']) wallet[k] = Array.isArray(w[k]) ? w[k].slice() : [];
+  for (const i of [0, 1, 2, 4]) if (!wallet.guns.includes(i)) wallet.guns.push(i);   // starter guns
+  if (!wallet.skins.includes('classic')) wallet.skins.push('classic');
+  if (w.bp && !BPS.premium) { BPS.premium = true; saveBP(); }
+  localStorage.setItem('arenaclash.wallet', JSON.stringify(wallet)); renderCrystals();
+  if (current === 's-shop') renderShop();
+}
+function acctUI() {
+  const u = ACCT.user;
+  $('acctlabel').innerHTML = u ? 'Logged in as <b>' + esc(u) + '</b>' : 'Playing as <b>Guest</b>';
+  $('acctbtn').textContent = u ? 'Account' : 'Log in / Sign up';
+  $('pname').disabled = !!u; if (u) { $('pname').value = u; P.name = u; }
+  $('acctin').hidden = !!u; $('acctout').hidden = !u;
+  if (u) $('acctwho').textContent = u;
+  $('acctoff').hidden = NET.accounts !== false;
+  $('lbnote').textContent = NET.accounts ? 'Saved forever for players with accounts.' : 'Resets whenever the server restarts.';
+}
+function onAcctMsg(m) {
+  if (m.t === 'auth') {
+    const fresh = !ACCT.user;
+    ACCT.user = m.username; ACCT.dev = !!m.dev; localStorage.setItem('arenaclash.token', JSON.stringify(m.token));
+    if (m.uid && m.uid !== myUid) { myUid = m.uid; store.set('arenaclash.uid', myUid); }
+    const local = Number(localStorage.getItem('arenaclash.synced') || 0), switching = store.get('arenaclash.acctname', '') !== m.username;
+    if (m.profile && Object.keys(m.profile).length && (switching || (m.updated || 0) > local)) {
+      // this account's progress is newer than what's on this device: load it
+      for (const [k, v] of Object.entries(m.profile)) if (SYNC_KEYS.includes('arenaclash.' + k)) localStorage.setItem('arenaclash.' + k, JSON.stringify(v));
+      localStorage.setItem('arenaclash.synced', String(m.updated || Date.now()));
+      localStorage.setItem('arenaclash.acctname', JSON.stringify(m.username));
+      if (!sessionStorage.getItem('acctReloaded')) { sessionStorage.setItem('acctReloaded', '1'); location.reload(); return; }
+    }
+    localStorage.setItem('arenaclash.acctname', JSON.stringify(m.username));
+    sessionStorage.removeItem('acctReloaded');
+    if (m.dev) NET.dev = NET.devok = true;
+    acctUI(); sendHello();
+    if (fresh && current === 's-account') { $('acctmsg').textContent = ''; show('s-menu'); }
+    if (fresh && !ACCT.quiet) msg('Welcome, ' + m.username + '!');
+    if (!m.profile || !Object.keys(m.profile).length) acctSyncNow();   // first login: upload this device's progress
+  }
+  if (m.t === 'wallet') acctApplyWallet(m.w);
+  if (m.t === 'autherr') {
+    if (m.expired) { localStorage.removeItem('arenaclash.token'); acctUI(); return; }
+    $('acctmsg').textContent = m.text; if (current !== 's-account' && match.active) msg(m.text);
+  }
+  if (m.t === 'loggedout') {
+    for (const k of [...SYNC_KEYS, 'arenaclash.wallet', 'arenaclash.token', 'arenaclash.synced', 'arenaclash.acctname', 'arenaclash.uid']) localStorage.removeItem(k);
+    location.reload();
+  }
+}
+function acctSubmit(kind) {
+  const u = $('acctuser').value.trim(), pw = $('acctpass').value;
+  if (!NET.ok) { $('acctmsg').textContent = 'Not connected to the server yet. Try again in a few seconds.'; return; }
+  if (!/^[A-Za-z0-9_]{3,14}$/.test(u)) { $('acctmsg').textContent = 'Usernames are 3 to 14 letters, numbers or _.'; return; }
+  if (pw.length < 6) { $('acctmsg').textContent = 'Passwords need at least 6 characters.'; return; }
+  const devKey = u.toLowerCase() === 'electrix' ? (store.get('arenaclash.devkey', '') || prompt('Enter the dev key for the Electrix account:') || '') : '';
+  if (devKey) store.set('arenaclash.devkey', devKey);
+  $('acctmsg').textContent = kind === 'signup' ? 'Creating your account...' : 'Logging in...';
+  if (kind === 'signup') {
+    if (pw !== $('acctpass2').value) { $('acctmsg').textContent = "The passwords don't match."; return; }
+    const imp = $('acctimport').checked ? { wallet, profile: acctProfile() } : null;
+    netSend({ t: 'signup', username: u, password: pw, uid: myUid, import: imp, devKey });
+  } else netSend({ t: 'login', username: u, password: pw, devKey });
+  $('acctpass').value = ''; $('acctpass2').value = '';
+}
+let acctMode = 'login';
+function acctTab(k) {
+  acctMode = k; $('acctgo').textContent = k === 'signup' ? 'Create account' : 'Log in';
+  $('acctsign').hidden = k !== 'signup';
+  document.querySelectorAll('#accttabs button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  $('acctmsg').textContent = '';
+}
+document.querySelectorAll('#accttabs button').forEach(b => b.addEventListener('click', () => acctTab(b.dataset.k)));
+$('acctgo').addEventListener('click', () => acctSubmit(acctMode));
+$('acctpass').addEventListener('keydown', e => { if (e.key === 'Enter' && acctMode === 'login') acctSubmit('login'); });
+$('acctbtn').addEventListener('click', () => { acctUI(); acctTab(acctMode); show('s-account'); });
+$('acctback').addEventListener('click', () => show('s-menu'));
+$('acctlogout').addEventListener('click', () => { acctSyncNow(); netSend({ t: 'logout', token: store.get('arenaclash.token', '') }); });
+function acctOnConnect() {   // called when the server says hello
+  const tok = store.get('arenaclash.token', '');
+  if (tok) { ACCT.quiet = true; netSend({ t: 'resume', token: tok }); }
+  acctUI();
+}
+
+/* ================= 3D Lobby (main menu) ================= */
+const LOBBY_Y = 400;
+const LOBBY = { g: null, me: null, key: '', others: new Map(), yaw: 0, emoteT: 4, emote: null, drag: null, floaters: [] };
+const LOBBY_SPOTS = [[-1.7, -.7], [1.7, -.7], [-3, -1.6], [3, -1.6], [-.9, -2.4], [.9, -2.4], [0, -3.2]];
+function buildLobbyStage() {
+  const g = new THREE.Group(); g.position.set(0, LOBBY_Y, 0);
+  const plat = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 3.6, .7, 48), LM(0x2a3348)); plat.position.y = -.35; g.add(plat);
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.2, .04, 48), LM(0x3d4a66)); top.position.y = .02; g.add(top);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(4.3, .07, 8, 72), new THREE.MeshBasicMaterial({ color: 0x5fe0ff })); ring.rotation.x = Math.PI / 2; ring.position.y = .03; g.add(ring);
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.1, .04, 8, 48), new THREE.MeshBasicMaterial({ color: 0xffd24a })); ring2.rotation.x = Math.PI / 2; ring2.position.y = .05; g.add(ring2);
+  const cols = [0xe76f51, 0x5fe0ff, 0xffd24a, 0x9b6bff, 0x3ddc84];
+  for (let i = 0; i < 14; i++) {   // floating cubes in the background
+    const s = .3 + Math.random() * .7, c = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), new THREE.MeshLambertMaterial({ color: cols[i % cols.length], emissive: cols[i % cols.length], emissiveIntensity: .25 }));
+    const a = Math.PI + (Math.random() - .5) * 2.6, r = 7 + Math.random() * 6;
+    c.position.set(Math.sin(a) * r, .5 + Math.random() * 4, Math.cos(a) * r); c.userData.spin = (Math.random() - .5) * 1.4; c.userData.y = c.position.y; c.userData.ph = Math.random() * 6;
+    g.add(c); LOBBY.floaters.push(c);
+  }
+  scene.add(g); LOBBY.g = g;
+}
+const lobbyKey = () => [look.color, look.hat, look.gunSkin, JSON.stringify(look.mythic || {}), look_lo()[0], P.name].join('|');
+function ensureLobbyMe() {
+  const k = lobbyKey(); if (LOBBY.me && LOBBY.key === k) return;
+  if (LOBBY.me) disposeAvatar(LOBBY.me);
+  const e = { name: P.name }; makeAvatar(e, P.name, AV_COLORS[look.color], look.hat, LOBBY.g); if (e.bar) e.bar.visible = false;
+  e.gunSkin = look.gunSkin; e.mythic = look.mythic; setAvatarGun(e, WEAPONS[look_lo()[0]].id);
+  LOBBY.me = e; LOBBY.key = k; LOBBY.emoteT = 1.5;
+}
+function syncLobbyOthers() {   // everyone in your online room stands on the stage with you
+  const want = new Map();
+  if (NET.room && current === 's-lobby') NET.room.players.filter(p => p.id !== NET.id).slice(0, LOBBY_SPOTS.length).forEach((p, i) => want.set(p.id, { p, i }));
+  for (const [id, e] of LOBBY.others) if (!want.has(id) || e.key !== want.get(id).p.name + want.get(id).p.color + want.get(id).p.hat) { disposeAvatar(e); LOBBY.others.delete(id); }
+  for (const [id, { p, i }] of want) {
+    let e = LOBBY.others.get(id);
+    if (!e) {
+      e = { name: p.name, key: p.name + p.color + p.hat }; makeAvatar(e, p.name, AV_COLORS[p.color] || AV_COLORS[0], p.hat, LOBBY.g); if (e.bar) e.bar.visible = false;
+      e.gunSkin = p.gunSkin; e.mythic = p.mythic || {}; setAvatarGun(e, 'ar'); e.ph = Math.random() * 6; LOBBY.others.set(id, e);
+    }
+    e.group.position.set(LOBBY_SPOTS[i][0], 0, LOBBY_SPOTS[i][1]); e.group.rotation.y = Math.atan2(-LOBBY_SPOTS[i][0] * .3, 3);
+  }
+}
+function updateLobby(dt) {
+  if (!LOBBY.g) buildLobbyStage();
+  LOBBY.g.visible = true; ensureLobbyMe(); syncLobbyOthers();
+  const me = LOBBY.me; me.group.position.set(0, 0, 0); me.group.rotation.y = LOBBY.yaw + Math.sin(clock * .45) * .1;
+  animateAvatar(me, 0, 0, dt, false, 0);
+  LOBBY.emoteT -= dt;
+  if (LOBBY.emoteT <= 0 && !LOBBY.emote) { LOBBY.emote = { e: Math.floor(Math.random() * EMOTES.length), t: EMOTE_TIME }; LOBBY.emoteT = 10 + Math.random() * 6; }
+  if (LOBBY.emote) { LOBBY.emote.t -= dt; if (LOBBY.emote.t <= 0) LOBBY.emote = null; else emoteAnim(me, LOBBY.emote.e, EMOTE_TIME - LOBBY.emote.t); }
+  for (const e of LOBBY.others.values()) { e.group.position.y = 0; animateAvatar(e, 0, 0, dt, false, Math.sin(clock * .8 + e.ph) * .1); }
+  for (const c of LOBBY.floaters) { c.rotation.x += c.userData.spin * dt; c.rotation.y += c.userData.spin * .7 * dt; c.position.y = c.userData.y + Math.sin(clock + c.userData.ph) * .25; }
+  const wide = innerWidth >= 760 && document.body.classList.contains('lobbyview'), off = wide ? -1.9 : 0, dist = wide ? 5.4 : 6.4;
+  if (camera.fov !== 50) { camera.fov = 50; camera.updateProjectionMatrix(); }
+  camera.position.set(off, LOBBY_Y + 1.6, dist); camera.lookAt(off, LOBBY_Y + 1.1, 0);
+}
+function hideLobby() { if (LOBBY.g) LOBBY.g.visible = false; }
+$('overlay').addEventListener('pointerdown', e => { if (e.target === $('overlay')) LOBBY.drag = { x: e.clientX, yaw: LOBBY.yaw }; });
+addEventListener('pointermove', e => { if (LOBBY.drag) LOBBY.yaw = LOBBY.drag.yaw + (e.clientX - LOBBY.drag.x) * .012; });
+addEventListener('pointerup', () => { LOBBY.drag = null; });
 
 /* ================= Map Editor ================= */
 const ED = { on: false, blocks: [], ents: [], color: 0xe76f51, size: 2, shape: 'cube', theme: 'blockyard', name: 'My map', undo: [], ghost: null };
@@ -4155,8 +4371,8 @@ $('lmapclear').addEventListener('click', () => netSend({ t: 'cmap', map: null })
 $('lfriends').addEventListener('click', () => { pollFriends(); renderFriends(); show('s-friends'); });
 
 /* ================= Battle Royale ================= */
-const BR_BUS_C = 35;
-const BR_PHASES_C = [[BR_BUS_C + 45, 35, 130, 4], [40, 30, 80, 8], [35, 25, 45, 15], [30, 20, 20, 25], [25, 20, 0, 40]];   // same as the server
+const BR_BUS_C = 40;
+const BR_PHASES_C = [[BR_BUS_C + 25, 30, 260, 5], [25, 25, 150, 10], [20, 20, 80, 18], [18, 18, 35, 28], [15, 15, 0, 45]];   // same as the server (faster storm)
 const BR_RARITY = { 0: 'common', 1: 'common', 2: 'common', 4: 'common', 5: 'rare', 3: 'rare', 7: 'rare', 8: 'epic', 6: 'epic', 11: 'epic', 9: 'legendary' };
 const RARITY_COL = { common: 0xb8c0cc, rare: 0x4f8fe8, epic: 0xb06bff, legendary: 0xffb21f };
 const brOn = () => !!MODES[match.mode].br;
@@ -4195,7 +4411,7 @@ function busMesh() {
 }
 const busPos = (t) => new V3().lerpVectors(BUS.a, BUS.b, Math.min(1, Math.max(0, t / BUS.dur)));
 function startBus(arr, elapsed) {
-  BUS.a.set(arr[0], 70, arr[1]); BUS.b.set(arr[2], 70, arr[3]); BUS.dur = arr[4] || 35; BUS.t = elapsed || 0; BUS.on = true;
+  BUS.a.set(arr[0], 85, arr[1]); BUS.b.set(arr[2], 85, arr[3]); BUS.dur = arr[4] || 35; BUS.t = elapsed || 0; BUS.on = true;
   if (!BUS.mesh) BUS.mesh = busMesh(); BUS.mesh.visible = true;
   P.bus = true; P.sky = false; P.glider = false; P.dead = false; P.yaw = Math.atan2(BUS.a.x - BUS.b.x, BUS.a.z - BUS.b.z);
 }
@@ -4273,7 +4489,7 @@ function startBRPractice() {
   const loot = []; let id = 1; const bag = [];
   const weight = { common: 5, rare: 3, epic: 2, legendary: 1 };
   for (const [w, r] of Object.entries(BR_RARITY)) if (+w !== 4) for (let i = 0; i < weight[r]; i++) bag.push(+w);
-  for (let i = 0; i < 140; i++) loot.push({ id: id++, x: (Math.random() * 2 - 1) * (ARENA - 8), z: (Math.random() * 2 - 1) * (ARENA - 8), w: Math.random() < .22 ? 'hp' : pickAny(bag) });
+  for (let i = 0; i < 260; i++) loot.push({ id: id++, x: (Math.random() * 2 - 1) * (ARENA - 8), z: (Math.random() * 2 - 1) * (ARENA - 8), w: Math.random() < .22 ? 'hp' : pickAny(bag) });
   startBRClient(loot);
   const a = Math.random() * Math.PI * 2, e = ARENA + 20; startBus([Math.cos(a) * e, Math.sin(a) * e, -Math.cos(a + .35) * e, -Math.sin(a + .35) * e, BR_BUS_C], 0);
   for (const b of bots) { b.dead = true; b.group.visible = false; b.respawn = 5 + Math.random() * (BR_BUS_C - 2); }
@@ -4306,9 +4522,16 @@ function brLocalOut(f, why) {
   if (f === P) { P.deaths++; stats.deaths++; saveStats(); showDeath(why); }
   else { f.group.visible = false; f.deaths++; feed(nameHTML(f.name) + ' was caught in the storm'); }
 }
+let cullT = 0;
+function cullFar(dt) {
+  cullT -= dt; if (cullT > 0) return; cullT = .4;
+  const cx = camera.position.x, cz = camera.position.z, high = camera.position.y > 40;
+  for (const s of solids) if (s.mesh && s.kind === 'block') s.mesh.visible = high || Math.hypot(s.mesh.position.x - cx, s.mesh.position.z - cz) < 230;
+  for (const l of BRC.loot.values()) l.g.visible = Math.hypot(l.x - cx, l.z - cz) < 110;
+}
 function updateBR(dt) {
   if (!match.active || !brOn()) { $('stormfx').hidden = true; return; }
-  updateBus(dt);
+  updateBus(dt); if (ARENA > 100) cullFar(dt);
   if (mode !== 'online') tickBRLocal(dt);
   for (const l of BRC.loot.values()) { l.g.rotation.y += dt * 1.4; l.g.children[l.g.children.length - 1].rotation.z += dt; }
   tryLootPickup(dt);
@@ -4332,7 +4555,7 @@ function brSpectate() { // after you're out of a Battle Royale, follow someone w
 $('specnext').addEventListener('click', () => { BRC.specIdx++; KC.ent = null; });
 
 /* ================= screens ================= */
-const screens = ['s-menu', 's-locker', 's-loadout', 's-shop', 's-gamelog', 's-bp', 's-mastery', 's-friends', 's-maps', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
+const screens = ['s-account', 's-menu', 's-locker', 's-loadout', 's-shop', 's-gamelog', 's-bp', 's-mastery', 's-friends', 's-maps', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
 let current = 's-menu';
 function show(id) {
   current = id;
@@ -4343,6 +4566,7 @@ function show(id) {
   if (id !== null && chatOpen) closeChat();
   $('gchat').hidden = !match.active;
   $('shopbtn').hidden = $('gamelogbtn').hidden = id !== 's-menu';
+  document.body.classList.toggle('lobbyview', id === 's-menu' || id === 's-lobby');
   if (id === 's-menu') { bpDot(); logDot(); $('frdot').hidden = !FR.pending.length; }
   if (id !== null && ED.on) { /* leaving the editor via a menu */ }
   if (typeof refreshDev === 'function') refreshDev();
@@ -4531,7 +4755,7 @@ function startPractice() {
 }
 let pv_maps = {}, pv_modes = {}, pv_myMap = null, pv_myMode = null, voting = false, pv_choices = [];
 const countOf = (o) => { const c = {}; for (const k in o) c[k] = o[k].length; return c; };
-function castPractice(store_, who, id) { for (const k in store_) store_[k] = store_[k].filter(v => v !== who); store_[id].push(who); updateVote(countOf(pv_maps), countOf(pv_modes), 6, pv_myMap, pv_myMode); }
+function castPractice(store_, who, id) { for (const k in store_) store_[k] = store_[k].filter(v => v !== who); store_[id].push(who); updateVote(countOf(pv_maps), countOf(pv_modes), 1, pv_myMap, pv_myMode); }
 function startPracticeVote() {
   clearTimers();
   pv_choices = Object.keys(MAPS).filter(k => !['pumpkin', 'valley', 'custom'].includes(k)).sort(() => Math.random() - .5).slice(0, 3);   // special maps are picked by their modes
@@ -4541,12 +4765,8 @@ function startPracticeVote() {
   buildVote(pmodes, pv_choices,
     (id) => { if (!voting) return; pv_myMode = id; castPractice(pv_modes, 'me', id); },
     (id) => { if (!voting) return; pv_myMap = id; castPractice(pv_maps, 'me', id); });
-  $('vsub').textContent = 'Pick a mode and a map. You can change your votes until the timer ends.';
-  show('s-vote'); updateVote({}, {}, 6, null, null); voting = true;
-  lobby.forEach(b => {
-    timers.push(setTimeout(() => castPractice(pv_maps, b.name, pickAny(pv_choices)), 600 + Math.random() * 8000));
-    timers.push(setTimeout(() => castPractice(pv_modes, b.name, pickAny(Object.keys(MODES).filter(k => !MODES[k].online))), 600 + Math.random() * 8000));
-  });
+  $('vsub').textContent = 'Pick a mode and a map. Bots don\'t vote, so your pick wins (no vote = random).';
+  show('s-vote'); updateVote({}, {}, 1, null, null); voting = true;
   let left = 12; $('vtimer').textContent = left;
   timers.push(setInterval(() => {
     left--; $('vtimer').textContent = Math.max(0, left);
@@ -4669,7 +4889,7 @@ function pickCard(g) {
     if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen(w.id)) return;
     if (loArmed !== i) { loArmed = i; renderLoadout(); return; }
     if (!canAfford(price)) { sfx('empty'); return; }
-    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); sfx('buy'); loArmed = null;
+    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); acctBuy('gun', i); sfx('buy'); loArmed = null;
   }
   loArmed = null;
   const at = loDraft.indexOf(i);
@@ -4766,16 +4986,16 @@ function shopBuy(key) {
   if (shopArmed !== key) { shopArmed = key; renderShop(); return; }
   if (key[0] === 'c') {
     const id = key.slice(1), S = MYTHICS[id]; if (!S || S.bp || !canAfford(S.price) || ownsMythic(id)) return;
-    wallet.crystals -= cost(S.price); wallet.mythics.push(id); saveWallet(); sfx('buy'); equipMythic(id, true); shopArmed = null; renderShop(); return;
+    wallet.crystals -= cost(S.price); wallet.mythics.push(id); saveWallet(); acctBuy('mythic', id); sfx('buy'); equipMythic(id, true); shopArmed = null; renderShop(); return;
   }
   if (key[0] === 'g') {
     const i = +key.slice(1), w = WEAPONS[i], price = GUN_INFO[w.id][0];
     if (GUN_INFO[w.id][1] === 'limited' && !limitedOpen(w.id)) return;
     if (!canAfford(price) || ownsGun(i)) return;
-    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); sfx('buy');
+    wallet.crystals -= cost(price); wallet.guns.push(i); saveWallet(); acctBuy('gun', i); sfx('buy');
   } else {
     const id = key.slice(1), S = GUN_SKINS[id]; if (S.bp || !canAfford(S.price) || ownsSkin(id)) return;
-    wallet.crystals -= cost(S.price); wallet.skins.push(id); saveWallet(); sfx('buy'); equipSkin(id);
+    wallet.crystals -= cost(S.price); wallet.skins.push(id); saveWallet(); acctBuy('skin', id); sfx('buy'); equipSkin(id);
   }
   shopArmed = null; renderShop();
 }
@@ -4862,7 +5082,7 @@ function leaveMatch() {
 function goOnline(m) {
   if (!NET.ok) { menuError('Not connected to the server yet.'); return; }
   readName();
-  if (P.name.toLowerCase() === 'electrix' && !store.get('arenaclash.devkey', '')) {
+  if (P.name.toLowerCase() === 'electrix' && !store.get('arenaclash.devkey', '') && !ACCT.dev) {
     const k = prompt('"Electrix" is the developer name. Enter the dev key to use it online:');
     if (!k) { menuError('Pick a different name to play online.'); return; }
     store.set('arenaclash.devkey', k.trim());
@@ -5073,13 +5293,9 @@ function loop(now) {
     camera.rotation.set(P.pitch, P.yaw, P.dead ? .4 : 0);
     if (shake > 0) { camera.position.x += (Math.random() - .5) * shake * .3; camera.position.y += (Math.random() - .5) * shake * .3; camera.rotation.z += (Math.random() - .5) * shake * .05; shake = Math.max(0, shake - dt * 2.5); }
     if (P.bus && BUS.on) busCamera(); else if (!updateKillcam() && !brSpectate()) updateEmote(dt);
-  } else if (ED.on) updateEditor(dt);
-  else {
-    menuYaw += dt * .06;
-    camera.position.set(Math.sin(menuYaw) * 34, 16, Math.cos(menuYaw) * 34);
-    camera.rotation.set(-.42, menuYaw, 0);
-    if (camera.fov !== 75) { camera.fov = 75; camera.updateProjectionMatrix(); }
-  }
+  } else if (ED.on) { hideLobby(); updateEditor(dt); }
+  else updateLobby(dt);
+  if (match.active) hideLobby();
   sky.position.copy(camera.position);
   if (SHADOWS) { const cx = match.active ? P.pos.x : 0, cz = match.active ? P.pos.z : 0; sun.target.position.set(cx * .3, 0, cz * .3); sun.position.set(cx * .3 + 38, 70, cz * .3 + 26); }
   updateGhost(); updateVM(dt); updateHud(dt);
