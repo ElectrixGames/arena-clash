@@ -167,6 +167,7 @@ async function initDB() {
     await accounts.createIndex({ lower: 1 }, { unique: true });
     await accounts.createIndex({ tokens: 1 });
     console.log('Connected to MongoDB: accounts are on');
+    broadcastAll({ t: 'accounts', on: true });   // tell anyone who connected while the database was still starting up
     refreshLB();
   } catch (e) { console.error('MongoDB connection failed:', e.message); accounts = null; }
 }
@@ -195,7 +196,7 @@ async function newToken(a) {
 }
 function slowDown(p) { const now = Date.now(); p.authTries = (p.authTries || []).filter(t => now - t < 60000); p.authTries.push(now); return p.authTries.length > 6; }
 async function accountMsg(p, m) {
-  if (!accounts) return send(p, { t: 'autherr', text: 'Accounts are offline right now. You can still play as a guest.' });
+  if (!accounts) return send(p, { t: 'autherr', text: process.env.MONGODB_URI ? 'Accounts are still starting up. Try again in a few seconds.' : 'Accounts are offline right now. You can still play as a guest.' });
   const now = Date.now();
   if (m.t === 'signup') {
     if (slowDown(p)) return send(p, { t: 'autherr', text: 'Too many tries. Wait a minute and try again.' });
