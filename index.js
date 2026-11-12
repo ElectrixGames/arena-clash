@@ -64,18 +64,18 @@ const CUSTOM_THEMES = ['blockyard', 'dustbowl', 'frostbite', 'neon', 'harvest', 
 const MAX_CUSTOM_BLOCKS = 500;
 /* ================= Battle Royale ================= */
 // phases: [wait seconds, shrink seconds, end radius, storm damage per second]
-const BR_HALF = 150;                  // Harvest Valley is 300 x 300
-const BR_BUS = 35;                    // seconds the Drop Bus takes to cross the map
+const BR_HALF = 300;                  // Harvest Valley is 600 x 600
+const BR_BUS = 40;                    // seconds the Drop Bus takes to cross the map
 const BR_HP = 500;                    // everyone has 500 HP in Battle Royale
 // phases: [wait seconds, shrink seconds, end radius, storm damage per second]
-const BR_PHASES = [[BR_BUS + 45, 35, 130, 4], [40, 30, 80, 8], [35, 25, 45, 15], [30, 20, 20, 25], [25, 20, 0, 40]];
+const BR_PHASES = [[BR_BUS + 25, 30, 260, 5], [25, 25, 150, 10], [20, 20, 80, 18], [18, 18, 35, 28], [15, 15, 0, 45]];   // faster storm
 const boundOf = (room) => room && room.mode === 'br' ? BR_HALF : 40;
 const BR_LOOT = [[0, 'common'], [1, 'common'], [2, 'common'], [5, 'rare'], [3, 'rare'], [7, 'rare'], [8, 'epic'], [6, 'epic'], [11, 'epic'], [9, 'legendary']];
 function startBR(room) {
   const loot = []; let id = 1;
   const weight = { common: 5, rare: 3, epic: 2, legendary: 1 }, bag = [];
   for (const [w, r] of BR_LOOT) for (let i = 0; i < weight[r]; i++) bag.push(w);
-  for (let i = 0; i < 140; i++) {
+  for (let i = 0; i < 260; i++) {
     const x = (Math.random() * 2 - 1) * (BR_HALF - 8), z = (Math.random() * 2 - 1) * (BR_HALF - 8);
     loot.push({ id: id++, x: r2(x), z: r2(z), w: Math.random() < .22 ? 'hp' : bag[Math.floor(Math.random() * bag.length)] });
   }
@@ -127,6 +127,159 @@ function friendStatus(code) {
   const q = byUid.get(code);
   if (!q) return { code, online: false };
   return { code, online: true, name: q.name, room: q.room ? q.room.code : null, state: q.room ? q.room.state : 'menu', full: q.room ? q.room.players.size >= MAX_PLAYERS : false };
+}
+/* ================= Accounts (MongoDB Atlas) ================= */
+const crypto = require('crypto');
+let accounts = null;   // the MongoDB collection, or null when accounts are off
+const SHOP = {   // server-side prices, so nobody can buy things they can't afford
+  gun: { 4: 0, 0: 0, 1: 0, 2: 0, 3: 300, 5: 400, 7: 400, 8: 600, 11: 700, 6: 800, 12: 900, 9: 1000, 10: 1200, 13: 1100 },
+  gunUntil: { 10: Date.UTC(2026, 10, 8), 13: Date.UTC(2026, 11, 1) },   // limited weapons
+  skin: { classic: 0, camo: 200, candy: 300, frost: 400, neon: 600, lava: 700, gold: 900, galaxy: 1200, rainbow: 1500, maple: 500, harvest: 700, pumpkinspice: 900 },
+  mythic: { dragonfire: 2000, voltage: 1800, thunderclap: 1900, starfall: 2300, royal: 1800, phantom: 2000, doomsday: 2300, outlaw: 2000, viper: 2200,
+    overdrive: 2400, headless: 2500, reaper: 2000, inferno: 2200, frostbite: 2200, celestial: 2500, quantum: 2200, gobbler: 2400 },
+  bp: 1000,
+};
+const UNLOCKABLE = { hat: ['pumpkinhead', 'viking', 'wizard'], effect: ['lightning', 'hearts'], skin: ['autumnwood', 'sunset'], mythic: Object.keys(MYTHICS).filter(k => k === 'harvestmoon' || /^(gold|diamond)_/.test(k)) };
+const EARN_PER_MSG = 1000, EARN_PER_HOUR = 5000, IMPORT_MAX = 20000;
+const PROFILE_MAX = 400000;   // bytes of saved settings, stats, missions, friends and maps
+const hashPw = (pw, salt) => crypto.scryptSync(String(pw), salt, 64).toString('hex');
+const hashTok = (t) => crypto.createHash('sha256').update(String(t)).digest('hex');
+const okName = (n) => /^[A-Za-z0-9_]{3,14}$/.test(String(n || ''));
+function cleanWallet(w) {
+  w = w && typeof w === 'object' ? w : {};
+  const arr = (a, ok) => Array.isArray(a) ? [...new Set(a.filter(ok))].slice(0, 200) : [];
+  return {
+    crystals: Math.max(0, Math.min(IMPORT_MAX, Math.floor(Number(w.crystals) || 0))),
+    guns: arr(w.guns, g => Number.isInteger(g) && g in SHOP.gun),
+    skins: arr(w.skins, s => s in SHOP.skin || UNLOCKABLE.skin.includes(s)),
+    mythics: arr(w.mythics, m => m in MYTHICS),
+    hats: arr(w.hats, h => UNLOCKABLE.hat.includes(h)), effects: arr(w.effects, e => UNLOCKABLE.effect.includes(e)), bp: !!w.bp,
+  };
+}
+const walletMsg = (a) => ({ t: 'wallet', w: a.wallet });
+async function initDB() {
+  if (!process.env.MONGODB_URI) { console.log('No MONGODB_URI set: accounts are turned off'); return; }
+  try {
+    const { MongoClient } = require('mongodb');
+    const client = new MongoClient(process.env.MONGODB_URI);
+    await client.connect();
+    accounts = client.db('arenaclash').collection('accounts');
+    await accounts.createIndex({ lower: 1 }, { unique: true });
+    await accounts.createIndex({ tokens: 1 });
+    console.log('Connected to MongoDB: accounts are on');
+    refreshLB();
+  } catch (e) { console.error('MongoDB connection failed:', e.message); accounts = null; }
+}
+let lbCache = null;
+async function refreshLB() {
+  if (!accounts) return;
+  try {
+    const top = await accounts.find({ 'lb.matches': { $gt: 0 } }, { projection: { username: 1, lb: 1 } }).sort({ 'lb.wins': -1, 'lb.kills': -1 }).limit(10).toArray();
+    lbCache = top.map(a => ({ name: a.username, wins: a.lb.wins || 0, kills: a.lb.kills || 0, matches: a.lb.matches || 0 }));
+  } catch (e) { console.error('leaderboard', e.message); }
+}
+setInterval(refreshLB, 60000);
+function signedIn(p, a, token) {
+  p.account = { id: a._id, username: a.username, uid: a.uid, dev: !!a.dev };
+  p.name = a.username; p.uid = a.uid; byUid.set(a.uid, p);
+  if (a.dev) { p.dev = true; send(p, { t: 'devok' }); }
+  send(p, { t: 'auth', ok: true, username: a.username, uid: a.uid, token, profile: a.profile || {}, updated: a.updated || 0, dev: !!a.dev });
+  send(p, walletMsg(a));
+  if (p.room) sendRoom(p.room);
+}
+async function newToken(a) {
+  const token = crypto.randomBytes(24).toString('hex');
+  const tokens = [hashTok(token), ...(a.tokens || [])].slice(0, 5);   // stay logged in on up to 5 devices
+  await accounts.updateOne({ _id: a._id }, { $set: { tokens } });
+  return token;
+}
+function slowDown(p) { const now = Date.now(); p.authTries = (p.authTries || []).filter(t => now - t < 60000); p.authTries.push(now); return p.authTries.length > 6; }
+async function accountMsg(p, m) {
+  if (!accounts) return send(p, { t: 'autherr', text: 'Accounts are offline right now. You can still play as a guest.' });
+  const now = Date.now();
+  if (m.t === 'signup') {
+    if (slowDown(p)) return send(p, { t: 'autherr', text: 'Too many tries. Wait a minute and try again.' });
+    if (!okName(m.username)) return send(p, { t: 'autherr', text: 'Usernames are 3 to 14 letters, numbers or _.' });
+    if (String(m.password || '').length < 6 || String(m.password).length > 100) return send(p, { t: 'autherr', text: 'Passwords need at least 6 characters.' });
+    const lower = m.username.toLowerCase();
+    const dev = lower === DEV_NAME && DEV_KEY && m.devKey === DEV_KEY;
+    if (lower === DEV_NAME && !dev) return send(p, { t: 'autherr', text: 'That name is reserved.' });
+    const salt = crypto.randomBytes(16).toString('hex');
+    const imported = m.import ? cleanWallet(m.import.wallet) : cleanWallet({});
+    const profile = m.import && m.import.profile && JSON.stringify(m.import.profile).length < PROFILE_MAX ? m.import.profile : {};
+    const uid = /^[A-Z0-9]{8}$/.test(String(m.uid || '')) && !(await accounts.findOne({ uid: m.uid })) ? m.uid : crypto.randomBytes(6).toString('base64').replace(/[^A-Z0-9]/gi, '').toUpperCase().padEnd(8, 'X').slice(0, 8);
+    const a = { username: m.username, lower, salt, hash: hashPw(m.password, salt), uid, dev: !!dev, created: now, updated: now, tokens: [], wallet: imported, profile, lb: { kills: 0, wins: 0, matches: 0 }, earn: { hour: now, amount: 0 } };
+    try { const r = await accounts.insertOne(a); a._id = r.insertedId; }
+    catch (e) { return send(p, { t: 'autherr', text: e.code === 11000 ? 'That username is taken.' : 'Could not create the account. Try again.' }); }
+    return signedIn(p, a, await newToken(a));
+  }
+  if (m.t === 'login') {
+    if (slowDown(p)) return send(p, { t: 'autherr', text: 'Too many tries. Wait a minute and try again.' });
+    const a = await accounts.findOne({ lower: String(m.username || '').toLowerCase() });
+    if (!a || hashPw(m.password, a.salt) !== a.hash) return send(p, { t: 'autherr', text: 'Wrong username or password.' });
+    if (a.lower === DEV_NAME && DEV_KEY && m.devKey === DEV_KEY && !a.dev) { a.dev = true; await accounts.updateOne({ _id: a._id }, { $set: { dev: true } }); }
+    return signedIn(p, a, await newToken(a));
+  }
+  if (m.t === 'resume') {
+    const a = await accounts.findOne({ tokens: hashTok(m.token) });
+    if (!a) return send(p, { t: 'autherr', text: 'Your login expired. Please log in again.', expired: true });
+    return signedIn(p, a, m.token);
+  }
+  if (!p.account) return;
+  const id = p.account.id;
+  if (m.t === 'logout') {
+    if (m.token) await accounts.updateOne({ _id: id }, { $pull: { tokens: hashTok(m.token) } });
+    const uid = p.account.uid; p.account = null; p.dev = false; p.devGod = false;
+    if (byUid.get(uid) === p) { byUid.delete(uid); for (const q of players.values()) if (q.account && q.account.uid === uid) { byUid.set(uid, q); break; } }
+    p.uid = null; return send(p, { t: 'loggedout' });
+  }
+  if (m.t === 'save') {
+    if (!m.profile || typeof m.profile !== 'object' || JSON.stringify(m.profile).length > PROFILE_MAX) return;
+    await accounts.updateOne({ _id: id }, { $set: { profile: m.profile, updated: Number(m.updated) || now } }); return;
+  }
+  const a = await accounts.findOne({ _id: id }); if (!a) return;
+  const w = a.wallet || cleanWallet({});
+  if (m.t === 'earn') {   // crystals are earned in-game; the server caps how fast
+    let n = Math.max(0, Math.min(EARN_PER_MSG, Math.floor(Number(m.n) || 0)));
+    if (!p.dev) {
+      const e = a.earn && now - a.earn.hour < 3600e3 ? a.earn : { hour: now, amount: 0 };
+      n = Math.min(n, Math.max(0, EARN_PER_HOUR - e.amount)); e.amount += n;
+      await accounts.updateOne({ _id: id }, { $inc: { 'wallet.crystals': n }, $set: { earn: e } });
+    } else await accounts.updateOne({ _id: id }, { $inc: { 'wallet.crystals': n } });
+    w.crystals = (w.crystals || 0) + n; return send(p, { t: 'wallet', w });
+  }
+  if (m.t === 'buy') {   // { kind: 'gun' | 'skin' | 'mythic' | 'bp', id }
+    let price = null, field = null, val = m.id;
+    if (m.kind === 'gun') { val = Math.floor(Number(m.id)); price = SHOP.gun[val]; field = 'guns'; if (SHOP.gunUntil[val] && now > SHOP.gunUntil[val]) price = null; }
+    if (m.kind === 'skin') { price = SHOP.skin[val]; field = 'skins'; }
+    if (m.kind === 'mythic') { price = SHOP.mythic[val]; field = 'mythics'; }
+    if (m.kind === 'bp') price = SHOP.bp;
+    if (price == null) return send(p, walletMsg(a));
+    if (p.dev) price = 0;
+    const owned = m.kind === 'bp' ? w.bp : (w[field] || []).includes(val);
+    if (owned) return send(p, walletMsg(a));
+    if ((w.crystals || 0) < price) { send(p, { t: 'autherr', text: 'Not enough Clash Crystals.' }); return send(p, walletMsg(a)); }
+    const upd = m.kind === 'bp' ? { $inc: { 'wallet.crystals': -price }, $set: { 'wallet.bp': true } } : { $inc: { 'wallet.crystals': -price }, $addToSet: { ['wallet.' + field]: val } };
+    await accounts.updateOne({ _id: id, 'wallet.crystals': { $gte: price } }, upd);
+    const fresh = await accounts.findOne({ _id: id }); return send(p, walletMsg(fresh));
+  }
+  if (m.t === 'unlock') {   // Battle Pass items and mastery camos (cosmetic only)
+    const list = UNLOCKABLE[m.kind]; if (!list || !list.includes(m.id)) return;
+    const field = { hat: 'hats', effect: 'effects', skin: 'skins', mythic: 'mythics' }[m.kind];
+    await accounts.updateOne({ _id: id }, { $addToSet: { ['wallet.' + field]: m.id } });
+    const fresh = await accounts.findOne({ _id: id }); return send(p, walletMsg(fresh));
+  }
+}
+async function recordMatchForAccounts(room, winners) {
+  if (!accounts) return;
+  for (const p of room.players.values()) if (p.account)
+    accounts.updateOne({ _id: p.account.id }, { $inc: { 'lb.kills': p.kills || 0, 'lb.matches': 1, 'lb.wins': winners.has(p.id) ? 1 : 0 } }).catch(() => {});
+}
+async function giftToAccount(target, amount) {
+  if (!accounts || !target.account) return false;
+  await accounts.updateOne({ _id: target.account.id }, { $inc: { 'wallet.crystals': amount } });
+  const fresh = await accounts.findOne({ _id: target.account.id }); if (fresh) send(target, walletMsg(fresh));
+  return true;
 }
 
 const PLACE_BONUS = [100, 50, 25];   // Clash Crystals for 1st, 2nd and 3rd place
@@ -432,10 +585,11 @@ function endMatch(room, reason) {
     e.name = p.name; e.kills += p.kills; e.matches++; if (winners.has(p.id)) e.wins++;
     leaderboard.set(key, e);
   }
+  recordMatchForAccounts(room, winners).then(() => setTimeout(refreshLB, 1500));
   broadcastAll({ t: 'lb', top: lbTop() });
   sendRoom(room);
 }
-const lbTop = () => [...leaderboard.values()].sort((a, b) => b.wins - a.wins || b.kills - a.kills).slice(0, 10);
+const lbTop = () => lbCache && lbCache.length ? lbCache : [...leaderboard.values()].sort((a, b) => b.wins - a.wins || b.kills - a.kills).slice(0, 10);
 
 function applyDamage(room, attacker, target, dmg, head, w) {
   if (target.devGod) return;
@@ -575,10 +729,11 @@ function handle(p, m) {
   const playing = room && room.state === 'playing';
   switch (m.t) {
     case 'hello':
-      p.name = cleanName(m.name);
-      if (/^[A-Z0-9]{8}$/.test(String(m.uid || ''))) { if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); p.uid = String(m.uid); byUid.set(p.uid, p); }
-      p.dev = false;
-      if (p.name.toLowerCase() === DEV_NAME) {
+      p.name = p.account ? p.account.username : cleanName(m.name);
+      if (!p.account && /^[A-Z0-9]{8}$/.test(String(m.uid || ''))) { if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); p.uid = String(m.uid); byUid.set(p.uid, p); }
+      p.dev = !!(p.account && p.account.dev);   // a developer account stays dev on every device
+      if (p.dev) { /* signed in as the dev account */ }
+      else if (p.name.toLowerCase() === DEV_NAME) {
         if (DEV_KEY && m.devKey === DEV_KEY) { p.dev = true; send(p, { t: 'devok' }); }
         else { p.name = 'Player' + p.id; send(p, { t: 'err', text: 'That name is reserved.' }); }
       }
@@ -627,7 +782,7 @@ function handle(p, m) {
     }
     case 's': {
       if (!playing) return;
-      const B = boundOf(room) + 5, x = num(m.x, -B, B), y = num(m.y, -5, 90), z = num(m.z, -B, B);
+      const B = boundOf(room) + 5, x = num(m.x, -B, B), y = num(m.y, -5, 110), z = num(m.z, -B, B);
       if (x === null || y === null || z === null) return;
       p.x = x; p.y = y; p.z = z; p.yaw = num(m.yaw, -1e4, 1e4) || 0; p.pitch = num(m.pitch, -2, 2) || 0;
       p.w = int(m.w, 0, BUILD_SLOT); break;
@@ -637,7 +792,7 @@ function handle(p, m) {
       if (room.br && (p.out || p.spawnedOnce)) return;   // Battle Royale: one life
       if (room.br) p.spawnedOnce = true;
       if (isCoop(room) && p.out) return;
-      const B = boundOf(room), x = num(m.x, -B, B), y = num(m.y, 0, 90), z = num(m.z, -B, B);
+      const B = boundOf(room), x = num(m.x, -B, B), y = num(m.y, 0, 110), z = num(m.z, -B, B);
       if (x === null || y === null || z === null) return;
       p.x = x; p.y = y; p.z = z; p.dead = false; p.hp = p.maxHp || 100; p.spawnAt = now; p.turkeyUntil = 0; p.dmgBy.clear();
       broadcast(room, { t: 'spawn', id: p.id, x, y, z });
@@ -678,7 +833,8 @@ function handle(p, m) {
       if (!p.dev) return;
       const q = byUid.get(String(m.code)), amount = int(m.amount, 1, 100000);
       if (!q) return send(p, { t: 'ferr', text: "That friend isn't online right now." });
-      send(q, { t: 'gift', from: p.name, amount }); send(p, { t: 'fsent', name: q.name + ' (' + amount + ' crystals sent)' }); break;
+      giftToAccount(q, amount).then(acct => send(q, { t: 'gift', from: p.name, amount, acct })).catch(() => send(q, { t: 'gift', from: p.name, amount }));
+      send(p, { t: 'fsent', name: q.name + ' (' + amount + ' crystals sent)' }); break;
     }
     case 'selfdmg': { // your own Halloween RPG blast, or a long fall
       if (!playing || p.dead || p.devGod || now - p.spawnAt < SPAWN_SHIELD) return;
@@ -710,6 +866,8 @@ function handle(p, m) {
       room.customMap = { name: cleanText(m.map.name).slice(0, 24) || 'Custom map', theme: CUSTOM_THEMES.includes(m.map.theme) ? m.map.theme : 'blockyard', blocks };
       sysChat(room, 'The host picked a custom map: ' + room.customMap.name + ' (' + blocks.length + ' blocks)'); sendRoom(room); break;
     }
+    case 'signup': case 'login': case 'resume': case 'logout': case 'save': case 'earn': case 'buy': case 'unlock':
+      accountMsg(p, m).catch(e => { console.error('account', e.message); send(p, { t: 'autherr', text: 'Something went wrong. Try again.' }); }); break;
     case 'fstatus': if (Array.isArray(m.codes)) send(p, { t: 'fstatus', list: m.codes.slice(0, 50).map(c => friendStatus(String(c))) }); break;
     case 'freq': { const q = byUid.get(String(m.code)); if (!q || q === p) return send(p, { t: 'ferr', text: "That player isn't online right now. Friend requests only work while both of you are online." }); send(q, { t: 'freq', from: p.uid, name: p.name }); send(p, { t: 'fsent', name: q.name }); break; }
     case 'facc': { const q = byUid.get(String(m.code)); if (q) send(q, { t: 'facc', from: p.uid, name: p.name }); break; }
@@ -786,7 +944,7 @@ function handle(p, m) {
 wss.on('connection', (ws) => {
   const p = { id: nextId++, ws, name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', mythic: {}, team: 0, room: null, x: 0, y: 0, z: 0, yaw: 0, pitch: 0, w: 0 };
   resetPlayer(p); players.set(p.id, p);
-  send(p, { t: 'welcome', id: p.id, online: players.size });
+  send(p, { t: 'welcome', accounts: !!accounts, id: p.id, online: players.size });
   send(p, { t: 'lb', top: lbTop() });
   ws.on('message', (raw) => {
     let m; try { m = JSON.parse(raw); } catch (e) { return; }
@@ -796,4 +954,5 @@ wss.on('connection', (ws) => {
 });
 
 const PORT = process.env.PORT || 3000;
+initDB();
 server.listen(PORT, () => console.log('Arena Clash server running on port ' + PORT));
