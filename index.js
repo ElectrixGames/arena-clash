@@ -23,6 +23,13 @@ const MODES = {
   br: { limit: 0, br: true },                 // Battle Royale: one life, loot, shrinking storm
 };
 const RANKED_MODES = ['ffa', 'gungame', 'br'];
+// Ranked: Bronze I-III, Silver I-III, Gold I-III, Platinum I-III, Diamond I-III (100 RP each), then Champion at 1500 RP
+const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'], CHAMPION_RP = 1500;
+function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
+function rpChange(place, n, kills) {   // 1st place +32 down to last place -24, plus 2 per kill (up to +10)
+  const share = n > 1 ? place / (n - 1) : 0;
+  return Math.round(32 - 56 * share) + Math.min(10, (kills || 0) * 2);
+}
 const MODE_IDS = Object.keys(MODES);
 const MAX_PLAYERS = 8;
 const MATCH_TIME = 240;      // seconds
@@ -171,20 +178,23 @@ async function initDB() {
     refreshLB();
   } catch (e) { console.error('MongoDB connection failed:', e.message); accounts = null; }
 }
-let lbCache = null;
+let lbCache = null, rankedCache = [];
 async function refreshLB() {
   if (!accounts) return;
   try {
     const top = await accounts.find({ 'lb.matches': { $gt: 0 } }, { projection: { username: 1, lb: 1 } }).sort({ 'lb.wins': -1, 'lb.kills': -1 }).limit(10).toArray();
     lbCache = top.map(a => ({ name: a.username, wins: a.lb.wins || 0, kills: a.lb.kills || 0, matches: a.lb.matches || 0 }));
+    const rk = await accounts.find({ rp: { $gt: 0 } }, { projection: { username: 1, rp: 1 } }).sort({ rp: -1 }).limit(10).toArray();
+    rankedCache = rk.map(a => ({ name: a.username, rp: a.rp, rank: rankName(a.rp) }));
   } catch (e) { console.error('leaderboard', e.message); }
 }
 setInterval(refreshLB, 60000);
 function signedIn(p, a, token) {
   p.account = { id: a._id, username: a.username, uid: a.uid, dev: !!a.dev };
+  p.rp = a.rp || 0; p.rank = rankName(p.rp);
   p.name = a.username; p.uid = a.uid; byUid.set(a.uid, p);
   if (a.dev) { p.dev = true; send(p, { t: 'devok' }); }
-  send(p, { t: 'auth', ok: true, username: a.username, uid: a.uid, token, profile: a.profile || {}, updated: a.updated || 0, dev: !!a.dev });
+  send(p, { t: 'auth', ok: true, username: a.username, uid: a.uid, token, profile: a.profile || {}, updated: a.updated || 0, dev: !!a.dev, rp: p.rp });
   send(p, walletMsg(a));
   if (p.room) sendRoom(p.room);
 }
@@ -271,8 +281,18 @@ async function accountMsg(p, m) {
     const fresh = await accounts.findOne({ _id: id }); return send(p, walletMsg(fresh));
   }
 }
-async function recordMatchForAccounts(room, winners) {
+async function recordMatchForAccounts(room, winners, standings) {
   if (!accounts) return;
+  if (room.ranked && standings && standings.length >= 2) {   // Ranked points
+    const n = standings.length;
+    for (let i = 0; i < n; i++) {
+      const p = room.players.get(standings[i].id); if (!p || !p.account) continue;
+      const before = p.rp || 0, delta = rpChange(i, n, standings[i].kills), rp = Math.max(0, before + delta);
+      p.rp = rp; p.rank = rankName(rp);
+      accounts.updateOne({ _id: p.account.id }, { $set: { rp } }).catch(() => {});
+      send(p, { t: 'rank', before, rp, delta: rp - before, place: i + 1, of: n });
+    }
+  }
   for (const p of room.players.values()) if (p.account)
     accounts.updateOne({ _id: p.account.id }, { $inc: { 'lb.kills': p.kills || 0, 'lb.matches': 1, 'lb.wins': winners.has(p.id) ? 1 : 0 } }).catch(() => {});
 }
@@ -586,8 +606,8 @@ function endMatch(room, reason) {
     e.name = p.name; e.kills += p.kills; e.matches++; if (winners.has(p.id)) e.wins++;
     leaderboard.set(key, e);
   }
-  recordMatchForAccounts(room, winners).then(() => setTimeout(refreshLB, 1500));
-  broadcastAll({ t: 'lb', top: lbTop() });
+  recordMatchForAccounts(room, winners, standings).then(() => setTimeout(refreshLB, 1500));
+  broadcastAll({ t: 'lb', top: lbTop(), ranked: rankedCache });
   sendRoom(room);
 }
 const lbTop = () => lbCache && lbCache.length ? lbCache : [...leaderboard.values()].sort((a, b) => b.wins - a.wins || b.kills - a.kills).slice(0, 10);
@@ -723,6 +743,16 @@ setInterval(() => {
   }
 }, 50);
 setInterval(() => broadcastAll({ t: 'online', n: players.size }), 5000);
+/* ===== The shared hub: everyone on the main menu walks around together ===== */
+const HUB_TIMEOUT = 2500;
+const inHub = (p) => p.hub && Date.now() - p.hub.t < HUB_TIMEOUT && !(p.room && p.room.state === 'playing');
+setInterval(() => {
+  const here = [...players.values()].filter(inHub);
+  if (!here.length) return;
+  const list = here.map(p => [p.id, p.name, p.hub.x, p.hub.y, p.hub.z, p.hub.f, p.color || 0, p.hat || 'none', p.rank && p.account ? p.rank : '', p.hub.g || 'ar', p.gunSkin || 'classic']);
+  const msg = JSON.stringify({ t: 'hub', list });
+  for (const p of here) if (p.ws.readyState === 1) p.ws.send(msg);
+}, 120);
 
 /* ================= messages ================= */
 function handle(p, m) {
@@ -748,6 +778,7 @@ function handle(p, m) {
       break;
     case 'quick': {
       const ranked = !!m.ranked; let best = null;
+      if (ranked && !p.account) return send(p, { t: 'err', text: 'Log in to play Ranked. Your rank is saved to your account.' });
       for (const r of rooms.values()) if (!r.isPrivate && !!r.ranked === ranked && r.players.size < MAX_PLAYERS && (!best || r.players.size > best.players.size)) best = r;
       if (!best) { best = createRoom(false); best.ranked = ranked; }
       joinRoom(p, best); break;
@@ -765,7 +796,18 @@ function handle(p, m) {
       joinRoom(p, r); break;
     }
     case 'leave': leaveRoom(p); break;
-    case 'lb': send(p, { t: 'lb', top: lbTop() }); break;
+    case 'lb': send(p, { t: 'lb', top: lbTop(), ranked: rankedCache }); break;
+    case 'hub': { // your position in the shared hub
+      p.hub = { x: num(m.x, -12, 12) || 0, y: num(m.y, 0, 4) || 0, z: num(m.z, -66, 9) || 0, f: r2(Number(m.f) || 0), g: /^[a-z]{2,10}$/.test(String(m.g || '')) ? m.g : 'ar', t: now }; break;
+    }
+    case 'hubleave': p.hub = null; break;
+    case 'hchat': { // hub chat: everyone on the main menu sees it
+      if (!inHub(p) || now - (p.lastHubChat || 0) < 1000) return;
+      const text = cleanText(m.text); if (!text) return;
+      p.lastHubChat = now; const msg = JSON.stringify({ t: 'hchat', id: p.id, name: p.name, color: p.color, rank: p.account ? p.rank : '', text });
+      for (const q of players.values()) if (inHub(q) && q.ws.readyState === 1) q.ws.send(msg);
+      break;
+    }
     case 'chat': {
       if (!room || now - (p.lastChat || 0) < 600) return;
       const text = cleanText(m.text); if (!text) return;
@@ -946,7 +988,7 @@ wss.on('connection', (ws) => {
   const p = { id: nextId++, ws, name: 'Player', color: 0, hat: 'none', effect: 'sparks', gunSkin: 'classic', mythic: {}, team: 0, room: null, x: 0, y: 0, z: 0, yaw: 0, pitch: 0, w: 0 };
   resetPlayer(p); players.set(p.id, p);
   send(p, { t: 'welcome', accounts: !!accounts, id: p.id, online: players.size });
-  send(p, { t: 'lb', top: lbTop() });
+  send(p, { t: 'lb', top: lbTop(), ranked: rankedCache });
   ws.on('message', (raw) => {
     let m; try { m = JSON.parse(raw); } catch (e) { return; }
     if (m && typeof m.t === 'string') { try { handle(p, m); } catch (e) { console.error(e); } }
