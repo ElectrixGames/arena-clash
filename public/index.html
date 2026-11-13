@@ -512,13 +512,58 @@ body.touch #gchat{top:calc(66px + env(safe-area-inset-top,0px))}
 
 .acctbox{display:flex;justify-content:space-between;align-items:center;gap:8px}
 #accttabs button{flex:1}#accttabs button.on{background:var(--gold2);color:#1c1206}
-/* ============ V1.7: 3D lobby ============ */
-@media (min-width:760px){
-  body.lobbyview #overlay{background:linear-gradient(90deg,rgba(6,10,24,.78) 0%,rgba(6,10,24,.45) 48%,rgba(6,10,24,0) 72%);backdrop-filter:none;justify-content:flex-start}
-  body.lobbyview #s-menu,body.lobbyview #s-lobby{margin-left:3vw;margin-right:auto;max-width:min(880px,56vw)}
-}
-#lobbyhint{position:fixed;right:4vw;bottom:calc(22px + env(safe-area-inset-bottom,0px));color:rgba(255,255,255,.7);font-size:13px;pointer-events:none;display:none}
-body.lobbyview #lobbyhint{display:block}
+/* ============ V1.8: the hub ============ */
+body.hubview #overlay{background:none;backdrop-filter:none;pointer-events:none;padding:0}
+.hubhud{position:fixed;inset:0;pointer-events:none;font-family:Rubik,sans-serif}
+.hubhud>*{pointer-events:auto}
+.hubhud[hidden]{display:none}
+.hub-tl{position:absolute;left:calc(16px + env(safe-area-inset-left,0px));top:calc(14px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.hub-tc{position:absolute;left:50%;top:calc(12px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px}
+.hub-tr{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));display:flex;gap:8px}
+.hubbtn{width:auto;font-family:"Lilita One",sans-serif;font-size:22px;padding:10px 20px;border-radius:14px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35);border:2px solid rgba(0,0,0,.35)}
+.hubbtn.blue{background:linear-gradient(180deg,#3d9bff,#1e64e0);box-shadow:0 5px 0 #0f3a8a}
+.hubbtn.orange{background:linear-gradient(180deg,#ff9a3d,#f06a1a);box-shadow:0 5px 0 #8a3a0a}
+.hubbtn.green{background:linear-gradient(180deg,#5fe08a,#2fa85a);box-shadow:0 5px 0 #146a34;font-size:18px}
+.hubbtn.dark{background:rgba(20,24,36,.88);box-shadow:none;font-size:20px;display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
+.hubbtn.dark small{font-family:Rubik,sans-serif;font-size:13px;color:var(--muted)}
+.hubbtn.sq{padding:10px 14px}
+.hubpill{display:flex;align-items:center;gap:8px;background:rgba(20,24,36,.82);border:2px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 14px;font-size:15px}
+.crpill b{font-family:"Lilita One",sans-serif;font-size:26px;font-weight:400;min-width:60px}
+.crpill .plus{width:30px;height:30px;padding:0;border-radius:50%;font-size:20px;line-height:1;background:rgba(255,255,255,.15);color:#fff;box-shadow:none;border:none}
+.hubbrand{display:flex;gap:8px;align-items:center;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.hubbrand .display{font-size:22px;color:var(--gold1)}
+#rankpill b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:17px}
+.rpbar{width:70px;height:8px;border-radius:4px;background:rgba(0,0,0,.5);overflow:hidden}.rpbar i{display:block;height:100%}
+.hub-center{position:absolute;left:50%;bottom:calc(118px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;width:min(300px,80vw)}
+.nicklbl{font-size:13px;color:rgba(255,255,255,.75);margin:0;text-shadow:0 1px 3px #000}
+#pname{text-align:center;font-family:"Lilita One",sans-serif;font-size:24px;background:rgba(20,24,36,.75);margin:0;padding:6px 12px}
+.playbtn{font-family:"Lilita One",sans-serif;font-size:42px;line-height:1;padding:10px 0 6px;border-radius:16px;display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,#ffa53d,#f07a1a);color:#fff;box-shadow:0 6px 0 #8a3a0a;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.playbtn small{font-family:Rubik,sans-serif;font-size:15px;font-weight:700;opacity:.9}
+.playbtn.ranked{background:linear-gradient(180deg,#c99aff,#7a3ae0);box-shadow:0 6px 0 #3a1478}
+#qmode{display:flex;gap:4px;background:rgba(20,24,36,.8);border-radius:12px;padding:3px}
+#qmode button{width:auto;font-size:14px;padding:5px 14px;background:none;color:#fff;box-shadow:none;border:none;border-radius:9px}
+#qmode button.on{background:var(--gold2);color:#1c1206}
+.hub-bar{position:absolute;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:4px;background:rgba(150,70,20,.55);border-radius:16px;padding:6px 10px;max-width:96vw;overflow-x:auto}
+.hicon{position:relative;width:76px;flex:0 0 auto;background:none;box-shadow:none;border:none;color:#fff;font-family:"Lilita One",sans-serif;font-size:15px;padding:2px;display:flex;flex-direction:column;align-items:center;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.hicon span{font-size:30px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.35),rgba(255,255,255,.08));margin-bottom:2px;transition:transform .12s}
+.hicon:hover span{transform:scale(1.1)}
+.hicon .ndot{right:8px;top:0}
+.hub-bl{position:absolute;left:calc(16px + env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:4px;max-width:240px}
+.hub-bl .small{text-shadow:0 1px 3px #000;margin:0}
+.hub-br{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+#hubprompt{position:fixed;left:50%;top:44%;transform:translateX(-50%);z-index:4;background:rgba(10,16,34,.88);border:2px solid var(--gold2);border-radius:14px;padding:10px 18px;font-family:"Lilita One",sans-serif;font-size:22px;cursor:pointer;animation:pulse 1.2s infinite}
+#hubprompt kbd{background:var(--gold2);color:#1c1206;border-radius:6px;padding:0 8px;margin-right:6px}
+#hubstick{display:none;position:absolute;left:calc(26px + env(safe-area-inset-left,0px));bottom:calc(150px + env(safe-area-inset-bottom,0px));width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);touch-action:none}
+#hubstick i{position:absolute;left:30px;top:30px;width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.45)}
+@media (hover:none),(pointer:coarse){#hubstick{display:block}}
+@media (max-width:760px){.hubbtn{font-size:16px;padding:8px 12px}.hub-tr #hubinvite{font-size:0;padding:8px 12px}.hub-tr #hubinvite::first-letter{font-size:18px}.hub-center{bottom:calc(104px + env(safe-area-inset-bottom,0px))}.playbtn{font-size:32px}.hicon{width:62px;font-size:12px}.hicon span{width:44px;height:44px;font-size:24px}.hub-br{display:none}.hub-bl{bottom:auto;top:calc(120px + env(safe-area-inset-top,0px))}.hubbrand{display:none}}
+#rankres{margin:4px 0 10px;font-size:18px}#rankres b{font-family:"Lilita One",sans-serif;font-weight:400;font-size:22px}
+.rpup{color:var(--hp);font-weight:700}.rpdown{color:var(--danger);font-weight:700}
+.rankup{font-family:"Lilita One",sans-serif;font-size:30px;color:var(--gold1);animation:pulse 1s infinite}
+#hubchat{width:min(320px,70vw);display:flex;flex-direction:column;gap:4px}
+#hubchatlog{max-height:150px;overflow:hidden;font-size:14px;line-height:1.35;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:flex-end}
+#hubchatin{margin:0;font-size:14px;padding:6px 10px;background:rgba(20,24,36,.7);border-color:rgba(255,255,255,.15)}
+@media (max-width:760px){#hubchatlog{max-height:90px;font-size:12px}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -600,21 +645,71 @@ body.lobbyview #lobbyhint{display:block}
   <div id="edcross"></div>
   <div class="edhelp">Click the game to aim · WASD fly, Space up, Q down, Shift faster · Left click place · Right click remove · Wheel size · 1 to 9 colors · Esc to use the buttons</div>
 </div>
-<div id="lobbyhint">Drag to spin your character</div>
+<div id="hubprompt" hidden></div>
 <div id="overlay">
-  <section class="card wide" id="s-menu">
+  <section id="s-menu" class="hubhud">
+    <div class="hub-tl">
+      <button id="acctbtn" class="hubbtn blue">👤 Login</button>
+      <span id="acctlabel" hidden></span>
+      <div id="rankpill" class="hubpill"></div>
+      <div id="hubchat"><div id="hubchatlog"></div><input id="hubchatin" maxlength="80" placeholder="Press Enter to chat" autocomplete="off" aria-label="Hub chat"></div>
+    </div>
+    <div class="hub-tc">
+      <div class="hubpill crpill"><span class="crico"></span><b class="crystals">0</b><button class="plus" id="hubplus" aria-label="Get crystals in the Shop">+</button></div>
+      <div class="hubbrand"><span class="display">Arena Clash</span><span class="badge v14">V1.8</span></div>
+    </div>
+    <div class="hub-tr">
+      <button id="hubinvite" class="hubbtn orange">👥 INVITE FRIENDS</button>
+      <button id="hubfull" class="hubbtn sq" aria-label="Fullscreen">⛶</button>
+    </div>
+    <div class="hub-center">
+      <label for="pname" class="nicklbl">Nickname</label>
+      <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
+      <button id="quick" class="playbtn">⌖ PLAY<small id="quicksub">Unranked</small></button>
+      <div id="qmode"><button data-q="unranked" class="on">Unranked</button><button data-q="ranked">★ Ranked</button></div>
+    </div>
+    <div class="hub-bar">
+      <button class="hicon" id="hTasks"><span>📋</span>Tasks</button>
+      <button class="hicon" id="openFriends"><span>👥</span>Social<i class="ndot" id="frdot" hidden></i></button>
+      <button class="hicon" id="openLoadout"><span>🎒</span>Loadout</button>
+      <button class="hicon" id="openMastery"><span>🏅</span>Mastery</button>
+      <button class="hicon" id="openBP"><span>🎟️</span>Pass<i class="ndot" id="bpdot" hidden></i></button>
+      <button class="hicon" id="openLocker"><span>🎨</span>Customize</button>
+      <button class="hicon" id="hShop"><span>🛒</span>Shop</button>
+      <button class="hicon" id="openMaps"><span>🛠️</span>Editor</button>
+      <button class="hicon" id="hSettings"><span>⚙️</span>Settings</button>
+      <button class="hicon" id="hLog"><span>📜</span>Log</button>
+    </div>
+    <div class="hub-bl">
+      <button class="hubbtn green" id="practice">🤖 Practice vs bots</button>
+      <p class="small" id="hubcount"></p>
+      <p class="small" id="netstatus">Connecting to the server<span class="dots"></span></p>
+      <p id="menuerr" hidden></p>
+    </div>
+    <div class="hub-br"><button class="hubbtn dark" id="hPrivate">👥 Private Game<small>Play with friends</small></button></div>
+    <div id="hubstick"><i></i></div>
+    <div class="preview" id="pvMenu" hidden></div>
+  </section>
+
+  <section class="card" id="s-missions" hidden>
+    <div class="statbox missionbox"><div class="mhead"><b class="display">Daily Missions</b><span class="small" id="mreset"></span></div><div id="missions"></div></div>
+    <div class="row"><button class="ghost" id="missionsback">Back</button></div>
+  </section>
+
+  <section class="card" id="s-private" hidden>
+    <h2 class="display">Private Game</h2>
+    <p class="small">Make a room and share the code, or type a friend's code to join them.</p>
+    <div class="row"><button id="create">Create private room</button></div>
+    <div class="row"><div class="coderow"><input id="code" maxlength="5" placeholder="Room code" autocomplete="off" spellcheck="false" aria-label="Room code"><button class="ghost" id="joincode">Join</button></div></div>
+    <div class="row"><button class="ghost" id="privateback">Back</button></div>
+  </section>
+
+  <section class="card wide" id="s-stats" hidden>
+    <h2 class="display">Settings &amp; Stats</h2>
     <div class="menugrid">
       <div>
-        <div class="brand"><h1 class="display">Arena Clash</h1><span class="badge">Voxel arena shooter</span><span class="badge v14">V1.7</span></div>
-        <p>Up to 8 players. Free-for-all, Team Deathmatch or Snipers Only, voted on by the lobby.</p>
-        <label for="pname">Your name</label>
-        <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
-        <button id="quick">Play online</button>
-        <div class="row"><button class="ghost" id="create">Create private room</button></div>
-        <div class="row"><div class="coderow"><input id="code" maxlength="5" placeholder="Room code" autocomplete="off" spellcheck="false" aria-label="Room code"><button class="ghost" id="joincode">Join</button></div></div>
-        <div class="row"><button class="ghost" id="practice">Practice vs bots</button></div>
-        <p class="small" id="netstatus">Connecting to the server<span class="dots"></span></p>
-        <p id="menuerr" hidden></p>
+        <div class="statbox"><div class="small">Your stats</div><div class="stats4" id="mystats"></div></div>
+        <div class="statbox"><div class="small">Touch controls</div><div class="chips" id="touchmode" role="radiogroup" aria-label="Touch controls" style="margin:6px 0 0"></div></div>
         <details>
           <summary>Controls</summary>
           <div class="keys">
@@ -634,20 +729,12 @@ body.lobbyview #lobbyhint{display:block}
           </div>
         </details>
       </div>
-      <div class="side">
-          <div class="statbox acctbox"><span id="acctlabel">Playing as <b>Guest</b></span><button class="small-btn" id="acctbtn">Log in / Sign up</button></div>
-        <div class="crbar"><span class="crico"></span><b class="crystals">0</b><span>Clash Crystals</span></div>
-        <div class="preview" id="pvMenu"></div>
-        <div class="row" style="margin-top:0"><button class="ghost" id="openLoadout">Loadout</button><button class="ghost" id="openLocker">Customize</button></div>
-        <div class="row" style="margin-top:0"><button id="openBP" class="bpbtn">🎟️ Battle Pass<span class="ndot" id="bpdot" hidden></span></button></div>
-        <div class="row" style="margin-top:0"><button class="ghost" id="openMastery">🏅 Mastery</button><button class="ghost" id="openFriends" style="position:relative">👥 Friends<span class="ndot" id="frdot" hidden></span></button></div>
-        <div class="row" style="margin-top:0"><button class="ghost" id="openMaps">🛠️ Map Editor</button></div>
-        <div class="statbox missionbox"><div class="mhead"><b class="display">Daily Missions</b><span class="small" id="mreset"></span></div><div id="missions"></div></div>
-        <div class="statbox"><div class="small">Touch controls</div><div class="chips" id="touchmode" role="radiogroup" aria-label="Touch controls" style="margin:6px 0 0"></div></div>
-        <div class="statbox"><div class="small">Your stats</div><div class="stats4" id="mystats"></div></div>
+      <div>
+        <div class="statbox"><div class="small">★ Ranked leaderboard</div><ol id="lbrank"></ol></div>
         <div class="statbox"><div class="small">Server leaderboard (wins)</div><ol id="lb"></ol><div class="small" id="lbnote">Resets whenever the server restarts.</div></div>
       </div>
     </div>
+    <div class="row"><button class="ghost" id="statsback">Back</button></div>
   </section>
 
   <section class="card wide" id="s-locker" hidden>
@@ -699,7 +786,15 @@ body.lobbyview #lobbyhint{display:block}
   <section class="card wide" id="s-gamelog" hidden>
     <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.7</span></div>
     <div class="glbody">
-      <h4>V1.7: The Realism Update 🔫</h4>
+      <h4>V1.8: Ranked &amp; the Hub ★</h4>
+      <ul>
+        <li>★ <b>Ranked</b>: Bronze I, II, III, then Silver, Gold, Platinum and Diamond, all the way up to <b>Champion</b>. Win to gain RP, place low to lose some. Log in to play.</li>
+        <li>🏟️ <b>The Hub</b>: the main menu is now a place you can walk around! Walk to a pad and press E (or tap) to play Ranked, Practice, open the Battle Pass and more. Visit the <b>Armory</b> at the end of the hall to change your loadout.</li>
+        <li>🏆 New <b>Ranked leaderboard</b> in Settings.</li>
+        <li>👥 <b>Shared hub</b>: everyone on the main menu is in the same hub. Walk around together, and press <b>Enter</b> to chat!</li>
+      </ul>
+
+      <h4 class="old">V1.7: The Realism Update 🔫</h4>
       <ul>
         <li>🔫 <b>Realistic guns</b>: round barrels, scopes, tubes and muzzles.</li>
         <li>🏟️ <b>3D Lobby</b>: your character stands on a floating stage holding your gun. Drag to spin them. In an online room, everyone stands on the stage together!</li>
@@ -718,7 +813,7 @@ body.lobbyview #lobbyhint{display:block}
         <li>❤️ Everyone has <b>500 HP</b> in Battle Royale. Health packs heal 100 and the storm hits harder to match.</li>
         <li>🦃 <b>Feast Defense</b> replaces Zombies: team up to protect the Thanksgiving feast from wild turkeys, Tom turkeys and the boss <b>GOBBLEZILLA</b>, who throws pies from the sky.</li>
       </ul>
-      <div class="soon">Coming soon: Ranked!</div>
+      
 
       <h4 class="old">V1.5: The Harvest Update 🦃</h4>
       <ul>
@@ -867,6 +962,7 @@ body.lobbyview #lobbyhint{display:block}
   <section class="card" id="s-results" hidden>
     <h2 class="display" id="wintitle">You win!</h2>
     <p id="winsub"></p>
+    <div id="rankres" hidden></div>
     <div class="podium" id="podium"></div>
     <table><thead><tr><th>#</th><th>Player</th><th class="n">K</th><th class="n">A</th><th class="n">D</th></tr></thead><tbody id="resbody"></tbody></table>
     <div class="row"><button id="again">Play again</button></div>
@@ -2523,9 +2619,12 @@ function onNet(m) {
   switch (m.t) {
     case 'welcome': NET.id = m.id; NET.accounts = !!m.accounts; showOnline(m.online); acctOnConnect(); break;
     case 'auth': case 'autherr': case 'wallet': case 'loggedout': onAcctMsg(m); break;
+    case 'rank': onRankMsg(m); break;
+    case 'hub': onHubList(m.list || []); break;
+    case 'hchat': onHubChat(m); break;
     case 'accounts': NET.accounts = !!m.on; if (m.on && !ACCT.user && store.get('arenaclash.token', '')) netSend({ t: 'resume', token: store.get('arenaclash.token', '') }); acctUI(); break;
     case 'online': if (!NET.room) showOnline(m.n); break;
-    case 'lb': NET.lb = m.top || []; renderLB(); break;
+    case 'lb': NET.lb = m.top || []; NET.lbRanked = m.ranked || []; renderLB(); break;
     case 'err':
       if (/reserved/.test(m.text)) { NET.dev = false; store.set('arenaclash.devkey', ''); }
       if (mode === 'online' && NET.room) addChat(null, m.text, 0, true);
@@ -2693,6 +2792,7 @@ function addChat(name, text, color, sys) {
   log.scrollTop = log.scrollHeight;
 }
 function resetForMatch() {
+  $('rankres').hidden = true;
   P.gg = 0; P.turkeyT = 0; P.out = false; P.bus = false; P.sky = false; P.maxHp = MODES[match.mode].br ? 500 : 100;
   P.kills = 0; P.deaths = 0; P.assists = 0; P.mats = 200; P.pitch = 0; Wp.piece = 'wall'; Wp.aim = false; Wp.burstLeft = 0;
   match.teamScores = [0, 0]; Wp.cur = 0; Wp.spin = 0; pendingLO = null; LO = matchLoadout(); buildSlots();
@@ -2960,6 +3060,8 @@ addEventListener('keydown', e => {
   if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) || (e.code === 'Tab' && match.active)) e.preventDefault();
   keys[e.code] = true;
   if (ED.on) { edKey(e); return; }
+  if (e.code === 'KeyE' && current === 's-menu' && !match.active && !e.repeat) { hubInteract(); return; }
+  if ((e.code === 'Enter' || e.code === 'Slash') && current === 's-menu' && !match.active) { e.preventDefault(); for (const k in keys) keys[k] = false; $('hubchatin').focus(); return; }
   if (e.code === 'Tab' && match.active) { renderBoard(); $('board').hidden = false; }
   if (paused || e.repeat) return;
   if ((e.code === 'Enter' || e.code === 'KeyT') && match.active && !chatOpen) { e.preventDefault(); for (const k in keys) keys[k] = false; openChat(); return; }
@@ -3910,7 +4012,7 @@ function updateMythicGlow(dt) {
 }
 
 /* ================= Game Log (opens like the Shop, with a red dot after updates) ================= */
-const LOG_VERSION = '1.7';
+const LOG_VERSION = '1.8';
 function logDot() { $('logdot').hidden = store.get('arenaclash.logseen', '') === LOG_VERSION; }
 $('gamelogbtn').addEventListener('click', () => { store.set('arenaclash.logseen', LOG_VERSION); logDot(); show('s-gamelog'); });
 $('logclose').addEventListener('click', () => show('s-menu'));
@@ -4100,8 +4202,8 @@ function acctApplyWallet(w) {
 }
 function acctUI() {
   const u = ACCT.user;
-  $('acctlabel').innerHTML = u ? 'Logged in as <b>' + esc(u) + '</b>' : 'Playing as <b>Guest</b>';
-  $('acctbtn').textContent = u ? 'Account' : 'Log in / Sign up';
+  $('acctbtn').innerHTML = '👤 ' + (u ? esc(u) : 'Login');
+  rankUI();
   $('pname').disabled = !!u; if (u) { $('pname').value = u; P.name = u; }
   $('acctin').hidden = !!u; $('acctout').hidden = !u;
   if (u) $('acctwho').textContent = u;
@@ -4111,7 +4213,7 @@ function acctUI() {
 function onAcctMsg(m) {
   if (m.t === 'auth') {
     const fresh = !ACCT.user;
-    ACCT.user = m.username; ACCT.dev = !!m.dev; localStorage.setItem('arenaclash.token', JSON.stringify(m.token));
+    ACCT.user = m.username; ACCT.dev = !!m.dev; ACCT.rp = m.rp || 0; localStorage.setItem('arenaclash.token', JSON.stringify(m.token));
     if (m.uid && m.uid !== myUid) { myUid = m.uid; store.set('arenaclash.uid', myUid); }
     const local = Number(localStorage.getItem('arenaclash.synced') || 0), switching = store.get('arenaclash.acctname', '') !== m.username;
     if (m.profile && Object.keys(m.profile).length && (switching || (m.updated || 0) > local)) {
@@ -4173,64 +4275,252 @@ function acctOnConnect() {   // called when the server says hello
   acctUI();
 }
 
-/* ================= 3D Lobby (main menu) ================= */
+/* ================= The Lobby Hub (walk around like veck.io) ================= */
 const LOBBY_Y = 400;
-const LOBBY = { g: null, me: null, key: '', others: new Map(), yaw: 0, emoteT: 4, emote: null, drag: null, floaters: [] };
-const LOBBY_SPOTS = [[-1.7, -.7], [1.7, -.7], [-3, -1.6], [3, -1.6], [-.9, -2.4], [.9, -2.4], [0, -3.2]];
-function buildLobbyStage() {
+const HUB = { g: null, me: null, key: '', others: new Map(), pos: new V3(0, 0, 3), vy: 0, face: Math.PI, camYaw: 0, camPitch: .32, drag: null, near: null, jx: 0, jy: 0, floaters: [], rankSprite: null, rankKey: '' };
+const LOBBY = HUB;   // older code calls it LOBBY
+const PADS = [
+  { x: -4.4, z: -5, label: 'PRACTICE', sub: 'vs bots', color: 0x3ddc84, act: 'practice' },
+  { x: 4.4, z: -5, label: 'RANKED', sub: 'Bronze to Champion', color: 0xffb21f, act: 'ranked' },
+  { x: -4.4, z: -15, label: 'PLAY', sub: 'Unranked', color: 0x5fb0ff, act: 'quick' },
+  { x: 4.4, z: -15, label: 'PRIVATE', sub: 'Play with friends', color: 0xc77dff, act: 'private' },
+  { x: -4.4, z: -25, label: 'MAP EDITOR', sub: 'Build your own', color: 0xe76f51, act: 'maps' },
+  { x: 4.4, z: -25, label: 'BATTLE PASS', sub: 'Season rewards', color: 0x9b6bff, act: 'bp' },
+  { x: -4.4, z: -35, label: 'MASTERY', sub: 'Gold + Diamond camos', color: 0xffd24a, act: 'mastery' },
+  { x: 4.4, z: -35, label: 'FRIENDS', sub: 'Invite and join', color: 0x5fe0ff, act: 'friends' },
+  { x: -3.4, z: 2.2, label: 'MISSIONS', color: 0xff4d5e, act: 'tasks', gift: true },
+  { x: 3.4, z: 2.2, label: 'SHOP', color: 0xffb21f, act: 'shop', crate: true },
+  { x: 0, z: -53, label: 'ARMORY', sub: 'Change your loadout', color: 0xff8a1f, act: 'loadout', r: 4 },
+];
+function textTex(lines, color, w = 512, h = 256) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
+  g.fillStyle = '#0f1424'; g.fillRect(0, 0, w, h); g.strokeStyle = '#' + color.toString(16).padStart(6, '0'); g.lineWidth = 12; g.strokeRect(6, 6, w - 12, h - 12);
+  g.textAlign = 'center'; g.fillStyle = '#ffffff'; g.font = 'bold ' + Math.round(h * .34) + 'px "Lilita One", sans-serif'; g.fillText(lines[0], w / 2, h * (lines[1] ? .5 : .62));
+  if (lines[1]) { g.fillStyle = '#' + color.toString(16).padStart(6, '0'); g.font = 'bold ' + Math.round(h * .17) + 'px Rubik, sans-serif'; g.fillText(lines[1], w / 2, h * .8); }
+  const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+}
+function buildHub() {
   const g = new THREE.Group(); g.position.set(0, LOBBY_Y, 0);
-  const plat = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 3.6, .7, 48), LM(0x2a3348)); plat.position.y = -.35; g.add(plat);
-  const top = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.2, .04, 48), LM(0x3d4a66)); top.position.y = .02; g.add(top);
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(4.3, .07, 8, 72), new THREE.MeshBasicMaterial({ color: 0x5fe0ff })); ring.rotation.x = Math.PI / 2; ring.position.y = .03; g.add(ring);
-  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.1, .04, 8, 48), new THREE.MeshBasicMaterial({ color: 0xffd24a })); ring2.rotation.x = Math.PI / 2; ring2.position.y = .05; g.add(ring2);
-  const cols = [0xe76f51, 0x5fe0ff, 0xffd24a, 0x9b6bff, 0x3ddc84];
-  for (let i = 0; i < 14; i++) {   // floating cubes in the background
-    const s = .3 + Math.random() * .7, c = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), new THREE.MeshLambertMaterial({ color: cols[i % cols.length], emissive: cols[i % cols.length], emissiveIntensity: .25 }));
-    const a = Math.PI + (Math.random() - .5) * 2.6, r = 7 + Math.random() * 6;
-    c.position.set(Math.sin(a) * r, .5 + Math.random() * 4, Math.cos(a) * r); c.userData.spin = (Math.random() - .5) * 1.4; c.userData.y = c.position.y; c.userData.ph = Math.random() * 6;
-    g.add(c); LOBBY.floaters.push(c);
+  const B = (w, h, d, c, x, y, z, emiss) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), emiss ? new THREE.MeshBasicMaterial({ color: c }) : LM(c)); m.position.set(x, y, z); g.add(m); return m; };
+  // the hallway
+  B(14, .2, 58, 0x2a2a32, 0, -.1, -21); B(6, .02, 58, 0x7a1e22, 0, .01, -21);
+  B(.18, .03, 58, 0xff8a1f, -3, .02, -21, true); B(.18, .03, 58, 0x2a6aff, 3, .02, -21, true);
+  B(.6, 8, 58, 0x3a3f4a, -7.3, 4, -21); B(.6, 8, 58, 0x3a3f4a, 7.3, 4, -21); B(14.6, 8, .6, 0x3a3f4a, 0, 4, 8.3);
+  B(14.6, .4, 58, 0x22252c, 0, 8.2, -21);
+  B(.25, .06, 58, 0xffe680, -3.6, 7.95, -21, true); B(.25, .06, 58, 0xffe680, 3.6, 7.95, -21, true);
+  for (let z = 6; z > -48; z -= 8) {
+    for (const sx of [-1, 1]) { B(1, 8, 1, 0x30343e, sx * 6.6, 4, z); const lamp = B(.15, 1.6, .5, 0xfff0a0, sx * 6.95, 5.6, z - 4, true); lamp.rotation.z = sx * .35; }
   }
-  scene.add(g); LOBBY.g = g;
-}
-const lobbyKey = () => [look.color, look.hat, look.gunSkin, JSON.stringify(look.mythic || {}), look_lo()[0], P.name].join('|');
-function ensureLobbyMe() {
-  const k = lobbyKey(); if (LOBBY.me && LOBBY.key === k) return;
-  if (LOBBY.me) disposeAvatar(LOBBY.me);
-  const e = { name: P.name }; makeAvatar(e, P.name, AV_COLORS[look.color], look.hat, LOBBY.g); if (e.bar) e.bar.visible = false;
-  e.gunSkin = look.gunSkin; e.mythic = look.mythic; setAvatarGun(e, WEAPONS[look_lo()[0]].id);
-  LOBBY.me = e; LOBBY.key = k; LOBBY.emoteT = 1.5;
-}
-function syncLobbyOthers() {   // everyone in your online room stands on the stage with you
-  const want = new Map();
-  if (NET.room && current === 's-lobby') NET.room.players.filter(p => p.id !== NET.id).slice(0, LOBBY_SPOTS.length).forEach((p, i) => want.set(p.id, { p, i }));
-  for (const [id, e] of LOBBY.others) if (!want.has(id) || e.key !== want.get(id).p.name + want.get(id).p.color + want.get(id).p.hat) { disposeAvatar(e); LOBBY.others.delete(id); }
-  for (const [id, { p, i }] of want) {
-    let e = LOBBY.others.get(id);
-    if (!e) {
-      e = { name: p.name, key: p.name + p.color + p.hat }; makeAvatar(e, p.name, AV_COLORS[p.color] || AV_COLORS[0], p.hat, LOBBY.g); if (e.bar) e.bar.visible = false;
-      e.gunSkin = p.gunSkin; e.mythic = p.mythic || {}; setAvatarGun(e, 'ar'); e.ph = Math.random() * 6; LOBBY.others.set(id, e);
+  // the armory at the end
+  B(22, .2, 16, 0x2a2a32, 0, -.1, -57); B(.6, 8, 16, 0x3a3f4a, -11.3, 4, -57); B(.6, 8, 16, 0x3a3f4a, 11.3, 4, -57); B(22.6, 8, .6, 0x3a3f4a, 0, 4, -65.3);
+  B(22.6, .4, 16, 0x22252c, 0, 8.2, -57); B(.25, .06, 16, 0xffe680, 0, 7.95, -57, true);
+  B(4.4, 8, .6, 0x3a3f4a, -9.1, 4, -49.3); B(4.4, 8, .6, 0x3a3f4a, 9.1, 4, -49.3);
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(7, 1.75), new THREE.MeshBasicMaterial({ map: textTex(['ARMORY'], 0xff8a1f, 512, 128) })); sign.position.set(0, 6.6, -49); g.add(sign);
+  WEAPONS.forEach((w, i) => {   // every gun on display
+    const col = i % 7, row = Math.floor(i / 7), h = new THREE.Group(); buildWorldGun(h, w.id, 'classic'); h.scale.setScalar(2.2); h.rotation.y = Math.PI / 2;
+    h.position.set(-7.8 + col * 2.6, 2.6 + row * 2.2, -64.6); g.add(h);
+    B(2.2, .1, .5, 0x5a3a1e, h.position.x, h.position.y - .55, -64.8);
+  });
+  const tv = new THREE.Mesh(new THREE.PlaneGeometry(5.6, 2.8), new THREE.MeshBasicMaterial({ map: textTex(['ARENA CLASH', 'Walk to a pad and press E'], 0x5fe0ff) })); tv.position.set(0, 5.4, 7.95); tv.rotation.y = Math.PI; g.add(tv);
+  // pads, signs, gift box and shop crate
+  for (const p of PADS) {
+    const r = p.r || 1.5;
+    if (!p.gift && !p.crate) {
+      for (const [w, d, x, z] of [[r * 2, .12, 0, -r], [r * 2, .12, 0, r], [.12, r * 2, -r, 0], [.12, r * 2, r, 0]]) B(w, .04, d, p.color, p.x + x, .04, p.z + z, true);
+      B(r * 2 - .2, .02, r * 2 - .2, 0x14161c, p.x, .03, p.z);
     }
-    e.group.position.set(LOBBY_SPOTS[i][0], 0, LOBBY_SPOTS[i][1]); e.group.rotation.y = Math.atan2(-LOBBY_SPOTS[i][0] * .3, 3);
+    if (p.act !== 'loadout') {
+      const sx = p.x < 0 ? -1 : 1, s = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.3), new THREE.MeshBasicMaterial({ map: textTex([p.label, p.sub || ''], p.color) }));
+      if (p.gift || p.crate) { s.position.set(p.x, 2.6, p.z - .2); s.rotation.y = 0; s.scale.setScalar(.7); }
+      else { s.position.set(sx * 6.95, 4.2, p.z); s.rotation.y = -sx * Math.PI / 2; }
+      g.add(s);
+    }
+    if (p.gift) { B(1.4, 1.1, 1.4, 0xd8323a, p.x, .55, p.z); B(1.45, 1.12, .25, 0xffd24a, p.x, .56, p.z); B(.25, 1.12, 1.45, 0xffd24a, p.x, .56, p.z); B(.6, .3, .3, 0xffd24a, p.x - .2, 1.25, p.z); B(.6, .3, .3, 0xffd24a, p.x + .2, 1.25, p.z); }
+    if (p.crate) { B(1.3, 1.1, 1.3, 0x8a5a2a, p.x, .55, p.z); B(1.35, .12, 1.35, 0x5a3a1e, p.x, .35, p.z); B(1.35, .12, 1.35, 0x5a3a1e, p.x, .85, p.z); }
+  }
+  scene.add(g); HUB.g = g;
+}
+const hubKey = () => [look.color, look.hat, look.gunSkin, JSON.stringify(look.mythic || {}), look_lo()[0], P.name].join('|');
+function rankSpriteFor(text, color) {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 64; const g = c.getContext('2d');
+  g.font = 'bold 34px "Lilita One", sans-serif'; g.textAlign = 'center'; g.lineWidth = 6; g.strokeStyle = 'rgba(0,0,0,.7)'; g.strokeText(text, 128, 44); g.fillStyle = color; g.fillText(text, 128, 44);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), depthTest: false })); s.scale.set(1.6, .4, 1); s.renderOrder = 12; return s;
+}
+function ensureHubMe() {
+  const k = hubKey();
+  if (!HUB.me || HUB.key !== k) {
+    if (HUB.me) disposeAvatar(HUB.me);
+    const e = { name: P.name }; makeAvatar(e, P.name, AV_COLORS[look.color], look.hat, HUB.g); if (e.bar) e.bar.visible = false;
+    e.gunSkin = look.gunSkin; e.mythic = look.mythic; setAvatarGun(e, WEAPONS[look_lo()[0]].id);
+    HUB.me = e; HUB.key = k; HUB.rankKey = '';
+  }
+  const rk = ACCT.user ? rankName(ACCT.rp) : '';
+  if (HUB.rankKey !== rk) {
+    if (HUB.rankSprite) { HUB.me.group.remove(HUB.rankSprite); HUB.rankSprite.material.map.dispose(); HUB.rankSprite = null; }
+    if (rk) { HUB.rankSprite = rankSpriteFor('★ ' + rk, rankColor(ACCT.rp)); HUB.rankSprite.position.y = 2.75; HUB.me.group.add(HUB.rankSprite); }
+    HUB.rankKey = rk;
   }
 }
-function updateLobby(dt) {
-  if (!LOBBY.g) buildLobbyStage();
-  LOBBY.g.visible = true; ensureLobbyMe(); syncLobbyOthers();
-  const me = LOBBY.me; me.group.position.set(0, 0, 0); me.group.rotation.y = LOBBY.yaw + Math.sin(clock * .45) * .1;
-  animateAvatar(me, 0, 0, dt, false, 0);
-  LOBBY.emoteT -= dt;
-  if (LOBBY.emoteT <= 0 && !LOBBY.emote) { LOBBY.emote = { e: Math.floor(Math.random() * EMOTES.length), t: EMOTE_TIME }; LOBBY.emoteT = 10 + Math.random() * 6; }
-  if (LOBBY.emote) { LOBBY.emote.t -= dt; if (LOBBY.emote.t <= 0) LOBBY.emote = null; else emoteAnim(me, LOBBY.emote.e, EMOTE_TIME - LOBBY.emote.t); }
-  for (const e of LOBBY.others.values()) { e.group.position.y = 0; animateAvatar(e, 0, 0, dt, false, Math.sin(clock * .8 + e.ph) * .1); }
-  for (const c of LOBBY.floaters) { c.rotation.x += c.userData.spin * dt; c.rotation.y += c.userData.spin * .7 * dt; c.position.y = c.userData.y + Math.sin(clock + c.userData.ph) * .25; }
-  const wide = innerWidth >= 760 && document.body.classList.contains('lobbyview'), off = wide ? -1.9 : 0, dist = wide ? 5.4 : 6.4;
-  if (camera.fov !== 50) { camera.fov = 50; camera.updateProjectionMatrix(); }
-  camera.position.set(off, LOBBY_Y + 1.6, dist); camera.lookAt(off, LOBBY_Y + 1.1, 0);
+function syncHubOthers() {   // everyone in your online room stands near you
+  const want = new Map();
+  if (NET.room && current === 's-lobby') NET.room.players.filter(p => p.id !== NET.id).slice(0, 7).forEach((p, i) => want.set(p.id, { p, i }));
+  for (const [id, e] of HUB.others) if (!want.has(id) || e.key !== want.get(id).p.name + want.get(id).p.color + want.get(id).p.hat) { disposeAvatar(e); HUB.others.delete(id); }
+  for (const [id, { p, i }] of want) {
+    let e = HUB.others.get(id);
+    if (!e) {
+      e = { name: p.name, key: p.name + p.color + p.hat }; makeAvatar(e, p.name, AV_COLORS[p.color] || AV_COLORS[0], p.hat, HUB.g); if (e.bar) e.bar.visible = false;
+      e.gunSkin = p.gunSkin; e.mythic = p.mythic || {}; setAvatarGun(e, 'ar'); e.ph = Math.random() * 6; HUB.others.set(id, e);
+    }
+    const a = (i - 3) * .45; e.group.position.set(HUB.pos.x + Math.sin(HUB.face + a) * -2.6, 0, HUB.pos.z + Math.cos(HUB.face + a) * -2.6 + (i % 2) * .6);
+    e.group.rotation.y = Math.atan2(HUB.pos.x - e.group.position.x, HUB.pos.z - e.group.position.z);
+  }
 }
-function hideLobby() { if (LOBBY.g) LOBBY.g.visible = false; }
-$('overlay').addEventListener('pointerdown', e => { if (e.target === $('overlay')) LOBBY.drag = { x: e.clientX, yaw: LOBBY.yaw }; });
-addEventListener('pointermove', e => { if (LOBBY.drag) LOBBY.yaw = LOBBY.drag.yaw + (e.clientX - LOBBY.drag.x) * .012; });
-addEventListener('pointerup', () => { LOBBY.drag = null; });
+const hubMoving = () => current === 's-menu' && !ED.on;
+function updateLobby(dt) {
+  if (!HUB.g) buildHub();
+  HUB.g.visible = true; ensureHubMe(); syncHubOthers(); hubNet(dt); updatePeers(dt);
+  scene.fog.near = 150; scene.fog.far = 420;   // clear air in the hub (each map sets its own fog again when a match loads)
+  let fx = 0, fz = 0;
+  if (hubMoving()) {
+    if (keys.KeyW || keys.ArrowUp) fz -= 1; if (keys.KeyS || keys.ArrowDown) fz += 1; if (keys.KeyA) fx -= 1; if (keys.KeyD) fx += 1;
+    if (keys.ArrowLeft) HUB.camYaw += 1.8 * dt; if (keys.ArrowRight) HUB.camYaw -= 1.8 * dt;
+    fx += HUB.jx; fz += HUB.jy;
+    if (keys.Space && HUB.pos.y <= 0) HUB.vy = 6;
+  }
+  const len = Math.hypot(fx, fz); let vx = 0, vz = 0;
+  if (len > .1) {
+    const s = Math.sin(HUB.camYaw), c = Math.cos(HUB.camYaw), sp = (keys.ShiftLeft ? 7.5 : 5) * Math.min(1, len);
+    vx = ((fx * c + fz * s) / len) * sp; vz = ((-fx * s + fz * c) / len) * sp;
+    HUB.pos.x += vx * dt; HUB.pos.z += vz * dt;
+    const target = Math.atan2(vx, vz); let d = target - HUB.face; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; HUB.face += d * Math.min(1, dt * 12);
+  }
+  if (HUB.pos.z > -49.5) { HUB.pos.x = Math.max(-6.4, Math.min(6.4, HUB.pos.x)); HUB.pos.z = Math.min(7.4, HUB.pos.z); }
+  else { HUB.pos.x = Math.max(-10.4, Math.min(10.4, HUB.pos.x)); HUB.pos.z = Math.max(-64.4, HUB.pos.z); if (Math.abs(HUB.pos.x) > 6.4 && HUB.pos.z > -50.2) HUB.pos.z = -50.2; }
+  for (const p of PADS) if (p.gift || p.crate) { const dx = HUB.pos.x - p.x, dz = HUB.pos.z - p.z; if (Math.abs(dx) < 1.1 && Math.abs(dz) < 1.1) { if (Math.abs(dx) > Math.abs(dz)) HUB.pos.x = p.x + Math.sign(dx) * 1.1; else HUB.pos.z = p.z + Math.sign(dz) * 1.1; } }
+  HUB.vy -= 20 * dt; HUB.pos.y = Math.max(0, HUB.pos.y + HUB.vy * dt); if (HUB.pos.y <= 0) HUB.vy = 0;
+  const me = HUB.me; me.group.position.copy(HUB.pos); me.group.rotation.y = HUB.face;
+  animateAvatar(me, vx, vz, dt, HUB.pos.y > .05, 0);
+  for (const e of HUB.others.values()) animateAvatar(e, 0, 0, dt, false, Math.sin(clock * .8 + e.ph) * .1);
+  // the nearest pad
+  let near = null, nd = Infinity;
+  for (const p of PADS) { const d = Math.hypot(HUB.pos.x - p.x, HUB.pos.z - p.z); if (d < (p.r || 1.5) + (p.gift || p.crate ? 1.2 : .2) && d < nd) { nd = d; near = p; } }
+  if (HUB.pos.z < -50) near = PADS.find(p => p.act === 'loadout');
+  HUB.near = hubMoving() ? near : null;
+  const pr = $('hubprompt'); pr.hidden = !HUB.near;
+  if (HUB.near) pr.innerHTML = '<kbd>' + (isTouch ? 'TAP' : 'E') + '</kbd> ' + HUB.near.label + (HUB.near.act === 'ranked' && ACCT.user ? ' · ' + rankName(ACCT.rp) : '');
+  // third-person camera
+  const d = 5.2, cp = Math.max(.05, Math.min(1.1, HUB.camPitch));
+  const t = new V3(HUB.pos.x, LOBBY_Y + HUB.pos.y + 1.5, HUB.pos.z);
+  let cx = t.x + Math.sin(HUB.camYaw) * d * Math.cos(cp), cz = t.z + Math.cos(HUB.camYaw) * d * Math.cos(cp);
+  cx = Math.max(-6.9, Math.min(6.9, cx)); if (HUB.pos.z < -50) cx = Math.max(-10.9, Math.min(10.9, cx)); cz = Math.min(7.9, cz);
+  if (camera.fov !== 60) { camera.fov = 60; camera.updateProjectionMatrix(); }
+  camera.position.set(cx, Math.min(LOBBY_Y + 7.6, t.y + Math.sin(cp) * d), cz); camera.lookAt(t);
+}
+function hideLobby() { if (HUB.g) HUB.g.visible = false; $('hubprompt').hidden = true; }
+function hubInteract(p) {
+  p = p || HUB.near; if (!p) return;
+  const acts = {
+    practice: () => $('practice').click(), quick: () => { QMODE = 'unranked'; qmodeUI(); $('quick').click(); },
+    ranked: () => { QMODE = 'ranked'; qmodeUI(); $('quick').click(); }, private: () => show('s-private'),
+    maps: () => $('openMaps').click(), bp: () => $('openBP').click(), mastery: () => $('openMastery').click(), friends: () => $('openFriends').click(),
+    tasks: () => show('s-missions'), shop: () => $('shopbtn').click(), loadout: () => $('openLoadout').click(),
+  };
+  (acts[p.act] || (() => {}))();
+}
+$('hubprompt').addEventListener('click', () => hubInteract());
+// camera drag (mouse and touch) and the mobile stick
+canvas.addEventListener('pointerdown', e => { if (current === 's-menu' && !ED.on && !match.active) HUB.drag = { x: e.clientX, y: e.clientY, yaw: HUB.camYaw, pitch: HUB.camPitch, id: e.pointerId }; });
+addEventListener('pointermove', e => { if (HUB.drag && e.pointerId === HUB.drag.id) { HUB.camYaw = HUB.drag.yaw - (e.clientX - HUB.drag.x) * .008; HUB.camPitch = HUB.drag.pitch + (e.clientY - HUB.drag.y) * .005; } });
+addEventListener('pointerup', e => { if (HUB.drag && e.pointerId === HUB.drag.id) HUB.drag = null; });
+{
+  const st = $('hubstick'), knob = st.querySelector('i'); let sid = null, cx = 0, cy = 0;
+  st.addEventListener('touchstart', e => { const t = e.changedTouches[0]; sid = t.identifier; const r = st.getBoundingClientRect(); cx = r.left + r.width / 2; cy = r.top + r.height / 2; e.preventDefault(); }, { passive: false });
+  st.addEventListener('touchmove', e => { for (const t of e.changedTouches) if (t.identifier === sid) { let dx = (t.clientX - cx) / 45, dy = (t.clientY - cy) / 45; const l = Math.hypot(dx, dy); if (l > 1) { dx /= l; dy /= l; } HUB.jx = dx; HUB.jy = dy; knob.style.transform = 'translate(' + dx * 34 + 'px,' + dy * 34 + 'px)'; } e.preventDefault(); }, { passive: false });
+  const end = e => { for (const t of e.changedTouches) if (t.identifier === sid) { sid = null; HUB.jx = HUB.jy = 0; knob.style.transform = ''; } };
+  st.addEventListener('touchend', end); st.addEventListener('touchcancel', end);
+}
+
+/* ---- the shared hub: other players walking around ---- */
+const PEERS = new Map();   // id -> { e, key, tx, ty, tz, tf, rs }
+let hubSendT = 0;
+function hubNet(dt) {
+  if (!NET.ok) return;
+  if (hubMoving()) {
+    hubSendT -= dt;
+    if (hubSendT <= 0) { hubSendT = .12; HUB.inHub = true; netSend({ t: 'hub', x: rd(HUB.pos.x), y: rd(HUB.pos.y), z: rd(HUB.pos.z), f: rd(HUB.face), g: WEAPONS[look_lo()[0]].id }); }
+  } else if (HUB.inHub) { HUB.inHub = false; netSend({ t: 'hubleave' }); clearPeers(); }
+}
+function onHubList(list) {
+  $('hubcount').textContent = list.length === 1 ? 'Just you in the hub' : list.length + ' players in the hub';
+  if (!hubMoving() || !HUB.g) return;
+  const seen = new Set();
+  for (const [id, name, x, y, z, f, color, hat, rank, gun, skin] of list) {
+    if (id === NET.id) continue; seen.add(id);
+    const key = [name, color, hat, gun, skin, rank].join('|');
+    let pr = PEERS.get(id);
+    if (pr && pr.key !== key) { removePeer(id); pr = null; }
+    if (!pr) {
+      const e = { name }; makeAvatar(e, name, AV_COLORS[color] || AV_COLORS[0], hat, HUB.g); if (e.bar) e.bar.visible = false;
+      e.gunSkin = skin; e.mythic = {}; setAvatarGun(e, gun);
+      pr = { e, key, tx: x, ty: y, tz: z, tf: f };
+      if (rank) { pr.rs = rankSpriteFor('★ ' + rank, RANK_COLORS[rank.split(' ')[0]] || '#ffffff'); pr.rs.position.y = 2.75; e.group.add(pr.rs); }
+      e.group.position.set(x, y, z); e.group.rotation.y = f; PEERS.set(id, pr);
+    }
+    pr.tx = x; pr.ty = y; pr.tz = z; pr.tf = f;
+  }
+  for (const id of [...PEERS.keys()]) if (!seen.has(id)) removePeer(id);
+}
+function removePeer(id) { const pr = PEERS.get(id); if (!pr) return; if (pr.rs) pr.rs.material.map.dispose(); disposeAvatar(pr.e); PEERS.delete(id); }
+function clearPeers() { for (const id of [...PEERS.keys()]) removePeer(id); }
+function updatePeers(dt) {   // glide smoothly between the 8-per-second updates
+  const k = Math.min(1, dt * 10);
+  for (const pr of PEERS.values()) {
+    const g = pr.e.group, ox = g.position.x, oz = g.position.z;
+    g.position.x += (pr.tx - ox) * k; g.position.y += (pr.ty - g.position.y) * k; g.position.z += (pr.tz - oz) * k;
+    let d = pr.tf - g.rotation.y; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; g.rotation.y += d * k;
+    animateAvatar(pr.e, (g.position.x - ox) / Math.max(dt, .001), (g.position.z - oz) / Math.max(dt, .001), dt, g.position.y > .05, 0);
+  }
+}
+/* ---- hub chat ---- */
+function onHubChat(m) {
+  const log = $('hubchatlog'), line = document.createElement('div');
+  line.innerHTML = (m.rank ? '<span style="color:' + (RANK_COLORS[m.rank.split(' ')[0]] || '#fff') + '">[' + esc(m.rank) + ']</span> ' : '') + '<b style="color:' + hex(AV_COLORS[m.color] || 0xffffff) + '">' + esc(m.name) + ':</b> ' + esc(m.text);
+  log.appendChild(line); while (log.children.length > 7) log.firstChild.remove();
+  log.scrollTop = log.scrollHeight; if (m.id !== NET.id) sfx('chat');
+}
+$('hubchatin').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const t = $('hubchatin').value.trim(); if (t) netSend({ t: 'hchat', text: t }); $('hubchatin').value = ''; $('hubchatin').blur(); e.preventDefault(); }
+  if (e.key === 'Escape') $('hubchatin').blur();
+  e.stopPropagation();
+});
+
+/* ================= Ranked ================= */
+const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'], CHAMPION_RP = 1500;
+const RANK_COLORS = { Bronze: '#d08a4a', Silver: '#d8dde6', Gold: '#ffd24a', Platinum: '#6fe0d0', Diamond: '#8fd0ff', Champion: '#ff5fd8' };
+function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
+const rankColor = (rp) => RANK_COLORS[rankName(rp).split(' ')[0]];
+const rankProgress = (rp) => rp >= CHAMPION_RP ? 100 : (rp % 100);
+let QMODE = 'unranked';
+function qmodeUI() {
+  $('quicksub').textContent = QMODE === 'ranked' ? 'Ranked' : 'Unranked';
+  $('quick').classList.toggle('ranked', QMODE === 'ranked');
+  document.querySelectorAll('#qmode button').forEach(b => b.classList.toggle('on', b.dataset.q === QMODE));
+}
+document.querySelectorAll('#qmode button').forEach(b => b.addEventListener('click', () => { QMODE = b.dataset.q; qmodeUI(); }));
+function rankUI() {
+  const pill = $('rankpill');
+  if (!ACCT.user) { pill.innerHTML = '<span class="small">Log in for Ranked</span>'; return; }
+  const rp = ACCT.rp || 0, nm = rankName(rp);
+  pill.innerHTML = '<b style="color:' + rankColor(rp) + '">★ ' + nm + '</b><span class="rpbar"><i style="width:' + rankProgress(rp) + '%;background:' + rankColor(rp) + '"></i></span><span class="small">' + (rp >= CHAMPION_RP ? rp + ' RP' : (rp % 100) + ' / 100 RP') + '</span>';
+}
+function onRankMsg(m) {
+  const up = rankName(m.rp) !== rankName(m.before) && m.rp > m.before, down = rankName(m.rp) !== rankName(m.before) && m.rp < m.before;
+  ACCT.rp = m.rp; rankUI(); HUB.rankKey = '';
+  const el = $('rankres'); el.hidden = false;
+  el.innerHTML = '<b style="color:' + rankColor(m.rp) + '">★ ' + rankName(m.rp) + '</b> <span class="' + (m.delta >= 0 ? 'rpup' : 'rpdown') + '">' + (m.delta >= 0 ? '+' : '') + m.delta + ' RP</span>' +
+    '<span class="small"> · placed #' + m.place + ' of ' + m.of + '</span>' + (up ? '<div class="rankup">RANK UP!</div>' : down ? '<div class="small">Rank down. You\'ll get it back!</div>' : '');
+  if (up) { sfx('buy'); waveBanner('RANK UP!', 'You are now ' + rankName(m.rp)); }
+}
 
 /* ================= Map Editor ================= */
 const ED = { on: false, blocks: [], ents: [], color: 0xe76f51, size: 2, shape: 'cube', theme: 'blockyard', name: 'My map', undo: [], ghost: null };
@@ -4556,7 +4846,7 @@ function brSpectate() { // after you're out of a Battle Royale, follow someone w
 $('specnext').addEventListener('click', () => { BRC.specIdx++; KC.ent = null; });
 
 /* ================= screens ================= */
-const screens = ['s-account', 's-menu', 's-locker', 's-loadout', 's-shop', 's-gamelog', 's-bp', 's-mastery', 's-friends', 's-maps', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
+const screens = ['s-account', 's-menu', 's-missions', 's-private', 's-stats', 's-locker', 's-loadout', 's-shop', 's-gamelog', 's-bp', 's-mastery', 's-friends', 's-maps', 's-lobby', 's-queue', 's-vote', 's-ready', 's-pause', 's-results'];
 let current = 's-menu';
 function show(id) {
   current = id;
@@ -4566,15 +4856,14 @@ function show(id) {
   $('touch').hidden = !(isTouch && match.active && !id);
   if (id !== null && chatOpen) closeChat();
   $('gchat').hidden = !match.active;
-  $('shopbtn').hidden = $('gamelogbtn').hidden = id !== 's-menu';
-  document.body.classList.toggle('lobbyview', id === 's-menu' || id === 's-lobby');
+  $('shopbtn').hidden = $('gamelogbtn').hidden = true;   // these live in the hub's bottom bar now
+  document.body.classList.toggle('hubview', id === 's-menu');
   if (id === 's-menu') { bpDot(); logDot(); $('frdot').hidden = !FR.pending.length; }
   if (id !== null && ED.on) { /* leaving the editor via a menu */ }
   if (typeof refreshDev === 'function') refreshDev();
   if (id !== null) { $('emotebar').hidden = true; if (P.emote) stopEmote(); }
   if (id === 's-menu') renderMissions();
   if (id !== null) { mouseL = false; resetJoy(); T.lookId = T.fireId = null; keys.Space = false; }
-  if (id === 's-menu') mountPreview('pvMenu');
   if (id === 's-locker') mountPreview('pvLocker');
   if (['s-ready', 's-pause', 's-results'].includes(id)) setTimeout(() => { const b = $(id).querySelector('button:not(.ghost):not([hidden])'); if (b && !isTouch) b.focus({ preventScroll: true }); }, 30);
 }
@@ -4694,6 +4983,8 @@ function renderStats() {
     .map(([k, v]) => '<div><b>' + v + '</b><span>' + k + '</span></div>').join('');
 }
 function renderLB() {
+  const lr = $('lbrank'), rk = NET.lbRanked || [];
+  lr.innerHTML = rk.length ? rk.map(e => '<li>' + esc(e.name) + ' <span style="color:' + rankColor(e.rp) + '">★ ' + esc(e.rank) + ' · ' + e.rp + ' RP</span></li>').join('') : '<li class="small">No ranked matches yet. Be the first!</li>';
   const lb = $('lb');
   if (!NET.ok) { lb.innerHTML = '<li class="small">Connect to the server to see it.</li>'; return; }
   if (!NET.lb.length) { lb.innerHTML = '<li class="small">No finished matches yet. Be the first!</li>'; return; }
@@ -5089,7 +5380,18 @@ function goOnline(m) {
     store.set('arenaclash.devkey', k.trim());
   } menuError(''); sendHello(); mode = 'online'; $('chatlog').innerHTML = ''; netSend(m);
 }
-$('quick').addEventListener('click', () => goOnline({ t: 'quick' }));
+$('quick').addEventListener('click', () => {
+  if (QMODE === 'ranked' && !ACCT.user) { acctUI(); acctTab('login'); $('acctmsg').textContent = 'Log in (or sign up) to play Ranked. Your rank is saved to your account.'; show('s-account'); return; }
+  goOnline({ t: 'quick', ranked: QMODE === 'ranked' });
+});
+$('hTasks').addEventListener('click', () => show('s-missions'));
+$('hShop').addEventListener('click', () => $('shopbtn').click()); $('hubplus').addEventListener('click', () => $('shopbtn').click());
+$('hSettings').addEventListener('click', () => { renderLB(); show('s-stats'); });
+$('hLog').addEventListener('click', () => $('gamelogbtn').click()); $('hLog').appendChild($('logdot'));
+$('hubinvite').addEventListener('click', () => $('openFriends').click());
+$('hPrivate').addEventListener('click', () => show('s-private'));
+for (const id of ['missionsback', 'privateback', 'statsback']) $(id).addEventListener('click', () => show('s-menu'));
+$('hubfull').addEventListener('click', () => { try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); } catch (e) {} });
 $('create').addEventListener('click', () => goOnline({ t: 'create' }));
 $('joincode').addEventListener('click', () => {
   const code = $('code').value.trim().toUpperCase();
