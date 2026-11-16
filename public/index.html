@@ -564,6 +564,8 @@ body.hubview #overlay{background:none;backdrop-filter:none;pointer-events:none;p
 #hubchatlog{max-height:150px;overflow:hidden;font-size:14px;line-height:1.35;text-shadow:0 1px 3px #000,0 0 6px rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:flex-end}
 #hubchatin{margin:0;font-size:14px;padding:6px 10px;background:rgba(20,24,36,.7);border-color:rgba(255,255,255,.15)}
 @media (max-width:760px){#hubchatlog{max-height:90px;font-size:12px}}
+#duelq{position:absolute;left:50%;top:calc(110px + env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(10,16,34,.9);border:2px solid #ff4d5e;border-radius:14px;padding:8px 14px;font-family:"Lilita One",sans-serif;font-size:20px;animation:pulse 1.2s infinite}
+#duelq[hidden]{display:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -656,12 +658,13 @@ body.hubview #overlay{background:none;backdrop-filter:none;pointer-events:none;p
     </div>
     <div class="hub-tc">
       <div class="hubpill crpill"><span class="crico"></span><b class="crystals">0</b><button class="plus" id="hubplus" aria-label="Get crystals in the Shop">+</button></div>
-      <div class="hubbrand"><span class="display">Arena Clash</span><span class="badge v14">V1.8</span></div>
+      <div class="hubbrand"><span class="display">Arena Clash</span><span class="badge v14">V1.9</span></div>
     </div>
     <div class="hub-tr">
       <button id="hubinvite" class="hubbtn orange">👥 INVITE FRIENDS</button>
       <button id="hubfull" class="hubbtn sq" aria-label="Fullscreen">⛶</button>
     </div>
+    <div id="duelq" hidden><span id="duelqtxt"></span><button class="small-btn ghost" id="duelqx">Cancel</button></div>
     <div class="hub-center">
       <label for="pname" class="nicklbl">Nickname</label>
       <input id="pname" maxlength="14" value="Player" autocomplete="off" spellcheck="false">
@@ -786,7 +789,19 @@ body.hubview #overlay{background:none;backdrop-filter:none;pointer-events:none;p
   <section class="card wide" id="s-gamelog" hidden>
     <div class="votehead"><h2 class="display">Game Log</h2><span class="badge v14">V1.7</span></div>
     <div class="glbody">
-      <h4>V1.8: Ranked &amp; the Hub ★</h4>
+      <h4>V1.9: Duels &amp; Fortresses ⚔️</h4>
+      <ul>
+        <li>⚔️ <b>Quick 1v1, 2v2 and 3v3</b>: step on a duel pad near the end of the hub and press E. The match starts as soon as enough players are queued, and you come back to the hub after.</li>
+        <li>🏰 <b>Map upgrade</b>: two-story buildings with doors, windows and a ladder upstairs, concrete bunkers with shooting slits, watchtowers and fenced pens. Harvest Valley has enterable houses, towers and bunkers too.</li>
+        <li>🪜 <b>Ladders</b>: walk into one and hold W (or Space) to climb.</li>
+        <li>🔥 <b>Win streaks</b> show above your head, in matches and in the hub.</li>
+        <li>★ <b>More ranks</b>: Emerald, Master and Grandmaster, then Champion, and <b>Legend</b> at the very top.</li>
+        <li>❤️ Everyone has <b>150 HP</b> now (Battle Royale stays at 500).</li>
+        <li>💥 <b>Damage numbers add up</b>: 40, 80, 120, 160 as you keep hitting the same player.</li>
+        <li>🏃 Faster walking in the hub.</li>
+      </ul>
+
+      <h4 class="old">V1.8: Ranked &amp; the Hub ★</h4>
       <ul>
         <li>★ <b>Ranked</b>: Bronze I, II, III, then Silver, Gold, Platinum and Diamond, all the way up to <b>Champion</b>. Win to gain RP, place low to lose some. Log in to play.</li>
         <li>🏟️ <b>The Hub</b>: the main menu is now a place you can walk around! Walk to a pad and press E (or tap) to play Ranked, Practice, open the Battle Pass and more. Visit the <b>Armory</b> at the end of the hall to change your loadout.</li>
@@ -1236,6 +1251,9 @@ const GEN = {
     for (let f = 0; f < 9; f++) { const fx = (rnd() * 2 - 1) * S, fz = (rnd() * 2 - 1) * S; addBlock(fx, 0, fz, 9, 4.5, 7, 0xb8322a); addBlock(fx, 4.5, fz, 9.6, .5, 7.6, 0x3a2a24); for (let i = 0; i < 6; i++) addBlock(fx + (rnd() * 2 - 1) * 12, 0, fz + (rnd() * 2 - 1) * 12, 1.6, 1.1, 1.1, 0xd8b868); }
     for (let i = 0; i < 150; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, c = pick([0xc0401a, 0xe07a2a, 0xffb02e, 0x5aa04a, 0x4a8a38]); addBlock(x, 0, z, .8, 3, .8, 0x5a3a1e); addBlock(x, 3, z, 3.2, 1.8, 3.2, c); }
     for (let i = 0; i < 110; i++) { const x = (rnd() * 2 - 1) * S, z = (rnd() * 2 - 1) * S, k = 1.2 + rnd() * 2; addBlock(x, 0, z, k, k * .7, k * 1.2, pick([0x8a8f75, 0x7a8066, 0x6a6a72])); }
+    for (let i = 0; i < 14; i++) { const x = (rnd() * 2 - 1) * S * .85, z = (rnd() * 2 - 1) * S * .85; clearArea(x - 7, z - 6, x + 7, z + 6); building(x, z, 10, 8, pick(M.pal), pick(['+x', '-x', '+z', '-z'])); }
+    for (let i = 0; i < 10; i++) { const x = (rnd() * 2 - 1) * S * .85, z = (rnd() * 2 - 1) * S * .85; clearArea(x - 4, z - 4, x + 4, z + 4); watchtower(x, z, 0x8a5a2b); }
+    for (let i = 0; i < 8; i++) { const x = (rnd() * 2 - 1) * S * .85, z = (rnd() * 2 - 1) * S * .85; clearArea(x - 7, z - 7, x + 7, z + 7); bunker(x, z, i % 2); }
     for (let i = 0; i < 9; i++) { const x = (rnd() * 2 - 1) * S * .9, z = (rnd() * 2 - 1) * S * .9; addBlock(x, 0, z, 3, 10, 3, 0x7a5a3a); addBlock(x, 10, z, 5, .5, 5, 0x5a3a1e); }
   },
   farm(M) {
@@ -1432,14 +1450,19 @@ function updateFx(dt) {
   }
 }
 const dmgNums = [];
-function dmgNum(p, v, head) {
+function dmgNum(p, v, head, ent) {
+  if (ent) {   // add up hits on the same target: 40, 80, 120... instead of 40, 40, 40
+    if (clock - (ent.accT || -99) > 3) ent.acc = 0;
+    ent.acc = (ent.acc || 0) + v; ent.accT = clock; v = Math.round(ent.acc);
+    if (ent.accNum && dmgNums.includes(ent.accNum)) ent.accNum.t = Math.min(ent.accNum.t, .1);
+  }
   if (dmgNums.length > 24) { const o = dmgNums.shift(); scene.remove(o.s); o.s.material.map.dispose(); o.s.material.dispose(); }
   const c = document.createElement('canvas'); c.width = 128; c.height = 64; const g = c.getContext('2d');
   g.font = '46px "Lilita One", Rubik, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
   g.lineWidth = 8; g.strokeStyle = 'rgba(20,10,0,.85)'; g.strokeText(String(v), 64, 34); g.fillStyle = head ? '#ff4d5e' : '#ffe066'; g.fillText(String(v), 64, 34);
   const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthTest: false }));
   s.position.copy(p).add(new V3((Math.random() - .5) * .5, .35, (Math.random() - .5) * .5)); s.renderOrder = 20; scene.add(s);
-  dmgNums.push({ s, t: .9, head });
+  const o = { s, t: .9, head }; dmgNums.push(o); if (ent) ent.accNum = o;
 }
 function updateDmgNums(dt) {
   for (let i = dmgNums.length - 1; i >= 0; i--) {
@@ -1754,7 +1777,7 @@ function damagePlayer(d, by) { // practice mode only; online damage comes from t
   if (P.turkeyT > 0) d *= .75;   // your turkey bodyguard soaks up 25%
   P.hp -= d; vigT = .35; sfx('hurt'); addShake(.12);
   if (P.hp <= 0) {
-    P.deaths++; by.kills++; by.hp = Math.min(by.maxHp || 100, by.hp + 25); stats.deaths++; saveStats();
+    P.deaths++; by.kills++; by.hp = Math.min(by.maxHp || 150, by.hp + 25); stats.deaths++; saveStats();
     if (gungameOn()) ggLocal(by, P, by.gun === 'scythe' ? SCYTHE_W : -1);
     if (teamsOn()) match.teamScores[by.team]++;
     killFx(by.effect, P.pos); showDeath(by.name); if (MODES[match.mode].br) { P.out = true; P.placeT = clock; } startKillcam(by, by.name, WEAPONS.findIndex(w => w.id === by.gun));
@@ -1861,15 +1884,15 @@ const crateMat = new THREE.MeshLambertMaterial({ color: 0x4f7d3a, map: blockTex 
 function addCrate(pos) {
   const g = new THREE.Group(); g.add(new THREE.Mesh(crateGeo, crateMat)); g.add(new THREE.Mesh(bandGeo, bandMat));
   g.children.forEach(m => m.castShadow = SHADOWS);
-  g.position.set(pos.x, .5, pos.z); scene.add(g); crates.push({ g, active: true, t: 0 });
+  g.position.set(pos.x, (pos.y || 0) + .5, pos.z); scene.add(g); crates.push({ g, active: true, t: 0, y: pos.y || 0 });
 }
 const needsAmmo = () => WEAPONS.some((w, i) => guns[i].reserve < w.reserve);
 let clock = 0;
 function updateCrates(dt) {
   for (const c of crates) {
     if (!c.active) { c.t -= dt; if (c.t <= 0) { c.active = true; c.g.visible = true; } continue; }
-    c.g.rotation.y += dt * 1.5; c.g.position.y = .5 + Math.sin(clock * 3) * .08;
-    if (!P.dead && P.pos.y < 1.5 && Math.hypot(P.pos.x - c.g.position.x, P.pos.z - c.g.position.z) < 1.3 && (needsAmmo() || P.hp < 100)) {
+    c.g.rotation.y += dt * 1.5; c.g.position.y = (c.y || 0) + .5 + Math.sin(clock * 3) * .08;
+    if (!P.dead && Math.abs(P.pos.y - (c.y || 0)) < 1.5 && Math.hypot(P.pos.x - c.g.position.x, P.pos.z - c.g.position.z) < 1.3 && (needsAmmo() || P.hp < (P.maxHp || 150))) {
       WEAPONS.forEach((w, i) => { guns[i].reserve = w.reserve; }); c.active = false; c.g.visible = false; c.t = 20;
       if (mode === 'online') netSend({ t: 'heal' }); else P.hp = Math.min(P.maxHp || 100, P.hp + 5);
       msg('Ammo refilled, +5 HP'); sfx('pickup');
@@ -1911,12 +1934,115 @@ function buildMap(id) {
   ground.material.map = groundTex(M.g[0], M.g[1], M.line); ground.material.map.repeat.set(ARENA * 2, ARENA * 2); ground.material.needsUpdate = true;
   groundHex = new THREE.Color(M.g[0]).getHex();
   const EH = M.circle ? .01 : 2.4;
-  addBlock(0, 0, -ARENA - .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark); addBlock(0, 0, ARENA + .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark);
-  addBlock(-ARENA - .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark); addBlock(ARENA + .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark);
-  seed = M.seed; GEN[M.gen](M); DECOR[M.decor](M);
+  ladders.length = 0;
+  for (const e of [addBlock(0, 0, -ARENA - .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark), addBlock(0, 0, ARENA + .5, ARENA * 2 + 2, EH, 1, M.edge, M.dark),
+    addBlock(-ARENA - .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark), addBlock(ARENA + .5, 0, 0, 1, EH, ARENA * 2, M.edge, M.dark)]) e.edge = true;
+  seed = M.seed; GEN[M.gen](M); DECOR[M.decor](M); buildStructures(M, id);
   buildClouds(M); buildScenery(M); buildWeather(M);
   for (let i = 0; i < 6; i++) addCrate(seededSpot());
   rebuildTargets();
+}
+
+/* ================= V1.9 map upgrade: buildings, bunkers, watchtowers, enclosures and climbable ladders ================= */
+const ladders = [];   // { min, max, top } climb zones
+const ladderRail = 0x6b4a2b, ladderRung = 0x8a5a2b;
+function addLadder(x, z, axis, face, y0, top) {   // axis 'x' = ladder against a wall that runs along x; face = which side the climber stands (+1 / -1)
+  const w = 1.1, h = top - y0, c = 0.18;
+  const ox = axis === 'z' ? face * c : 0, oz = axis === 'x' ? face * c : 0;
+  for (const s of [-1, 1]) decoBox(axis === 'x' ? .1 : .1, h + .6, axis === 'x' ? .1 : .1, ladderRail, x + ox + (axis === 'x' ? s * w / 2 : 0), y0, z + oz + (axis === 'z' ? s * w / 2 : 0));
+  for (let y = y0 + .35; y < top + .4; y += .45) decoBox(axis === 'x' ? w : .08, .08, axis === 'x' ? .08 : w, ladderRung, x + ox, y, z + oz);
+  const dx = axis === 'x' ? w / 2 : .55, dz = axis === 'z' ? w / 2 : .55, cx = x + (axis === 'z' ? face * .45 : 0), cz = z + (axis === 'x' ? face * .45 : 0);
+  ladders.push({ min: new V3(cx - dx, y0 - .1, cz - dz), max: new V3(cx + dx, top + .35, cz + dz), top: top + .08 });
+}
+function ladderAt(x, z, feet) {
+  for (const l of ladders) if (x + R > l.min.x && x - R < l.max.x && z + R > l.min.z && z - R < l.max.z && feet >= l.min.y && feet <= l.max.y) return l;
+  return null;
+}
+function clearArea(x0, z0, x1, z1) {   // remove generated blocks where a structure will stand
+  for (let i = solids.length - 1; i >= 0; i--) {
+    const s = solids[i]; if (s.kind !== 'block' || s.edge) continue;
+    if (s.max.x > x0 && s.min.x < x1 && s.max.z > z0 && s.min.z < z1) { scene.remove(s.mesh); s.mesh.geometry.dispose(); solids.splice(i, 1); }
+  }
+  for (let i = deco.children.length - 1; i >= 0; i--) { const m = deco.children[i], p = m.position; if (p.x > x0 && p.x < x1 && p.z > z0 && p.z < z1) { deco.remove(m); m.geometry.dispose(); } }
+}
+// a wall from a0 to a1 along one axis, with door/window holes { a, b, y0, y1 }
+function wallRun(axis, c, a0, a1, y0, y1, t, col, holes) {
+  const put = (a, b, ya, yb) => { if (b - a < .05 || yb - ya < .05) return; const m = (a + b) / 2, L = b - a; if (axis === 'x') addBlock(m, ya, c, L, yb - ya, t, col); else addBlock(c, ya, m, t, yb - ya, L, col); };
+  const spans = new Map();   // holes in the same column (a window downstairs and one upstairs) share one column of wall pieces
+  for (const h of holes || []) { const k = h.a + ',' + h.b; if (!spans.has(k)) spans.set(k, { a: h.a, b: h.b, gaps: [] }); spans.get(k).gaps.push([h.y0, h.y1]); }
+  let cur = a0;
+  for (const sp of [...spans.values()].sort((p, q) => p.a - q.a)) {
+    put(cur, sp.a, y0, y1);
+    let y = y0; for (const [g0, g1] of sp.gaps.sort((p, q) => p[0] - q[0])) { put(sp.a, sp.b, y, g0); y = Math.max(y, g1); }
+    put(sp.a, sp.b, y, y1); cur = sp.b;
+  }
+  put(cur, a1, y0, y1);
+}
+function slabWithHole(x0, x1, z0, z1, y, th, col, hole) {
+  const put = (a, b, c, d) => { if (b - a > .05 && d - c > .05) addBlock((a + b) / 2, y, (c + d) / 2, b - a, th, d - c, col); };
+  if (!hole) return put(x0, x1, z0, z1);
+  const [hx0, hx1, hz0, hz1] = hole;
+  put(x0, hx0, z0, z1); put(hx1, x1, z0, z1); put(hx0, hx1, z0, hz0); put(hx0, hx1, hz1, z1);
+}
+function building(x, z, w, d, col, door) {   // two stories, door, windows, inside ladder to the upper floor, flat roof
+  const t = .4, F = 3.4, Ht = 6.8, x0 = x - w / 2, x1 = x + w / 2, z0 = z - d / 2, z1 = z + d / 2;
+  const win = (a, lvl) => ({ a: a - .7, b: a + .7, y0: lvl + 1.1, y1: lvl + 2.2 });
+  const holes = { '+z': [], '-z': [], '+x': [], '-x': [] };
+  for (const k in holes) { const along = k[1] === 'z' ? x : z, half = (k[1] === 'z' ? w : d) / 4; holes[k].push(win(along - half, 0), win(along + half, 0), win(along - half, F), win(along + half, F)); }
+  const dc = door[1] === 'z' ? x : z; holes[door].push({ a: dc - .85, b: dc + .85, y0: 0, y1: 2.5 });
+  const back = door === '+z' ? '-z' : door === '-z' ? '+z' : door === '+x' ? '-x' : '+x';
+  holes[back].push({ a: (back[1] === 'z' ? x : z) - .85, b: (back[1] === 'z' ? x : z) + .85, y0: 0, y1: 2.5 });   // back door too, so nobody gets trapped
+  wallRun('x', z1 - t / 2, x0, x1, 0, Ht, t, col, holes['+z']); wallRun('x', z0 + t / 2, x0, x1, 0, Ht, t, col, holes['-z']);
+  wallRun('z', x1 - t / 2, z0 + t, z1 - t, 0, Ht, t, col, holes['+x']); wallRun('z', x0 + t / 2, z0 + t, z1 - t, 0, Ht, t, col, holes['-x']);
+  const hx0 = x0 + t, hz0 = z0 + t, hole = [hx0, hx0 + 1.8, hz0, hz0 + 1.8];   // ladder hole in the corner
+  slabWithHole(x0 + t, x1 - t, z0 + t, z1 - t, F - .3, .3, 0x8a6a4a, hole);
+  addLadder(hx0 + .9, z0 + t, 'x', 1, 0, F);
+  addBlock(x, Ht, z, w + .6, .35, d + .6, 0x5a3a2a);
+  for (let i = 0; i < 2; i++) addCrate(new V3(x + (i ? 1 : -1) * w * .25, F, z + d * .2));   // ammo upstairs
+}
+function bunker(x, z, rotX) {   // low concrete box with shooting slits and an entrance; climb its side for the roof
+  const w = rotX ? 5 : 7, d = rotX ? 7 : 5, t = .6, Hb = 2.5, col = 0x7a7f86, x0 = x - w / 2, x1 = x + w / 2, z0 = z - d / 2, z1 = z + d / 2;
+  const slit = (a) => ({ a: a - .9, b: a + .9, y0: 1.35, y1: 1.85 });
+  wallRun('x', z1 - t / 2, x0, x1, 0, Hb, t, col, rotX ? [slit(x)] : [{ a: x - .85, b: x + .85, y0: 0, y1: 2.2 }]);
+  wallRun('x', z0 + t / 2, x0, x1, 0, Hb, t, col, [slit(x - w * .22), slit(x + w * .22)]);
+  wallRun('z', x1 - t / 2, z0 + t, z1 - t, 0, Hb, t, col, rotX ? [{ a: z - .85, b: z + .85, y0: 0, y1: 2.2 }] : [slit(z)]);
+  wallRun('z', x0 + t / 2, z0 + t, z1 - t, 0, Hb, t, col, [slit(z)]);
+  addBlock(x, Hb, z, w + .4, .4, d + .4, 0x6a6f76);
+  addLadder(x0 - .02, z + (rotX ? -d * .3 : 0), 'z', -1, 0, Hb + .4);
+  for (const s of [-1, 1]) addBlock(x + s * (w / 2 + 1.6), 0, z1 + 1.2, 2.2, .9, .9, 0xc8b078);   // sandbags
+}
+function watchtower(x, z, col) {   // stilts, platform with railings, ladder up the side, little roof
+  const P_ = 4, Hp = 5, half = P_ / 2;
+  for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) addBlock(x + sx * (half - .2), 0, z + sz * (half - .2), .4, 8, .4, 0x6b4a2b);
+  addBlock(x, Hp - .3, z, P_, .3, P_, col);
+  wallRun('x', z - half + .1, x - half, x + half, Hp, Hp + 1, .2, col, []);
+  wallRun('z', x - half + .1, z - half + .2, z + half - .2, Hp, Hp + 1, .2, col, []);
+  wallRun('z', x + half - .1, z - half + .2, z + half - .2, Hp, Hp + 1, .2, col, []);
+  wallRun('x', z + half - .1, x - half, x + half, Hp, Hp + 1, .2, col, [{ a: x - .9, b: x + .9, y0: Hp, y1: Hp + 1 }]);   // gap for the ladder
+  addBlock(x, 0, z + half - .1, 1.4, Hp - .3, .2, 0x6b4a2b);   // the board the ladder is nailed to
+  addLadder(x, z + half, 'x', 1, 0, Hp);
+  addBlock(x, 8, z, P_ + .8, .3, P_ + .8, 0x5a3a2a);
+}
+function enclosure(x, z, col) {   // fenced pen with two gaps and cover inside
+  const s = 6, h = 1.15, t = .25;
+  wallRun('x', z - s, x - s, x + s, 0, h, t, col, [{ a: x - 1.1, b: x + 1.1, y0: 0, y1: h }]);
+  wallRun('x', z + s, x - s, x + s, 0, h, t, col, [{ a: x - 1.1, b: x + 1.1, y0: 0, y1: h }]);
+  wallRun('z', x - s, z - s, z + s, 0, h, t, col, []); wallRun('z', x + s, z - s, z + s, 0, h, t, col, []);
+  for (const [a, b] of [[-s, -s], [s, -s], [-s, s], [s, s]]) addBlock(x + a, 0, z + b, .45, h + .3, .45, 0x6b4a2b);
+  addBlock(x - 2.2, 0, z + 1.5, 1.8, 1.2, 1.8, 0xc8a050); addBlock(x + 2.4, 0, z - 1.8, 1.8, 1.2, 1.8, 0xc8a050);
+}
+const STRUCT_SPOTS = [['building', -24, 6, '+x'], ['building', 24, -6, '-x'], ['tower', -12, -26], ['tower', 12, 26], ['bunker', -27, -20, 0], ['bunker', 27, 20, 1], ['pen', 26, -25], ['pen', -26, 25]];
+function buildStructures(M, id) {
+  if (['valley', 'custom', 'pumpkin'].includes(id) || (MODES[match.mode] && MODES[match.mode].zombies)) return;
+  const wallCol = M.dark ? pick(M.pal) : (M.roof ? 0x9a6a4a : pick([0xb98e6a, 0xa8b0b8, 0xc8a878, 0x9aa085]));
+  for (const [kind, x, z, extra] of STRUCT_SPOTS) {
+    const r = kind === 'building' ? [6, 5] : kind === 'tower' ? [3, 3.5] : kind === 'bunker' ? [6, 6] : [7, 7];
+    clearArea(x - r[0] - 1.5, z - r[1] - 1.5, x + r[0] + 1.5, z + r[1] + 1.5);
+    if (kind === 'building') building(x, z, 10, 8, wallCol, extra);
+    if (kind === 'tower') watchtower(x, z, pick(M.pal));
+    if (kind === 'bunker') bunker(x, z, extra);
+    if (kind === 'pen') enclosure(x, z, 0x8a5a2b);
+  }
 }
 
 let groundHex = 0x74c25e;
@@ -2271,10 +2397,11 @@ function animateAvatar(ent, vx, vz, dt, air, pitch) {
   if (ent.flash > 0) { ent.flash -= dt; ent.shirt.emissive.setHex(0xffffff); ent.shirt.emissiveIntensity = Math.max(0, ent.flash) * 6; }
   else if (ent.shirt.emissiveIntensity) ent.shirt.emissiveIntensity = 0;
 }
+const tagName = (ent) => (ent.streak >= 2 ? '🔥' + ent.streak + ' ' : '') + ent.name;   // win streak above the head
 function setTag(ent, color, xray) {
   if (!ent.tag) return;
   ent.group.remove(ent.tag); ent.tag.material.map.dispose(); ent.tag.material.dispose();
-  ent.tag = nameSprite(ent.name, color, xray); ent.group.add(ent.tag);
+  ent.tag = nameSprite(tagName(ent), color, xray); ent.group.add(ent.tag);
 }
 function teamTag(ent) {
   if (teamsOn()) setTag(ent, TEAM_HEX[ent.team] || '#fff', ent.team === P.team); else setTag(ent, '#fff', false);
@@ -2285,7 +2412,7 @@ function setAvatarGun(ent, id, skin) {
   if (ent.gunId === id && ent.builtSkin === sk) return;
   ent.gunId = id; ent.builtSkin = sk; buildWorldGun(ent.gunHolder, id, sk);
 }
-function setBar(ent) { if (!ent.bar) return; const k = ent.hp / (ent.maxHp || 100); ent.bar.scale.x = Math.max(0.001, k); ent.bar.material.color.setHex(k < .4 ? 0xff4d5e : 0x3ddc84); }
+function setBar(ent) { if (!ent.bar) return; const k = ent.hp / (ent.maxHp || 150); ent.bar.scale.x = Math.max(0.001, k); ent.bar.material.color.setHex(k < .4 ? 0xff4d5e : 0x3ddc84); }
 function disposeAvatar(ent) {
   ent.host.remove(ent.group); ent.shirt.dispose();
   ent.hatObj.traverse(o => { if (o.geometry) o.geometry.dispose(); });
@@ -2301,7 +2428,7 @@ function makeBot(name, color, gun, hat, effect, team) {
   makeAvatar(b, name, color, hat); setAvatarGun(b, gun, pickAny(Object.keys(GUN_SKINS))); return b;
 }
 function spawnBot(b) {
-  b.pos.copy(randomFreeSpot([P, ...bots], 14, b.team)); b.maxHp = MODES[match.mode].br ? 500 : 100; b.hp = b.maxHp; b.dead = false; b.group.visible = true; b.cd = 1 + Math.random();
+  b.pos.copy(randomFreeSpot([P, ...bots], 14, b.team)); b.maxHp = MODES[match.mode].br ? 500 : 150; b.hp = b.maxHp; b.dead = false; b.group.visible = true; b.cd = 1 + Math.random();
   b.shield = SPAWN_SHIELD; setBar(b); b.target = null;
 }
 function removeBots() { bots.forEach(disposeAvatar); bots = []; }
@@ -2314,7 +2441,7 @@ function damageBot(b, d, head, by) {
     if (MODES[match.mode].br) { b.out = true; b.placeT = clock; }
     if (teamsOn()) match.teamScores[by.team]++;
     killFx(by.effect, b.pos);
-    if (by === P) { P.hp = Math.min(P.maxHp || 100, P.hp + 25); rewardKill(head, b.name); } else by.hp = Math.min(by.maxHp || 100, by.hp + 25);
+    if (by === P) { P.hp = Math.min(P.maxHp || 100, P.hp + 25); rewardKill(head, b.name); } else by.hp = Math.min(by.maxHp || 150, by.hp + 25);
     if (gungameOn()) ggLocal(by, b, by === P ? curDmgW : (by.gun === 'scythe' ? SCYTHE_W : -1));
     if (by !== P && b.dmgBy.has(P) && clock - b.dmgBy.get(P) < 10) onAssist(b.name);
     for (const f of b.dmgBy.keys()) if (f !== by && f !== P && clock - b.dmgBy.get(f) < 10) f.assists = (f.assists || 0) + 1;
@@ -2450,14 +2577,14 @@ function explode(r, p, kind) {
     c.set(e.pos.x, e.pos.y + 1, e.pos.z); const d = c.distanceTo(p);
     if (d < RAD) {
       const dmg = dmgAt(d);
-      if (mode === 'online') { if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(c.clone(), dmg, false); e.flash = .08; } }
-      else { if (!e.shield) dmgNum(c.clone(), dmg, false); damageBot(e, dmg, false, P); }
+      if (mode === 'online') { if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(c.clone(), dmg, false, e); e.flash = .08; } }
+      else { if (!e.shield) dmgNum(c.clone(), dmg, false, e); damageBot(e, dmg, false, P); }
     }
   }
   for (const z of zombieEnts.values()) {
     if (z.dead) continue;
     c.set(z.pos.x, z.scale, z.pos.z); const d = Math.max(0, c.distanceTo(p) - z.rad);
-    if (d < RAD) { const dmg = dmgAt(d); zl.push({ z: z.id, dmg, head: false }); dmgNum(c.clone().setY(z.scale * 1.6), dmg, false); z.flash = .08; }
+    if (d < RAD) { const dmg = dmgAt(d); zl.push({ z: z.id, dmg, head: false }); dmgNum(c.clone().setY(z.scale * 1.6), dmg, false, z); z.flash = .08; }
   }
   if (zl.length) { hitmarker(false); hitZombies(W, zl); }
   if (pk) { // the Halloween RPG hurts you too if you're inside the blast
@@ -2537,8 +2664,8 @@ function syncRemotes() {
   for (const p of NET.room.players) {
     if (p.id === NET.id) continue; ids.add(p.id);
     let r = remotes.get(p.id);
-    if (!r) { r = addRemote(p); changed = true; if (match.active) teamTag(r); }
-    else if (r.team !== p.team) { r.team = p.team; if (match.active) teamTag(r); }
+    if (!r) { r = addRemote(p); r.streak = p.streak || 0; changed = true; if (match.active) teamTag(r); }
+    else if (r.team !== p.team || r.streak !== (p.streak || 0)) { r.team = p.team; r.streak = p.streak || 0; if (match.active) teamTag(r); }
     r.effect = p.effect;
     const mk = JSON.stringify(p.mythic || {});
     if (r.mythicKey !== mk || r.gunSkin !== (p.gunSkin || 'classic')) { r.mythic = p.mythic || {}; r.mythicKey = mk; r.gunSkin = p.gunSkin || 'classic'; const g = r.gunId; r.gunId = null; if (g) setAvatarGun(r, g); }
@@ -2620,6 +2747,8 @@ function onNet(m) {
     case 'welcome': NET.id = m.id; NET.accounts = !!m.accounts; showOnline(m.online); acctOnConnect(); break;
     case 'auth': case 'autherr': case 'wallet': case 'loggedout': onAcctMsg(m); break;
     case 'rank': onRankMsg(m); break;
+    case 'dq': onDuelQ(m); break;
+    case 'duelend': if (mode === 'online') { leaveOnline(); show('s-menu'); } break;
     case 'hub': onHubList(m.list || []); break;
     case 'hchat': onHubChat(m); break;
     case 'accounts': NET.accounts = !!m.on; if (m.on && !ACCT.user && store.get('arenaclash.token', '')) netSend({ t: 'resume', token: store.get('arenaclash.token', '') }); acctUI(); break;
@@ -2648,7 +2777,7 @@ function onNet(m) {
         r.dead = !!dead; if (r.hp !== hp) { r.hp = hp; setBar(r); }
       }
       break;
-    case 'spawn': { const r = remotes.get(m.id); if (r) { r.pos.set(m.x, m.y, m.z); r.tpos.copy(r.pos); r.dead = false; r.hp = r.maxHp || 100; r.shieldUntil = clock + SPAWN_SHIELD; setBar(r); } break; }
+    case 'spawn': { const r = remotes.get(m.id); if (r) { r.pos.set(m.x, m.y, m.z); r.tpos.copy(r.pos); r.dead = false; r.hp = r.maxHp || 150; r.shieldUntil = clock + SPAWN_SHIELD; setBar(r); } break; }
     case 'hp':
       if (m.id === NET.id) {
         if (m.hp < P.hp && !P.dead) { vigT = .35; sfx('hurt'); addShake(.12); const r = m.by && remotes.get(m.by); if (r) threat(r.pos.x, r.pos.z, true); }
@@ -2723,6 +2852,7 @@ function onNet(m) {
     case 'collapse': if (match.active && Array.isArray(m.keys)) collapseKeys(m.keys); break;
     case 'emote': { const r = remotes.get(m.id); if (r && match.active) r.emote = { e: m.e, t: EMOTE_TIME }; break; }
     case 'end':
+      if (m.streaks) { NET.streak = m.streaks[NET.id] || 0; for (const [id, k] of Object.entries(m.streaks)) { const r = remotes.get(+id); if (r) r.streak = k; } }
       if (mode === 'online' && match.active) {
         if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores;
         endMatch(m.standings.map(p => ({ name: p.name, kills: p.kills, assists: p.assists || 0, deaths: p.deaths, team: p.team, isPlayer: p.id === NET.id, bonus: (m.place || {})[p.id] || 0 })), m.reason,
@@ -2735,7 +2865,7 @@ function onNet(m) {
 function onRoom(r) {
   const prev = NET.room ? NET.room.state : null;
   NET.room = r; mode = 'online';
-  const me = r.players.find(p => p.id === NET.id); if (me) P.team = me.team;
+  const me = r.players.find(p => p.id === NET.id); if (me) { P.team = me.team; NET.streak = me.streak || 0; }
   syncRemotes();
   if (r.state === 'playing') { if (match.active) { match.time = r.timeLeft; if (Array.isArray(r.teamScores)) match.teamScores = r.teamScores; } return; }
   if (match.active) return;
@@ -2793,7 +2923,7 @@ function addChat(name, text, color, sys) {
 }
 function resetForMatch() {
   $('rankres').hidden = true;
-  P.gg = 0; P.turkeyT = 0; P.out = false; P.bus = false; P.sky = false; P.maxHp = MODES[match.mode].br ? 500 : 100;
+  P.gg = 0; P.turkeyT = 0; P.out = false; P.bus = false; P.sky = false; P.maxHp = MODES[match.mode].br ? 500 : 150;
   P.kills = 0; P.deaths = 0; P.assists = 0; P.mats = 200; P.pitch = 0; Wp.piece = 'wall'; Wp.aim = false; Wp.burstLeft = 0;
   match.teamScores = [0, 0]; Wp.cur = 0; Wp.spin = 0; pendingLO = null; LO = matchLoadout(); buildSlots();
   $('feed').innerHTML = ''; lastHud = '';
@@ -2801,7 +2931,7 @@ function resetForMatch() {
   $('goal').textContent = M.teams ? '' : 'First to ' + match.limit + ' kills';
 }
 function startOnlineMatch(m) {
-  mode = 'online'; removeBots();
+  mode = 'online'; removeBots(); match.mode = MODES[m.mode] ? m.mode : 'ffa'; $('duelq').hidden = true;
   if (m.custom) setCustomMap(m.custom);
   buildMap(m.map);
   if (m.mode === 'br') startBRClient(m.loot);
@@ -2809,7 +2939,7 @@ function startOnlineMatch(m) {
   match.map = m.map; match.mode = MODES[m.mode] ? m.mode : 'ffa'; match.time = m.timeLeft; match.limit = m.limit; match.active = true;
   resetForMatch();
   if (Array.isArray(m.teamScores)) match.teamScores = m.teamScores.slice(0, 2);
-  for (const r of remotes.values()) { r.dead = true; r.snap = true; r.maxHp = MODES[match.mode].br ? 500 : 100; r.hp = r.maxHp; setBar(r); }
+  for (const r of remotes.values()) { r.dead = true; r.snap = true; r.maxHp = MODES[match.mode].br ? 500 : 150; r.hp = r.maxHp; setBar(r); }
   if (NET.room) for (const p of NET.room.players) { p.kills = 0; p.deaths = 0; }
   syncRemotes();
   for (const r of remotes.values()) teamTag(r);
@@ -3030,9 +3160,9 @@ function fireShot(w, g) {
   }
   const list = [], zl = [];
   for (const [e, o] of hitsOn) {
-    if (e.isZombie) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head); zl.push({ z: e.id, dmg: Math.round(o.d), head: o.head }); }
-    else if (e.isBot) { if (!e.shield) dmgNum(o.p, Math.round(o.d), o.head); damageBot(e, o.d, o.head, P); }
-    else if (!(e.shieldUntil > clock)) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head); list.push({ id: e.id, dmg: Math.round(o.d), head: o.head }); }
+    if (e.isZombie) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head, e); zl.push({ z: e.id, dmg: Math.round(o.d), head: o.head }); }
+    else if (e.isBot) { if (!e.shield) dmgNum(o.p, Math.round(o.d), o.head, e); damageBot(e, o.d, o.head, P); }
+    else if (!(e.shieldUntil > clock)) { hitmarker(o.head); e.flash = .08; dmgNum(o.p, Math.round(o.d), o.head, e); list.push({ id: e.id, dmg: Math.round(o.d), head: o.head }); }
   }
   if (zl.length) hitZombies(cw(), zl);
   if (mode === 'online') {
@@ -3315,7 +3445,7 @@ function onZEvent(ev) {
 }
 function onZWave(wave, lives) {
   P.lives = lives; ZS.wave = wave;
-  if (P.dead) { P.out = false; P.deathT = .4; } else P.hp = 100;   // full health every wave
+  if (P.dead) { P.out = false; P.deathT = .4; } else P.hp = P.maxHp || 150;   // full health every wave
   waveBanner('Wave ' + wave + ' of 5', wave >= 5 ? 'Final wave! One life only.' : (wave >= 4 ? 'Tom Turkeys and GOBBLEZILLA. ' : '') + lives + ' lives this wave');
   lastHud = '';
 }
@@ -3372,9 +3502,9 @@ function swingScythe() {
   for (const e of targets.slice(0, 5)) {
     const at = new V3(e.pos.x, (e.pos.y || 0) + 1.4 * (e.scale || 1), e.pos.z);
     burstFx(scene, at, [0xff5d6c, 0xffffff], 4, 2.5, .6, .3, 10);
-    if (e.isZombie) { zl.push({ z: e.id, dmg, head: false }); dmgNum(at, dmg, false); e.flash = .08; }
-    else if (e.isBot) { if (!e.shield) dmgNum(at, dmg, false); damageBot(e, dmg, false, P); }
-    else if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(at, dmg, false); e.flash = .08; }
+    if (e.isZombie) { zl.push({ z: e.id, dmg, head: false }); dmgNum(at, dmg, false, e); e.flash = .08; }
+    else if (e.isBot) { if (!e.shield) dmgNum(at, dmg, false, e); damageBot(e, dmg, false, P); }
+    else if (!(e.shieldUntil > clock)) { list.push({ id: e.id, dmg, head: false }); dmgNum(at, dmg, false, e); e.flash = .08; }
   }
   if (targets.length) { hitmarker(false); addShake(.06); }
   if (zl.length) hitZombies(SCYTHE_W, zl);
@@ -3549,7 +3679,7 @@ function updateDash(dt) {
   const tryHit = (e, rad) => {
     if (DASH.hit.has(e) || Math.hypot(e.pos.x - P.pos.x, e.pos.z - P.pos.z) > rad + 1.3) return;
     DASH.hit.add(e); const at = new V3(e.pos.x, (e.pos.y || 0) + 1.3 * (e.scale || 1), e.pos.z);
-    burstFx(scene, at, [0xb06bff, 0xffffff], 6, 3, .6, .35, 8); dmgNum(at, DASH_DMG, false); e.flash = .08; hitmarker(false);
+    burstFx(scene, at, [0xb06bff, 0xffffff], 6, 3, .6, .35, 8); dmgNum(at, DASH_DMG, false, e); e.flash = .08; hitmarker(false);
     if (e.isZombie) zl.push({ z: e.id, dmg: DASH_DMG, head: false });
     else if (e.isBot) damageBot(e, DASH_DMG, false, P);
     else if (!(e.shieldUntil > clock)) list.push({ id: e.id, dmg: DASH_DMG, head: false });
@@ -3632,7 +3762,7 @@ function updateGuardians(dt) {
         gd.target = best; gd.lunge = .25; curDmgW = TURKEY_W;
         const at = new V3(best.pos.x, (best.pos.y || 0) + 1.2 * (best.scale || 1), best.pos.z);
         tracer(gd.g.position.clone().setY(gd.g.position.y + 1), at, 0xffb02e); burstFx(scene, at, [0x7a4a22, 0xffb02e], 4, 2, .5, .3, 6);
-        dmgNum(at, PECK_DMG, false);
+        dmgNum(at, PECK_DMG, false, best);
         if (best.isZombie) hitZombies(TURKEY_W, [{ z: best.id, dmg: PECK_DMG, head: false }]);
         else if (best.isBot) damageBot(best, PECK_DMG, false, P);
         else if (!(best.shieldUntil > clock)) { best.flash = .08; netSend({ t: 'hit', w: TURKEY_W, list: [{ id: best.id, dmg: PECK_DMG, head: false }] }); }
@@ -4012,7 +4142,7 @@ function updateMythicGlow(dt) {
 }
 
 /* ================= Game Log (opens like the Shop, with a red dot after updates) ================= */
-const LOG_VERSION = '1.8';
+const LOG_VERSION = '1.9';
 function logDot() { $('logdot').hidden = store.get('arenaclash.logseen', '') === LOG_VERSION; }
 $('gamelogbtn').addEventListener('click', () => { store.set('arenaclash.logseen', LOG_VERSION); logDot(); show('s-gamelog'); });
 $('logclose').addEventListener('click', () => show('s-menu'));
@@ -4213,7 +4343,7 @@ function acctUI() {
 function onAcctMsg(m) {
   if (m.t === 'auth') {
     const fresh = !ACCT.user;
-    ACCT.user = m.username; ACCT.dev = !!m.dev; ACCT.rp = m.rp || 0; localStorage.setItem('arenaclash.token', JSON.stringify(m.token));
+    ACCT.user = m.username; ACCT.dev = !!m.dev; ACCT.rp = m.rp || 0; NET.streak = m.streak || 0; localStorage.setItem('arenaclash.token', JSON.stringify(m.token));
     if (m.uid && m.uid !== myUid) { myUid = m.uid; store.set('arenaclash.uid', myUid); }
     const local = Number(localStorage.getItem('arenaclash.synced') || 0), switching = store.get('arenaclash.acctname', '') !== m.username;
     if (m.profile && Object.keys(m.profile).length && (switching || (m.updated || 0) > local)) {
@@ -4290,6 +4420,9 @@ const PADS = [
   { x: 4.4, z: -35, label: 'FRIENDS', sub: 'Invite and join', color: 0x5fe0ff, act: 'friends' },
   { x: -3.4, z: 2.2, label: 'MISSIONS', color: 0xff4d5e, act: 'tasks', gift: true },
   { x: 3.4, z: 2.2, label: 'SHOP', color: 0xffb21f, act: 'shop', crate: true },
+  { x: -4.4, z: -43.5, label: '1v1', sub: 'First to 5', color: 0xff4d5e, act: 'duel1', over: true },
+  { x: 0, z: -43.5, label: '2v2', sub: 'First team to 10', color: 0xffb21f, act: 'duel2', over: true },
+  { x: 4.4, z: -43.5, label: '3v3', sub: 'First team to 15', color: 0x5fb0ff, act: 'duel3', over: true },
   { x: 0, z: -53, label: 'ARMORY', sub: 'Change your loadout', color: 0xff8a1f, act: 'loadout', r: 4 },
 ];
 function textTex(lines, color, w = 512, h = 256) {
@@ -4332,6 +4465,7 @@ function buildHub() {
     if (p.act !== 'loadout') {
       const sx = p.x < 0 ? -1 : 1, s = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.3), new THREE.MeshBasicMaterial({ map: textTex([p.label, p.sub || ''], p.color) }));
       if (p.gift || p.crate) { s.position.set(p.x, 2.6, p.z - .2); s.rotation.y = 0; s.scale.setScalar(.7); }
+      else if (p.over) { s.position.set(p.x, 4.2, p.z); s.rotation.y = 0; s.scale.setScalar(.85); }
       else { s.position.set(sx * 6.95, 4.2, p.z); s.rotation.y = -sx * Math.PI / 2; }
       g.add(s);
     }
@@ -4340,6 +4474,7 @@ function buildHub() {
   }
   scene.add(g); HUB.g = g;
 }
+const hubLabel = (rank, streak) => [streak >= 2 ? '🔥' + streak : '', rank ? '★ ' + rank : ''].filter(Boolean).join('  ');
 const hubKey = () => [look.color, look.hat, look.gunSkin, JSON.stringify(look.mythic || {}), look_lo()[0], P.name].join('|');
 function rankSpriteFor(text, color) {
   const c = document.createElement('canvas'); c.width = 256; c.height = 64; const g = c.getContext('2d');
@@ -4354,10 +4489,10 @@ function ensureHubMe() {
     e.gunSkin = look.gunSkin; e.mythic = look.mythic; setAvatarGun(e, WEAPONS[look_lo()[0]].id);
     HUB.me = e; HUB.key = k; HUB.rankKey = '';
   }
-  const rk = ACCT.user ? rankName(ACCT.rp) : '';
+  const rk = hubLabel(ACCT.user ? rankName(ACCT.rp) : '', NET.streak || 0);
   if (HUB.rankKey !== rk) {
     if (HUB.rankSprite) { HUB.me.group.remove(HUB.rankSprite); HUB.rankSprite.material.map.dispose(); HUB.rankSprite = null; }
-    if (rk) { HUB.rankSprite = rankSpriteFor('★ ' + rk, rankColor(ACCT.rp)); HUB.rankSprite.position.y = 2.75; HUB.me.group.add(HUB.rankSprite); }
+    if (rk) { HUB.rankSprite = rankSpriteFor(rk, ACCT.user ? rankColor(ACCT.rp) : '#ffb02e'); HUB.rankSprite.position.y = 2.75; HUB.me.group.add(HUB.rankSprite); }
     HUB.rankKey = rk;
   }
 }
@@ -4389,7 +4524,7 @@ function updateLobby(dt) {
   }
   const len = Math.hypot(fx, fz); let vx = 0, vz = 0;
   if (len > .1) {
-    const s = Math.sin(HUB.camYaw), c = Math.cos(HUB.camYaw), sp = (keys.ShiftLeft ? 7.5 : 5) * Math.min(1, len);
+    const s = Math.sin(HUB.camYaw), c = Math.cos(HUB.camYaw), sp = (keys.ShiftLeft ? 12 : 8.5) * Math.min(1, len);
     vx = ((fx * c + fz * s) / len) * sp; vz = ((-fx * s + fz * c) / len) * sp;
     HUB.pos.x += vx * dt; HUB.pos.z += vz * dt;
     const target = Math.atan2(vx, vz); let d = target - HUB.face; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; HUB.face += d * Math.min(1, dt * 12);
@@ -4423,7 +4558,7 @@ function hubInteract(p) {
     practice: () => $('practice').click(), quick: () => { QMODE = 'unranked'; qmodeUI(); $('quick').click(); },
     ranked: () => { QMODE = 'ranked'; qmodeUI(); $('quick').click(); }, private: () => show('s-private'),
     maps: () => $('openMaps').click(), bp: () => $('openBP').click(), mastery: () => $('openMastery').click(), friends: () => $('openFriends').click(),
-    tasks: () => show('s-missions'), shop: () => $('shopbtn').click(), loadout: () => $('openLoadout').click(),
+    tasks: () => show('s-missions'), duel1: () => duelQueue(1), duel2: () => duelQueue(2), duel3: () => duelQueue(3), shop: () => $('shopbtn').click(), loadout: () => $('openLoadout').click(),
   };
   (acts[p.act] || (() => {}))();
 }
@@ -4454,16 +4589,17 @@ function onHubList(list) {
   $('hubcount').textContent = list.length === 1 ? 'Just you in the hub' : list.length + ' players in the hub';
   if (!hubMoving() || !HUB.g) return;
   const seen = new Set();
-  for (const [id, name, x, y, z, f, color, hat, rank, gun, skin] of list) {
+  for (const [id, name, x, y, z, f, color, hat, rank, gun, skin, streak] of list) {
     if (id === NET.id) continue; seen.add(id);
-    const key = [name, color, hat, gun, skin, rank].join('|');
+    const key = [name, color, hat, gun, skin, rank, streak].join('|');
     let pr = PEERS.get(id);
     if (pr && pr.key !== key) { removePeer(id); pr = null; }
     if (!pr) {
       const e = { name }; makeAvatar(e, name, AV_COLORS[color] || AV_COLORS[0], hat, HUB.g); if (e.bar) e.bar.visible = false;
       e.gunSkin = skin; e.mythic = {}; setAvatarGun(e, gun);
       pr = { e, key, tx: x, ty: y, tz: z, tf: f };
-      if (rank) { pr.rs = rankSpriteFor('★ ' + rank, RANK_COLORS[rank.split(' ')[0]] || '#ffffff'); pr.rs.position.y = 2.75; e.group.add(pr.rs); }
+      const lbl = hubLabel(rank, streak || 0);
+      if (lbl) { pr.rs = rankSpriteFor(lbl, rank ? (RANK_COLORS[rank.split(' ')[0]] || '#ffffff') : '#ffb02e'); pr.rs.position.y = 2.75; e.group.add(pr.rs); }
       e.group.position.set(x, y, z); e.group.rotation.y = f; PEERS.set(id, pr);
     }
     pr.tx = x; pr.ty = y; pr.tz = z; pr.tf = f;
@@ -4481,6 +4617,17 @@ function updatePeers(dt) {   // glide smoothly between the 8-per-second updates
     animateAvatar(pr.e, (g.position.x - ox) / Math.max(dt, .001), (g.position.z - oz) / Math.max(dt, .001), dt, g.position.y > .05, 0);
   }
 }
+/* ---- quick 1v1 / 2v2 / 3v3 ---- */
+function duelQueue(size) {
+  if (!NET.ok) { menuError('Not connected to the server yet.'); return; }
+  readName(); sendHello(); netSend({ t: 'duel', size });
+}
+function onDuelQ(m) {
+  const el = $('duelq');
+  if (!m.size) { el.hidden = true; return; }
+  el.hidden = false; $('duelqtxt').textContent = 'Finding a ' + m.size + 'v' + m.size + '... ' + m.n + ' / ' + m.need + ' players';
+}
+$('duelqx').addEventListener('click', () => netSend({ t: 'duelleave' }));
 /* ---- hub chat ---- */
 function onHubChat(m) {
   const log = $('hubchatlog'), line = document.createElement('div');
@@ -4495,11 +4642,11 @@ $('hubchatin').addEventListener('keydown', e => {
 });
 
 /* ================= Ranked ================= */
-const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'], CHAMPION_RP = 1500;
-const RANK_COLORS = { Bronze: '#d08a4a', Silver: '#d8dde6', Gold: '#ffd24a', Platinum: '#6fe0d0', Diamond: '#8fd0ff', Champion: '#ff5fd8' };
-function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
+const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Emerald', 'Master', 'Grandmaster'], CHAMPION_RP = 2400, LEGEND_RP = 3000;
+const RANK_COLORS = { Bronze: '#d08a4a', Silver: '#d8dde6', Gold: '#ffd24a', Platinum: '#6fe0d0', Diamond: '#8fd0ff', Emerald: '#3ddc84', Master: '#b06bff', Grandmaster: '#ff4d5e', Champion: '#ff5fd8', Legend: '#ff9a1f' };
+function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= LEGEND_RP) return 'Legend'; if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
 const rankColor = (rp) => RANK_COLORS[rankName(rp).split(' ')[0]];
-const rankProgress = (rp) => rp >= CHAMPION_RP ? 100 : (rp % 100);
+const rankProgress = (rp) => rp >= LEGEND_RP ? 100 : rp >= CHAMPION_RP ? (rp - CHAMPION_RP) / 6 : (rp % 100);
 let QMODE = 'unranked';
 function qmodeUI() {
   $('quicksub').textContent = QMODE === 'ranked' ? 'Ranked' : 'Unranked';
@@ -4511,7 +4658,7 @@ function rankUI() {
   const pill = $('rankpill');
   if (!ACCT.user) { pill.innerHTML = '<span class="small">Log in for Ranked</span>'; return; }
   const rp = ACCT.rp || 0, nm = rankName(rp);
-  pill.innerHTML = '<b style="color:' + rankColor(rp) + '">★ ' + nm + '</b><span class="rpbar"><i style="width:' + rankProgress(rp) + '%;background:' + rankColor(rp) + '"></i></span><span class="small">' + (rp >= CHAMPION_RP ? rp + ' RP' : (rp % 100) + ' / 100 RP') + '</span>';
+  pill.innerHTML = '<b style="color:' + rankColor(rp) + '">★ ' + nm + '</b><span class="rpbar"><i style="width:' + rankProgress(rp) + '%;background:' + rankColor(rp) + '"></i></span><span class="small">' + (rp >= LEGEND_RP ? rp + ' RP' : rp >= CHAMPION_RP ? rp + ' / ' + LEGEND_RP + ' RP' : (rp % 100) + ' / 100 RP') + '</span>';
 }
 function onRankMsg(m) {
   const up = rankName(m.rp) !== rankName(m.before) && m.rp > m.before, down = rankName(m.rp) !== rankName(m.before) && m.rp < m.before;
@@ -4767,7 +4914,7 @@ function tryLootPickup(dt) {
   BRC.pickT -= dt; if (BRC.pickT > 0 || P.dead) return;
   for (const l of BRC.loot.values()) {
     if (Math.hypot(l.x - P.pos.x, l.z - P.pos.z) > 1.6 || Math.abs(l.g.position.y - .9 - P.pos.y) > 1.6) continue;
-    if (l.w === 'hp' && P.hp >= (P.maxHp || 100)) continue;
+    if (l.w === 'hp' && P.hp >= (P.maxHp || 150)) continue;
     BRC.pickT = .4;
     const slot = LO.length < 4 ? -1 : (Wp.cur < LO.length ? Wp.cur : 0);
     if (mode === 'online') netSend({ t: 'loot', id: l.id, slot: Math.max(0, slot) });
@@ -5445,6 +5592,17 @@ function updatePlayer(dt) {
     if (keys.ShiftLeft || keys.ShiftRight) P.pos.y = Math.max(groundAt(P.pos.x, P.pos.z, P.pos.y), P.pos.y - 10 * dt);
     P.shield = Math.max(0, P.shield - dt); return;
   }
+  const lad = !P.dead && ladderAt(P.pos.x, P.pos.z, P.pos.y);
+  if (lad) {   // ladders: hold W (or Space) to climb, let go to slide down
+    const up = fz_ < -.2 || keys.Space;
+    if (up || !P.onGround) {
+      P.vy = 0; P.ramp = null;
+      let ny = Math.min(lad.top, P.pos.y + (up ? 4.6 : -3.2) * dt);
+      const gl = groundAt(P.pos.x, P.pos.z, P.pos.y);
+      if (ny <= gl) { ny = gl; P.onGround = true; } else P.onGround = false;
+      P.pos.y = ny; P.shield = Math.max(0, P.shield - dt); return;
+    }
+  }
   if (keys.Space && P.onGround) { P.vy = 8.5; P.onGround = false; }
   const info = {}; const g = groundAt(P.pos.x, P.pos.z, P.pos.y, info);
   const fallV = P.vy;
@@ -5498,7 +5656,7 @@ let lastHud = '', miniT = 0;
 function fmtTime(t) { t = Math.max(0, Math.ceil(t)); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
 function updateHud(dt) {
   if (!match.active) return;
-  const hpk = P.hp / (P.maxHp || 100); $('hpfill').style.width = (100 * hpk) + '%'; $('hpfill').style.background = hpk < .35 ? 'var(--danger)' : 'var(--hp)';
+  const hpk = P.hp / (P.maxHp || 150); $('hpfill').style.width = (100 * hpk) + '%'; $('hpfill').style.background = hpk < .35 ? 'var(--danger)' : 'var(--hp)';
   const gun = cw() >= 0 ? guns[cw()] : null, w = gun && WEAPONS[cw()];
   const sig = [Math.ceil(P.hp), Wp.cur, P.nades, P.mines, LO.join(','), P.lives, ZS.wave, gun ? gun.mag : '', gun ? gun.reserve : '', P.mats, Wp.piece, guns.map(g => g.mag + '/' + g.reserve).join(','), match.teamScores.join('-'), match.mode].join('|');
   if (sig !== lastHud) {
@@ -5556,7 +5714,7 @@ function updateHud(dt) {
   }
   if (hitT > 0) { hitT -= dt; if (hitT <= 0) $('hit').classList.remove('show'); }
   if (msgT > 0) { msgT -= dt; if (msgT <= 0) $('msg').classList.remove('show'); }
-  vigT = Math.max(0, vigT - dt); $('vignette').style.opacity = Math.max(vigT * 1.6, P.hp / (P.maxHp || 100) < .3 && !P.dead ? .25 : 0);
+  vigT = Math.max(0, vigT - dt); $('vignette').style.opacity = Math.max(vigT * 1.6, P.hp / (P.maxHp || 150) < .3 && !P.dead ? .25 : 0);
 }
 
 /* ================= main loop ================= */
