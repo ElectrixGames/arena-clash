@@ -23,9 +23,10 @@ const MODES = {
   br: { limit: 0, br: true },                 // Battle Royale: one life, loot, shrinking storm
 };
 const RANKED_MODES = ['ffa', 'gungame', 'br'];
-// Ranked: Bronze I-III, Silver I-III, Gold I-III, Platinum I-III, Diamond I-III (100 RP each), then Champion at 1500 RP
-const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'], CHAMPION_RP = 1500;
-function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
+// Ranked: 8 tiers (I-III each, 100 RP per division), then Champion at 2400 RP and Legend at 3000 RP
+const RANK_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Emerald', 'Master', 'Grandmaster'], CHAMPION_RP = 2400, LEGEND_RP = 3000;
+const DEFAULT_HP = 150;   // every mode except Battle Royale (500)
+function rankName(rp) { rp = Math.max(0, rp || 0); if (rp >= LEGEND_RP) return 'Legend'; if (rp >= CHAMPION_RP) return 'Champion'; return RANK_TIERS[Math.floor(rp / 300)] + ' ' + ['I', 'II', 'III'][Math.floor((rp % 300) / 100)]; }
 function rpChange(place, n, kills) {   // 1st place +32 down to last place -24, plus 2 per kill (up to +10)
   const share = n > 1 ? place / (n - 1) : 0;
   return Math.round(32 - 56 * share) + Math.min(10, (kills || 0) * 2);
@@ -191,10 +192,11 @@ async function refreshLB() {
 setInterval(refreshLB, 60000);
 function signedIn(p, a, token) {
   p.account = { id: a._id, username: a.username, uid: a.uid, dev: !!a.dev };
-  p.rp = a.rp || 0; p.rank = rankName(p.rp);
+  if (a.dev && (a.rp || 0) < LEGEND_RP) { a.rp = LEGEND_RP; accounts.updateOne({ _id: a._id }, { $set: { rp: LEGEND_RP } }).catch(() => {}); }   // the developer gets max rank
+  p.rp = a.rp || 0; p.rank = rankName(p.rp); p.streak = a.streak || 0;
   p.name = a.username; p.uid = a.uid; byUid.set(a.uid, p);
   if (a.dev) { p.dev = true; send(p, { t: 'devok' }); }
-  send(p, { t: 'auth', ok: true, username: a.username, uid: a.uid, token, profile: a.profile || {}, updated: a.updated || 0, dev: !!a.dev, rp: p.rp });
+  send(p, { t: 'auth', ok: true, username: a.username, uid: a.uid, token, profile: a.profile || {}, updated: a.updated || 0, dev: !!a.dev, rp: p.rp, streak: p.streak || 0 });
   send(p, walletMsg(a));
   if (p.room) sendRoom(p.room);
 }
@@ -287,7 +289,7 @@ async function recordMatchForAccounts(room, winners, standings) {
     const n = standings.length;
     for (let i = 0; i < n; i++) {
       const p = room.players.get(standings[i].id); if (!p || !p.account) continue;
-      const before = p.rp || 0, delta = rpChange(i, n, standings[i].kills), rp = Math.max(0, before + delta);
+      const before = p.rp || 0, delta = rpChange(i, n, standings[i].kills), rp = Math.max(p.account.dev ? LEGEND_RP : 0, before + delta);
       p.rp = rp; p.rank = rankName(rp);
       accounts.updateOne({ _id: p.account.id }, { $set: { rp } }).catch(() => {});
       send(p, { t: 'rank', before, rp, delta: rp - before, place: i + 1, of: n });
@@ -461,7 +463,29 @@ function createRoom(isPrivate) {
     choices: [], votes: new Map(), map: 'blockyard', mode: 'ffa', endsAt: 0, structs: new Map(), teamScores: [0, 0] };
   rooms.set(room.code, room); return room;
 }
-const limitOf = (room) => MODES[room.mode].limit;
+const limitOf = (room) => room.limitOverride || MODES[room.mode].limit;
+/* ===== Quick duels: 1v1, 2v2 and 3v3 queues from the hub ===== */
+const DUEL_Q = { 1: [], 2: [], 3: [] }, DUEL_LIMIT = { 1: 5, 2: 10, 3: 15 };
+function duelRemove(p) { for (const k in DUEL_Q) { const i = DUEL_Q[k].indexOf(p); if (i >= 0) { DUEL_Q[k].splice(i, 1); duelStatus(+k); } } p.duelQ = 0; }
+function duelStatus(size) {
+  const q = DUEL_Q[size] = DUEL_Q[size].filter(p => p.ws.readyState === 1 && !p.room);
+  for (const p of q) send(p, { t: 'dq', size, n: q.length, need: size * 2 });
+}
+function tryDuel(size) {
+  duelStatus(size);
+  const q = DUEL_Q[size]; if (q.length < size * 2) return;
+  const group = q.splice(0, size * 2).sort(() => Math.random() - .5);
+  const room = createRoom(true); room.duel = size; room.limitOverride = DUEL_LIMIT[size];
+  room.mode = size === 1 ? 'ffa' : 'tdm'; room.map = MAPS[Math.floor(Math.random() * MAPS.length)];
+  room.sim = null; room.br = null; room.state = 'playing'; room.countdown = 0; room.endsAt = Date.now() + MATCH_TIME * 1000;
+  room.structs.clear(); room.teamScores = [0, 0];
+  group.forEach((p, i) => { p.duelQ = 0; p.hub = null; resetPlayer(p); p.team = i % 2; room.players.set(p.id, p); p.room = room; });
+  room.hostId = group[0].id;
+  startObjectives(room);
+  broadcast(room, startMsg(room)); sendRoom(room);
+  sysChat(room, size + 'v' + size + ' duel! First ' + (size === 1 ? 'player' : 'team') + ' to ' + DUEL_LIMIT[size] + ' kills wins.');
+  duelStatus(size);
+}
 const isTeams = (room) => !!MODES[room.mode].teams;
 function tally(room) {
   const maps = {}, modes = {};
@@ -477,7 +501,7 @@ function roomInfo(room) {
     choices: room.choices, votes: t.maps, modeChoices: room.modeChoices || MODE_IDS, modeVotes: t.modes, ranked: !!room.ranked, map: room.map, mode: room.mode,
     limit: limitOf(room), teamScores: room.teamScores, custom: room.customMap ? room.customMap.name : null,
     timeLeft: room.state === 'playing' ? Math.max(0, (room.endsAt - Date.now()) / 1000) : 0,
-    players: [...room.players.values()].map(p => ({ id: p.id, name: p.name, color: p.color, hat: p.hat, effect: p.effect, gunSkin: p.gunSkin, mythic: p.mythic, level: p.level || 1, rank: p.rank || 'bronze', gg: p.gg || 0, team: p.team, kills: p.kills, deaths: p.deaths, assists: p.assists || 0 })),
+    players: [...room.players.values()].map(p => ({ id: p.id, name: p.name, color: p.color, hat: p.hat, effect: p.effect, gunSkin: p.gunSkin, mythic: p.mythic, level: p.level || 1, rank: p.rank || 'bronze', streak: p.streak || 0, gg: p.gg || 0, team: p.team, kills: p.kills, deaths: p.deaths, assists: p.assists || 0 })),
   };
 }
 const sendRoom = (room) => broadcast(room, roomInfo(room));
@@ -489,7 +513,7 @@ function startMsg(room) {
     loot: room.br ? room.br.loot : undefined, bus: room.br ? room.br.bus : undefined, busT: room.br ? (Date.now() - room.br.started) / 1000 : undefined };
 }
 function resetPlayer(p) {
-  p.kills = 0; p.deaths = 0; p.assists = 0; p.maxHp = 100; p.hp = 100; p.dead = true; p.diedAt = 0; p.spawnAt = 0; p.dmgBy = new Map();
+  p.kills = 0; p.deaths = 0; p.assists = 0; p.maxHp = DEFAULT_HP; p.hp = DEFAULT_HP; p.dead = true; p.diedAt = 0; p.spawnAt = 0; p.dmgBy = new Map();
   p.lastShot = WEAPONS.map(() => 0); p.lastStruct = WEAPONS.map(() => 0);
 }
 function smallerTeam(room, except) {
@@ -499,7 +523,8 @@ function smallerTeam(room, except) {
 }
 
 function joinRoom(p, room) {
-  leaveRoom(p);
+  if (room.duel) return send(p, { t: 'err', text: "That's a quick duel. You can't join it." });
+  duelRemove(p); leaveRoom(p);
   if (room.players.size >= MAX_PLAYERS) return send(p, { t: 'err', text: 'That room is full.' });
   resetPlayer(p); p.team = smallerTeam(room, p);
   room.players.set(p.id, p); p.room = room;
@@ -516,6 +541,7 @@ function leaveRoom(p) {
   if (room.hostId === p.id) room.hostId = room.players.keys().next().value;
   broadcast(room, { t: 'left', id: p.id }); sysChat(room, p.name + ' left');
   if (room.state === 'waiting' && room.countdown > 0 && room.players.size < 2) room.countdown = 0;
+  if (room.duel && room.state === 'playing' && new Set([...room.players.values()].map(q => room.duel === 1 ? q.id : q.team)).size <= 1) endMatch(room, 'forfeit');
   sendRoom(room);
 }
 function maybeCountdown(room) {
@@ -562,7 +588,7 @@ function startZombies(room) {
         const lives = ZOMBIE_LIVES[ev.wave - 1] || 1;
         for (const p of room.players.values()) {
           p.lives = lives; p.out = false; if (p.dead) p.diedAt = 0;
-          else { p.hp = 100; broadcast(room, { t: 'hp', id: p.id, hp: 100 }); }   // full health at the start of each wave
+          else { p.hp = p.maxHp || DEFAULT_HP; broadcast(room, { t: 'hp', id: p.id, hp: p.hp }); }   // full health at the start of each wave
         }
         broadcast(room, { t: 'zwave', wave: ev.wave, lives });
       } else if (ev.type === 'won') { endMatch(room, 'won'); return; }
@@ -588,7 +614,8 @@ function endMatch(room, reason) {
   const standings = all.slice().sort((a, b) => (room.mode === 'br' ? brRank(b) - brRank(a) : 0) || (room.mode === 'gungame' ? (b.gg || 0) - (a.gg || 0) : 0) || b.kills - a.kills || a.deaths - b.deaths)
     .map(p => ({ id: p.id, name: p.name, kills: p.kills, deaths: p.deaths, assists: p.assists || 0, team: p.team }));
   let winTeam = null; const winners = new Set();
-  if (isCoop(room)) {
+  if (reason === 'forfeit') { all.forEach(p => winners.add(p.id)); winTeam = all[0] ? all[0].team : null; }
+  else if (isCoop(room)) {
     if (reason === 'won') all.forEach(p => winners.add(p.id));
   } else if (isTeams(room)) {
     const [a, b] = room.teamScores; winTeam = a === b ? -1 : (a > b ? 0 : 1);
@@ -596,9 +623,14 @@ function endMatch(room, reason) {
   } else if (room.mode === 'br') { if (standings[0] && !room.players.get(standings[0].id)?.dead) winners.add(standings[0].id); }
   else if (standings[0] && standings[0].kills > 0) winners.add(standings[0].id);
   room.koth = null; room.ctf = null;
+  const streaks = {};
+  for (const p of all) {   // win streaks: consecutive wins, shown above your head
+    p.streak = winners.has(p.id) ? (p.streak || 0) + 1 : 0; streaks[p.id] = p.streak;
+    if (accounts && p.account) accounts.updateOne({ _id: p.account.id }, { $set: { streak: p.streak } }).catch(() => {});
+  }
   const place = {};
   if (all.length >= PLACE_MIN_PLAYERS) standings.slice(0, 3).forEach((q, i) => { if (q.kills > 0) place[q.id] = PLACE_BONUS[i]; });
-  broadcast(room, { t: 'end', reason, standings, mode: room.mode, teamScores: room.teamScores, winTeam, winners: [...winners], place, players: all.length, wave: room.sim ? room.sim.S.wave : 0 });
+  broadcast(room, { t: 'end', reason, standings, mode: room.mode, teamScores: room.teamScores, winTeam, winners: [...winners], place, players: all.length, wave: room.sim ? room.sim.S.wave : 0, streaks, duel: room.duel || 0 });
   room.sim = null;
   // leaderboard
   for (const p of all) {
@@ -618,7 +650,7 @@ function applyDamage(room, attacker, target, dmg, head, w) {
   if (target.hp <= 0) {
     target.hp = 0; target.dead = true; target.diedAt = Date.now(); target.deaths++;
     if (room.br) { target.out = true; target.placeT = Date.now(); }
-    attacker.kills++; attacker.hp = Math.min(attacker.maxHp || 100, attacker.hp + 25);
+    attacker.kills++; attacker.hp = Math.min(attacker.maxHp || DEFAULT_HP, attacker.hp + 25);
     if (isTeams(room) && room.mode === 'tdm') room.teamScores[attacker.team]++;
     if (room.mode === 'gungame') {
       attacker.gg = (attacker.gg || 0) + 1;
@@ -720,6 +752,10 @@ setInterval(() => {
       room.countdown--; if (room.countdown <= 0) startMatch(room); else sendRoom(room);
     } else if (room.state === 'results') {
       room.countdown--;
+      if (room.countdown <= 0 && room.duel) {   // duels end and everyone goes back to the hub
+        for (const p of [...room.players.values()]) { send(p, { t: 'duelend' }); leaveRoom(p); }
+        continue;
+      }
       if (room.countdown <= 0) {
         room.state = 'waiting'; room.countdown = 0; room.teamScores = [0, 0];
         for (const p of room.players.values()) resetPlayer(p);
@@ -749,7 +785,7 @@ const inHub = (p) => p.hub && Date.now() - p.hub.t < HUB_TIMEOUT && !(p.room && 
 setInterval(() => {
   const here = [...players.values()].filter(inHub);
   if (!here.length) return;
-  const list = here.map(p => [p.id, p.name, p.hub.x, p.hub.y, p.hub.z, p.hub.f, p.color || 0, p.hat || 'none', p.rank && p.account ? p.rank : '', p.hub.g || 'ar', p.gunSkin || 'classic']);
+  const list = here.map(p => [p.id, p.name, p.hub.x, p.hub.y, p.hub.z, p.hub.f, p.color || 0, p.hat || 'none', p.rank && p.account ? p.rank : '', p.hub.g || 'ar', p.gunSkin || 'classic', p.streak || 0]);
   const msg = JSON.stringify({ t: 'hub', list });
   for (const p of here) if (p.ws.readyState === 1) p.ws.send(msg);
 }, 120);
@@ -796,6 +832,12 @@ function handle(p, m) {
       joinRoom(p, r); break;
     }
     case 'leave': leaveRoom(p); break;
+    case 'duel': {
+      const size = int(m.size, 1, 3); duelRemove(p);
+      if (p.room) leaveRoom(p);
+      p.duelQ = size; DUEL_Q[size].push(p); tryDuel(size); break;
+    }
+    case 'duelleave': duelRemove(p); send(p, { t: 'dq', size: 0 }); break;
     case 'lb': send(p, { t: 'lb', top: lbTop(), ranked: rankedCache }); break;
     case 'hub': { // your position in the shared hub
       p.hub = { x: num(m.x, -12, 12) || 0, y: num(m.y, 0, 4) || 0, z: num(m.z, -66, 9) || 0, f: r2(Number(m.f) || 0), g: /^[a-z]{2,10}$/.test(String(m.g || '')) ? m.g : 'ar', t: now }; break;
@@ -837,7 +879,7 @@ function handle(p, m) {
       if (isCoop(room) && p.out) return;
       const B = boundOf(room), x = num(m.x, -B, B), y = num(m.y, 0, 110), z = num(m.z, -B, B);
       if (x === null || y === null || z === null) return;
-      p.x = x; p.y = y; p.z = z; p.dead = false; p.hp = p.maxHp || 100; p.spawnAt = now; p.turkeyUntil = 0; p.dmgBy.clear();
+      p.x = x; p.y = y; p.z = z; p.dead = false; p.hp = p.maxHp || DEFAULT_HP; p.spawnAt = now; p.turkeyUntil = 0; p.dmgBy.clear();
       broadcast(room, { t: 'spawn', id: p.id, x, y, z });
       broadcast(room, { t: 'hp', id: p.id, hp: p.hp }); break;
     }
@@ -869,7 +911,7 @@ function handle(p, m) {
     }
     case 'heal': { // green ammo crates give +5 HP
       if (!playing || p.dead || now - (p.lastHeal || 0) < 4000) return;
-      p.lastHeal = now; p.hp = Math.min(p.maxHp || 100, p.hp + 5); broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp) }); break;
+      p.lastHeal = now; p.hp = Math.min(p.maxHp || DEFAULT_HP, p.hp + 5); broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp) }); break;
     }
     case 'dev': if (p.dev) p.devGod = !!m.god; break;
     case 'gift': { // developer only: send Clash Crystals to a friend
@@ -898,7 +940,7 @@ function handle(p, m) {
       const i = room.br.loot.findIndex(l => l.id === m.id); if (i < 0) return;
       const l = room.br.loot[i]; if (Math.hypot(l.x - p.x, l.z - p.z) > 3.5) return;
       room.br.loot.splice(i, 1);
-      if (l.w === 'hp') { p.hp = Math.min(p.maxHp || 100, p.hp + 100); broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp) }); }
+      if (l.w === 'hp') { p.hp = Math.min(p.maxHp || DEFAULT_HP, p.hp + 100); broadcast(room, { t: 'hp', id: p.id, hp: Math.round(p.hp) }); }
       else { if (p.inv.length < 4) p.inv.push(l.w); else p.inv[int(m.slot, 0, 3)] = l.w; }
       send(p, { t: 'lootget', w: l.w }); broadcast(room, { t: 'lootgone', id: l.id, by: p.id }); break;
     }
@@ -993,7 +1035,7 @@ wss.on('connection', (ws) => {
     let m; try { m = JSON.parse(raw); } catch (e) { return; }
     if (m && typeof m.t === 'string') { try { handle(p, m); } catch (e) { console.error(e); } }
   });
-  ws.on('close', () => { leaveRoom(p); players.delete(p.id); if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); });
+  ws.on('close', () => { duelRemove(p); leaveRoom(p); players.delete(p.id); if (p.uid && byUid.get(p.uid) === p) byUid.delete(p.uid); });
 });
 
 const PORT = process.env.PORT || 3000;
